@@ -100,4 +100,18 @@ class Force_Alarm_Admin {
 
 	}
 
+	/**
+	 * Changes the Wordpress admin footer text
+	 * 
+	 * @since 1.0.1
+	 */
+	public function wp_admin_footer_text() {
+		printf('<span id="footer-thankyou">%s <a href="%s">%s</a>. %s</span>'
+			, 'Force Alarm Systems. Developed by'
+			, 'https://richardblondet.com/'
+			, 'Richard Blondet'
+			, 'Plugin activated on: ' . get_option( 'force_alarm_plugin_activation' )
+		);
+	}
+
 }

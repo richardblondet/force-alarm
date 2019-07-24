@@ -13,6 +13,11 @@
  * @subpackage Force_Alarm/includes
  */
 
+
+// Define path and URL to the ACF plugin.
+define( 'FA_ACF_PATH', plugin_dir_path( dirname( __FILE__ ) )  . '/includes/advanced-custom-fields-pro/' );
+define( 'FA_ACF_URL', plugin_dir_url( __FILE__ ) . '/includes/advanced-custom-fields-pro/' );
+
 /**
  * The core plugin class.
  *
@@ -122,6 +127,11 @@ class Force_Alarm {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-force-alarm-public.php';
 
+		/**
+		 * Include the ACF plugin.
+		 */
+		include_once( FA_ACF_PATH . 'acf.php' );
+
 		$this->loader = new Force_Alarm_Loader();
 
 	}
@@ -156,7 +166,19 @@ class Force_Alarm {
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
+		$this->loader->add_filter( 'admin_footer_text', $plugin_admin, 'wp_admin_footer_text' );
 
+		$this->loader->add_filter( 'acf/settings/url', $this, 'fa_acf_settings_url' );
+
+	}
+
+	/**
+	 * Customize the url setting to fix incorrect asset URLs.
+	 * 
+	 * @since 1.0.1
+	 */
+	private function fa_acf_settings_url( $url ) {
+		return FA_ACF_URL;
 	}
 
 	/**

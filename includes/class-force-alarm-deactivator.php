@@ -30,11 +30,7 @@ class Force_Alarm_Deactivator {
 	 * @since    1.0.0
 	 */
 	public static function deactivate() {
-		$this->register_deactivation();
-	}
-
-	private function register_deactivation() {
-		add_option( 'force_alarm_plugin_deactivation', time() );
+		update_option( 'force_alarm_plugin_deactivation', date('D d/m/Y h:i:s a') );
 	}
 
 }

@@ -30,11 +30,7 @@ class Force_Alarm_Activator {
 	 * @since    1.0.0
 	 */
 	public static function activate() {
-		$this->register_activation();
-	}
-
-	private function register_activation() {
-		add_option( 'force_alarm_plugin_activation', time() );
+		update_option( 'force_alarm_plugin_activation', date('D d/m/Y h:i:s a') );
 	}
 
 }
