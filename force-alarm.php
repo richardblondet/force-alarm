@@ -38,6 +38,19 @@ if ( ! defined( 'WPINC' ) ) {
 define( 'FORCE_ALARM_VERSION', '1.0.0' );
 
 /**
+ * Define path and URL to the ACF plugin.
+ * This constants will help load the ACF plugin later on
+ */
+define( 'FA_ACF_PATH', plugin_dir_path( __FILE__ )  . 'includes/advanced-custom-fields-pro/' );
+define( 'FA_ACF_URL', plugin_dir_url( __FILE__ ) . 'includes/advanced-custom-fields-pro/' );
+
+
+/**
+ * Include the ACF plugin.
+ */
+include_once( FA_ACF_PATH . 'acf.php' );
+
+/**
  * The code that runs during plugin activation.
  * This action is documented in includes/class-force-alarm-activator.php
  */

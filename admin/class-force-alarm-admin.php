@@ -114,4 +114,24 @@ class Force_Alarm_Admin {
 		);
 	}
 
+	/**
+	 * Customize the url setting to fix incorrect asset URLs.
+	 * 
+	 * @since 1.0.1
+	 */
+	public function fa_acf_settings_url( $url ) {
+		return FA_ACF_URL;
+	}
+
+	/**
+	 * Toggle wheather or not show admin settings for ACF: default true
+	 * 
+	 * When development is over, consider turning off
+	 * 
+	 * @since 1.0.1
+	 */
+	public function fa_acf_settings_show_admin( $show_admin ) {
+		return false;
+	}
+
 }
