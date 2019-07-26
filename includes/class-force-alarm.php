@@ -163,7 +163,12 @@ class Force_Alarm {
 		 */
 		$this->loader->add_filter( 'acf/settings/url', $plugin_admin, 'fa_acf_settings_url' );
 		// $this->loader->add_filter( 'acf/settings/show_admin', $plugin_admin, 'fa_acf_settings_show_admin' );
-		
+
+		/**
+		 * Register Custom Post Types for this project
+		 */
+		$this->loader->add_action( 'init', $plugin_admin, 'fa_orders_custom_post_type', 0 );
+		$this->loader->add_action( 'init', $plugin_admin, 'fa_service_plan_custom_post_type', 0 );
 	}
 
 	/**

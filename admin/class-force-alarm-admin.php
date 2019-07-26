@@ -134,4 +134,123 @@ class Force_Alarm_Admin {
 		return false;
 	}
 
+	/**
+	 * Register the Orders Custom Post Type
+	 * 
+	 * @since 1.1.0
+	 */
+	public function fa_orders_custom_post_type() {
+
+		$labels = array(
+			'name'                  => _x( 'Orders', 'Post Type General Name', 'force-alarm' ),
+			'singular_name'         => _x( 'Order', 'Post Type Singular Name', 'force-alarm' ),
+			'menu_name'             => __( 'Orders', 'force-alarm' ),
+			'name_admin_bar'        => __( 'Orders', 'force-alarm' ),
+			'archives'              => __( 'Order Archives', 'force-alarm' ),
+			'attributes'            => __( 'Order Attributes', 'force-alarm' ),
+			'parent_item_colon'     => __( 'Parent Order:', 'force-alarm' ),
+			'all_items'             => __( 'All Orders', 'force-alarm' ),
+			'add_new_item'          => __( 'Add New Order', 'force-alarm' ),
+			'add_new'               => __( 'Add New', 'force-alarm' ),
+			'new_item'              => __( 'New Order', 'force-alarm' ),
+			'edit_item'             => __( 'Edit Order', 'force-alarm' ),
+			'update_item'           => __( 'Update Order', 'force-alarm' ),
+			'view_item'             => __( 'View Order', 'force-alarm' ),
+			'view_items'            => __( 'View Orders', 'force-alarm' ),
+			'search_items'          => __( 'Search Order', 'force-alarm' ),
+			'not_found'             => __( 'Order Not found', 'force-alarm' ),
+			'not_found_in_trash'    => __( 'Order Not found in Trash', 'force-alarm' ),
+			'featured_image'        => __( 'Featured Image', 'force-alarm' ),
+			'set_featured_image'    => __( 'Set featured image', 'force-alarm' ),
+			'remove_featured_image' => __( 'Remove featured image', 'force-alarm' ),
+			'use_featured_image'    => __( 'Use as featured image', 'force-alarm' ),
+			'insert_into_item'      => __( 'Insert into Order', 'force-alarm' ),
+			'uploaded_to_this_item' => __( 'Uploaded to this Order', 'force-alarm' ),
+			'items_list'            => __( 'Order list', 'force-alarm' ),
+			'items_list_navigation' => __( 'Orders list navigation', 'force-alarm' ),
+			'filter_items_list'     => __( 'Filter Orders list', 'force-alarm' ),
+		);
+		$args = array(
+			'label'                 => __( 'Order', 'force-alarm' ),
+			'description'           => __( 'Force Alarms Orders', 'force-alarm' ),
+			'labels'                => $labels,
+			'supports'              => array( 'title', 'editor', 'comments', 'custom-fields', 'page-attributes' ),
+			'hierarchical'          => false,
+			'public'                => true,
+			'show_ui'               => true,
+			'show_in_menu'          => true,
+			'menu_position'         => 15,
+			'show_in_admin_bar'     => true,
+			'show_in_nav_menus'     => true,
+			'can_export'            => true,
+			'has_archive'           => true,
+			'exclude_from_search'   => true,
+			'publicly_queryable'    => true,
+			'menu_icon'				=> 'dashicons-clipboard',
+			'capability_type'       => 'page',
+		);
+		register_post_type( 'fa_orders', $args );
+
+	}
+
+	/**
+	 * Register Custom Post Type
+	 * 
+	 * @since 1.1.1
+	 */
+	function fa_service_plan_custom_post_type() {
+
+		$labels = array(
+			'name'                  => _x( 'Service Plans', 'Post Type General Name', 'force-alarm' ),
+			'singular_name'         => _x( 'Service Plan', 'Post Type Singular Name', 'force-alarm' ),
+			'menu_name'             => __( 'Service Plans', 'force-alarm' ),
+			'name_admin_bar'        => __( 'Service Plans', 'force-alarm' ),
+			'archives'              => __( 'Service Plan Archives', 'force-alarm' ),
+			'attributes'            => __( 'Service Plans Attributes', 'force-alarm' ),
+			'parent_item_colon'     => __( 'Parent Plan:', 'force-alarm' ),
+			'all_items'             => __( 'All Service Plans', 'force-alarm' ),
+			'add_new_item'          => __( 'Add New Plan', 'force-alarm' ),
+			'add_new'               => __( 'Add New', 'force-alarm' ),
+			'new_item'              => __( 'New Service Plan', 'force-alarm' ),
+			'edit_item'             => __( 'Edit Service Plan', 'force-alarm' ),
+			'update_item'           => __( 'Update Service Plan', 'force-alarm' ),
+			'view_item'             => __( 'View Service Plan', 'force-alarm' ),
+			'view_items'            => __( 'View Service Plans', 'force-alarm' ),
+			'search_items'          => __( 'Search Plan', 'force-alarm' ),
+			'not_found'             => __( 'Plan Not found', 'force-alarm' ),
+			'not_found_in_trash'    => __( 'Plan Not found in Trash', 'force-alarm' ),
+			'featured_image'        => __( 'Service Plan Featured Image', 'force-alarm' ),
+			'set_featured_image'    => __( 'Set featured image', 'force-alarm' ),
+			'remove_featured_image' => __( 'Remove featured image', 'force-alarm' ),
+			'use_featured_image'    => __( 'Use as featured image', 'force-alarm' ),
+			'insert_into_item'      => __( 'Insert into Service Plan', 'force-alarm' ),
+			'uploaded_to_this_item' => __( 'Uploaded to this Plan', 'force-alarm' ),
+			'items_list'            => __( 'Services list', 'force-alarm' ),
+			'items_list_navigation' => __( 'Services list navigation', 'force-alarm' ),
+			'filter_items_list'     => __( 'Filter Services list', 'force-alarm' ),
+		);
+		$args = array(
+			'label'                 => __( 'Service Plan', 'force-alarm' ),
+			'description'           => __( 'Force Alarms Services', 'force-alarm' ),
+			'labels'                => $labels,
+			'supports'              => array( 'title', 'editor', 'thumbnail', 'comments', 'revisions', 'custom-fields', 'page-attributes', 'post-formats' ),
+			'hierarchical'          => false,
+			'public'                => true,
+			'show_ui'               => true,
+			'show_in_menu'          => true,
+			'menu_position'         => 10,
+			'menu_icon'             => 'dashicons-shield',
+			'show_in_admin_bar'     => true,
+			'show_in_nav_menus'     => true,
+			'can_export'            => true,
+			'has_archive'           => true,
+			'exclude_from_search'   => false,
+			'publicly_queryable'    => true,
+			'capability_type'       => 'page',
+		);
+		register_post_type( 'fa_service_plan', $args );
+
+	}
+
+
 }
