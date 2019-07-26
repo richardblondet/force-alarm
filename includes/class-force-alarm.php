@@ -169,6 +169,7 @@ class Force_Alarm {
 		 */
 		$this->loader->add_action( 'init', $plugin_admin, 'fa_orders_custom_post_type', 0 );
 		$this->loader->add_action( 'init', $plugin_admin, 'fa_service_plan_custom_post_type', 0 );
+		$this->loader->add_action( 'init', $plugin_admin, 'fa_ticket_custom_post_type', 0 );
 	}
 
 	/**

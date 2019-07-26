@@ -57,6 +57,8 @@ include_once( FA_ACF_PATH . 'acf.php' );
 function activate_force_alarm() {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-force-alarm-activator.php';
 	Force_Alarm_Activator::activate();
+	Force_Alarm_Activator::add_roles();
+	Force_Alarm_Activator::update_admin_capabilities();
 }
 
 /**
@@ -66,6 +68,7 @@ function activate_force_alarm() {
 function deactivate_force_alarm() {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-force-alarm-deactivator.php';
 	Force_Alarm_Deactivator::deactivate();
+	Force_Alarm_Deactivator::remove_roles();
 }
 
 register_activation_hook( __FILE__, 'activate_force_alarm' );

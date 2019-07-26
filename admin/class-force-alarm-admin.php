@@ -135,7 +135,13 @@ class Force_Alarm_Admin {
 	}
 
 	/**
-	 * Register the Orders Custom Post Type
+	 * Register the Orders Custom Post Type.
+	 * 
+	 * The Clients are the ones that can create orders,
+	 * but when they are still visitors, so, adding the 
+	 * capability to read orders won't be entirely necesary 
+	 * because we will fetch the orders based on the clients
+	 * ID.
 	 * 
 	 * @since 1.1.0
 	 */
@@ -194,7 +200,7 @@ class Force_Alarm_Admin {
 	}
 
 	/**
-	 * Register Custom Post Type
+	 * Register Service Plan Custom Post Type
 	 * 
 	 * @since 1.1.1
 	 */
@@ -249,6 +255,83 @@ class Force_Alarm_Admin {
 			'capability_type'       => 'page',
 		);
 		register_post_type( 'fa_service_plan', $args );
+
+	}
+
+	/**
+	 * Register Tickets Custom Post Type.
+	 * 
+	 * For further issues please see:
+	 * @see {@link https://wordpress.stackexchange.com/questions/299859/custom-post-type-role-permissions-wont-let-me-read}
+	 * @see {@link https://wordpress.stackexchange.com/questions/108338/capabilities-and-custom-post-types}
+	 * @see {@link https://wedevs.com/98266/add-custom-user-roles-wordpress/}
+	 * 
+	 * @since 1.1.2
+	 */
+	public function fa_ticket_custom_post_type() {
+
+		$labels = array(
+			'name'                  => _x( 'Tickets', 'Post Type General Name', 'force-alarm' ),
+			'singular_name'         => _x( 'Ticket', 'Post Type Singular Name', 'force-alarm' ),
+			'menu_name'             => __( 'Tickets', 'force-alarm' ),
+			'name_admin_bar'        => __( 'Tickets', 'force-alarm' ),
+			'archives'              => __( 'Tickets Archives', 'force-alarm' ),
+			'attributes'            => __( 'Tickets Attributes', 'force-alarm' ),
+			'parent_item_colon'     => __( 'Parent Ticket:', 'force-alarm' ),
+			'all_items'             => __( 'All Tickets', 'force-alarm' ),
+			'add_new_item'          => __( 'Add Ticket', 'force-alarm' ),
+			'add_new'               => __( 'Add New', 'force-alarm' ),
+			'new_item'              => __( 'New Ticket', 'force-alarm' ),
+			'edit_item'             => __( 'Edit Ticket', 'force-alarm' ),
+			'update_item'           => __( 'Update Ticket', 'force-alarm' ),
+			'view_item'             => __( 'View Ticket', 'force-alarm' ),
+			'view_items'            => __( 'View Tickets', 'force-alarm' ),
+			'search_items'          => __( 'Search Ticket', 'force-alarm' ),
+			'not_found'             => __( 'Ticket Not found', 'force-alarm' ),
+			'not_found_in_trash'    => __( 'Ticket Not found in Trash', 'force-alarm' ),
+			'featured_image'        => __( 'Ticket Featured Image', 'force-alarm' ),
+			'set_featured_image'    => __( 'Set featured image', 'force-alarm' ),
+			'remove_featured_image' => __( 'Remove featured image', 'force-alarm' ),
+			'use_featured_image'    => __( 'Use as featured image', 'force-alarm' ),
+			'insert_into_item'      => __( 'Insert into Ticket', 'force-alarm' ),
+			'uploaded_to_this_item' => __( 'Uploaded to this Ticket', 'force-alarm' ),
+			'items_list'            => __( 'Tickets list', 'force-alarm' ),
+			'items_list_navigation' => __( 'Tickets list navigation', 'force-alarm' ),
+			'filter_items_list'     => __( 'Filter Tickets list', 'force-alarm' ),
+		);
+		$capabilities = array(		
+			'create_posts'	 		=> 'edit_tickets',
+			'read_post'             => 'read_ticket',
+			'read_posts'            => 'read_tickets',
+			'read_private_posts'    => 'read_private_tickets',
+			'edit_post'             => 'edit_ticket',
+			'edit_posts'            => 'edit_tickets',
+			'edit_others_posts'     => 'edit_others_tickets',
+			'publish_posts'         => 'publish_tickets',
+			'delete_post'           => 'delete_ticket',
+			'delete_posts'      	=> 'delete_tickets',
+		);
+		$args = array(
+			'label'                 => __( 'Ticket', 'force-alarm' ),
+			'description'           => __( 'Force Alarms Support Tickets', 'force-alarm' ),
+			'labels'                => $labels,
+			'supports'              => array( 'title', 'editor', 'thumbnail', 'comments', 'revisions', 'custom-fields', 'page-attributes', 'post-formats' ),
+			'hierarchical'          => false,
+			'public'                => true,
+			'show_ui'               => true,
+			'show_in_menu'          => true,
+			'menu_position'         => 25,
+			'menu_icon'             => 'dashicons-sos',
+			'show_in_admin_bar'     => true,
+			'show_in_nav_menus'     => true,
+			'can_export'            => true,
+			'has_archive'           => true,
+			'exclude_from_search'   => true,
+			'publicly_queryable'    => true,
+			'capabilities'          => $capabilities,
+			'map_meta_cap' 			=> true
+		);
+		register_post_type( 'fa_ticket', $args );
 
 	}
 
