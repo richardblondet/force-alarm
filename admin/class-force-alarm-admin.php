@@ -52,6 +52,7 @@ class Force_Alarm_Admin {
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
 
+		$this->create_admin_settings_pages();
 	}
 
 	/**
@@ -132,6 +133,16 @@ class Force_Alarm_Admin {
 	 */
 	public function fa_acf_settings_show_admin( $show_admin ) {
 		return false;
+	}
+
+	public function create_admin_settings_pages() {
+		acf_add_options_page(array(
+			'page_title' 	=> 'Theme General Settings',
+			'menu_title'	=> 'Theme Settings',
+			'menu_slug' 	=> 'theme-general-settings',
+			'capability'	=> 'edit_posts',
+			'redirect'		=> false
+		));
 	}
 
 	/**
