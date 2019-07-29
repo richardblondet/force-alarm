@@ -8,11 +8,12 @@ class App extends React.Component {
     render() {
 
         return (
-            <div>Hello World from React as</div>
+            <div>Hello World from React Ex</div>
         );
     }
 }
 App.propTypes = {
     config: PropTypes.object
 };
+
 export default App;

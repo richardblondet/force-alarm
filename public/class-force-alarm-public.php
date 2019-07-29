@@ -118,7 +118,7 @@ class Force_Alarm_Public {
 			'baz' => 'default baz'
 		), $atts, 'fa_app' );
 
-		return '<div id="fd_app"></div>';
+		echo '<div id="fd_app"></div>';
 	}
 
 }
