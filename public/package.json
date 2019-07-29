@@ -13,7 +13,6 @@
   },
   "author": "Richard Blondet <richardblondet@gmail.com>",
   "license": "GPL-3.0-or-later",
-  
   "devDependencies": {
     "@babel/cli": "^7.1.0",
     "@babel/core": "^7.1.6",
@@ -25,6 +24,7 @@
     "babel-loader": "^8.0.4",
     "babel-plugin-add-module-exports": "^0.2.1",
     "babel-plugin-styled-components": "^1.10.6",
+    "css-loader": "^3.1.0",
     "cypress": "^3.1.1",
     "eslint": "^6.0.1",
     "eslint-plugin-react": "^7.14.2",
@@ -37,6 +37,7 @@
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
+    "reactstrap": "^8.0.1",
     "styled-components": "^4.3.2"
   },
   "standard": {

@@ -59,9 +59,9 @@ const config = {
     // watch: watch,
     devServer: {
         // contentBase: './',
-        after: function(app, server) {
-            console.log("Server", server);
-        }
+        // after: function(app, server) {
+        //     console.log("Server", server);
+        // }
     }
 };
 
