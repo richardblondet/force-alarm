@@ -1,0 +1,45 @@
+{
+  "name": "force-alarm-frontend-app",
+  "version": "1.0.0",
+  "description": "Frontend Facing App",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack --progress",
+    "cypress": "cypress open",
+    "dev": "webpack --watch --progress --info-verbosity verbose",
+    "server": "webpack-dev-server --hot --watch --progress",
+    "test": "cypress run",
+    "lint": "eslint src/"
+  },
+  "author": "Richard Blondet <richardblondet@gmail.com>",
+  "license": "GPL-3.0-or-later",
+  
+  "devDependencies": {
+    "@babel/cli": "^7.1.0",
+    "@babel/core": "^7.1.6",
+    "@babel/plugin-proposal-class-properties": "^7.5.0",
+    "@babel/plugin-transform-modules-commonjs": "^7.5.0",
+    "@babel/preset-env": "^7.1.0",
+    "@babel/preset-react": "^7.0.0",
+    "babel-eslint": "^10.0.2",
+    "babel-loader": "^8.0.4",
+    "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-plugin-styled-components": "^1.10.6",
+    "cypress": "^3.1.1",
+    "eslint": "^6.0.1",
+    "eslint-plugin-react": "^7.14.2",
+    "file-loader": "^4.0.0",
+    "webpack": "^4.25.1",
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "^3.7.2"
+  },
+  "dependencies": {
+    "prop-types": "^15.7.2",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "styled-components": "^4.3.2"
+  },
+  "standard": {
+    "parser": "babel-eslint"
+  }
+}

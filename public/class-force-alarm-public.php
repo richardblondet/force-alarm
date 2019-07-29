@@ -52,6 +52,13 @@ class Force_Alarm_Public {
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
 
+		/**
+		 * Front facing application react based
+		 * 
+		 * @since 1.4.0
+		 */
+		add_shortcode( 'fa_app', array( $this, 'fa_app_shortcode'));
+
 	}
 
 	/**
@@ -98,6 +105,20 @@ class Force_Alarm_Public {
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/force-alarm-public.js', array( 'jquery' ), $this->version, false );
 
+	}
+
+	/**
+	 * Frontend app initialization
+	 * 
+	 * @since 1.5.0
+	 */
+	public function fa_app_shortcode( $atts, $content ) {
+		$atts = shortcode_atts( array(
+			'foo' => 'no foo',
+			'baz' => 'default baz'
+		), $atts, 'fa_app' );
+
+		return "<h1>Hello World $content</h1>";
 	}
 
 }
