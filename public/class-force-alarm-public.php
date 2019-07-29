@@ -118,7 +118,7 @@ class Force_Alarm_Public {
 			'baz' => 'default baz'
 		), $atts, 'fa_app' );
 
-		return "<h1>Hello World $content</h1>";
+		return '<div id="fd_app"></div>';
 	}
 
 }

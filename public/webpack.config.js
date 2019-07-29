@@ -16,7 +16,7 @@ if (env === "development") {
     outputFile = libraryName + '.min.js';
     watch = false;
 }
-console.log(__dirname);
+
 const config = {
     mode: env,
     entry: __dirname + '/.src/index.js',
@@ -58,7 +58,10 @@ const config = {
     },
     // watch: watch,
     devServer: {
-        contentBase: './'
+        // contentBase: './',
+        after: function(app, server) {
+            console.log("Server", server);
+        }
     }
 };
 

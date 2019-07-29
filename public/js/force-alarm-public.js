@@ -149,7 +149,7 @@ function (_React$Component) {
   _createClass(App, [{
     key: "render",
     value: function render() {
-      return _react["default"].createElement("div", null, "Hello World from React");
+      return _react["default"].createElement("div", null, "Hello World from React as");
     }
   }]);
 
@@ -183,7 +183,7 @@ var _App = _interopRequireDefault(__webpack_require__(/*! ./App */ "./.src/App.j
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-_reactDom["default"].render(_react["default"].createElement(_App["default"], null), document.getElementById("app"));
+_reactDom["default"].render(_react["default"].createElement(_App["default"], null), document.getElementById("fd_app"));
 
 /***/ }),
 
