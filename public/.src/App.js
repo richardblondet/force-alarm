@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { StoreProvider } from "./redux/store";
 import Header from "./components/header";
 import Steps from "./components/steps";
+import ForceAlarmWizard from "./components/wizard";
 
 import {
     Container,
@@ -21,13 +22,9 @@ class App extends React.Component {
                 <Container>
                     <Steps />
                 </Container>
-                <Container fluid>
-                    <Row>
-                        <Col>
-                            <h1 className="mt-5">Hello World</h1>
-                        </Col>
-                    </Row>
-                </Container>
+                
+                <ForceAlarmWizard />
+                
             </StoreProvider>
         );
     }
