@@ -4,6 +4,11 @@ import Reducer, { initialState } from "./reducer";
 
 const Store = React.createContext();
 
+/**
+ * 
+ * @see {@link https://medium.com/simply/state-management-with-react-hooks-and-context-api-at-10-lines-of-code-baf6be8302c} 
+ */
+
 export const StoreProvider = (props) => {
     const { config } = props;
     const extendedState = Object.assign(initialState, config);
