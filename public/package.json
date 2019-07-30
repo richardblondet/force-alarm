@@ -4,10 +4,11 @@
   "description": "Frontend Facing App",
   "main": "index.js",
   "scripts": {
-    "build": "webpack --progress",
+    "build": "webpack --progress --colors",
+    "start": "webpack-dev-server --hot --host 0.0.0.0",
     "cypress": "cypress open",
     "dev": "webpack --watch --progress --info-verbosity verbose",
-    "server": "webpack-dev-server --hot --watch --progress",
+    "server": "webpack-dev-server --hot",
     "test": "cypress run",
     "lint": "eslint src/"
   },

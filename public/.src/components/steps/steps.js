@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Nav, NavItem, NavLink } from 'reactstrap';
+import Store from "../../redux/store";
 
 const Section = styled.section`
     position: relative;
@@ -68,34 +69,47 @@ const Dot = styled.a`
 
 `;
 class Steps extends React.Component {
+    static contextType = Store;
+
+    getSteps = () => {
+        return [
+            {
+                step: 0,
+                title: "Dimensión de tu hogar"
+            },
+            {
+                step: 1,
+                title: "Seleccionar Plan"
+            },
+            {
+                step: 2,
+                title: "Ingresar tus datos"
+            },
+            {
+                step: 3,
+                title: "Finalizar Orden"
+            }
+        ];
+    }
+
     render() {
+        
+        const { state } = this.context;
+        const steps = this.getSteps();
+        const renderSteps = steps.map((step) => {
+            return (
+                <NavItemStyle key={`step-key-${step.step}`}>
+                    <Dot active={step.step === state.step} done={step.step < state.step } />
+                    <NavLink>
+                        {step.title}
+                    </NavLink>
+                </NavItemStyle>
+            );
+        });
         return (
             <Section padding="1em 0">
                 <Nav fill justified>
-                    <NavItemStyle>
-                        <Dot active />
-                        <NavLink>
-                            Dimensión de tu hogar
-                        </NavLink>
-                    </NavItemStyle>
-                    <NavItemStyle>
-                        <Dot done />
-                        <NavLink>
-                            Seleccionar Plan
-                        </NavLink>
-                    </NavItemStyle>
-                    <NavItemStyle>
-                        <Dot />
-                        <NavLink>
-                            Ingresar tus datos
-                        </NavLink>
-                    </NavItemStyle>
-                    <NavItemStyle>
-                        <Dot />
-                        <NavLink>
-                            Finalizar Orden
-                        </NavLink>
-                    </NavItemStyle>
+                    {renderSteps}
                 </Nav>
             </Section>
         );

@@ -52,7 +52,7 @@ class Force_Alarm_Admin {
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
 
-		$this->create_admin_settings_pages();
+		// $this->create_admin_settings_pages();
 	}
 
 	/**

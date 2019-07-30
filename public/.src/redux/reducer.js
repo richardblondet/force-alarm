@@ -18,7 +18,7 @@ const Reducer = (state = initialState, action) => {
     /**
      * Simple log for our reducer
      */
-    console.log("%c Reducer Action: %s", "font-weight:bold;", action.type, action );
+    console.log("%c Reducer Action: %s", "font-weight:bold; color: #6B5ADF;", action.type, action );
     
     switch( action.type ) {
         

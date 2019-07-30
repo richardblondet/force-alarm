@@ -24,7 +24,7 @@ class App extends React.Component {
                 <Container fluid>
                     <Row>
                         <Col>
-                            <h1 className="mt-5">Antes de comenzar</h1>
+                            <h1 className="mt-5">Hello World</h1>
                         </Col>
                     </Row>
                 </Container>
