@@ -33,7 +33,7 @@ const PLANS = [
 ];
 
 const PlanName = styled.div`
-    color: #AD301F;
+    color: #c32c1e;
     font-size: 22px;
 `;
 
@@ -42,22 +42,41 @@ class SelectPlan extends React.Component {
     handleBackButton = (e) => {
         e.preventDefault();
     }
-    handlePlanSelect = (e) => {
+    handlePlanSelect = (e, plan) => {
         e.preventDefault();
-        this.props.handleStep();
+        console.log("Selected Plan", plan );
+        this.props.handleStep(plan);
     }
     getPlans = () => {
         return PLANS;
     }
     render() {
         const plans = this.getPlans();
-        const renderPlans = plans.map( plan => (
-            <Col xs="12" sm="4">
-                <PlanName>
-                    <span className="text-uppercase font-weight-light">{plan.title}</span>
-                </PlanName>
-            </Col>
-        ));
+        const renderPlans = plans.map( (plan, indx) => {
+            const formatter = new Intl.NumberFormat('en-US', { style: 'currency', currency:'USD' });
+            const PriceFormatted = formatter.format(plan.price);
+            return (
+                <Col xs="12" sm="4" key={indx} className="mt-5">
+                    <div className="mb-3">
+                        <center>
+                            <img 
+                                className="img-thumbnail py-5" 
+                                src="https://forcealarm.interactiva.com.do/wp-content/uploads/2019/07/Logo-ForceAlarm.png" 
+                                width="125" />
+                        </center>
+                    </div>
+                    <PlanName>
+                        <span className="text-uppercase font-weight-bold text-center">{plan.title}</span>
+                    </PlanName>
+                    <div>
+                        <p className="my-3 h3 text-center">
+                            {PriceFormatted} <span className="text-black-50 h6">/mes</span>
+                        </p>
+                    </div>
+                    <Button color="danger" onClick={e=>this.handlePlanSelect(e, plan)}>Seleccionar</Button>
+                </Col>
+            );
+        });
         return (
             <React.Fragment>
                 <Jumbotron tag="section" className="text-center" style={{backgroundColor:"white", borderRadius:"none"}}>
@@ -66,47 +85,14 @@ class SelectPlan extends React.Component {
                     </Container>
                     <Container fluid>
                         <Row>
-                            {renderPlans}
+                            <Col xs="12" md={{ size: 8, offset: 2 }}>
+                                <Row>
+                                    {renderPlans}
+                                </Row>
+                            </Col>
                         </Row>
                     </Container>    
                 </Jumbotron>
-                <Container fluid>
-                    <div className="card-deck mb-3 text-center">
-                        <div className="card mb-4 shadow-sm">
-                            <div className="card-header">
-                                <h5 className="my-0 font-weight-normal">BÁSICO</h5>
-                            </div>
-                            <div className="card-body">
-                                <h1 className="card-title pricing-card-title">$1,299.99 <small className="text-muted">/ mes</small></h1>
-                                <button type="button" onClick={this.handlePlanSelect} className="mb-4 btn btn-lg btn-block btn-primary">Seleccionar</button>
-                                
-                                
-                            </div>
-                        </div>
-                        <div className="card mb-4 shadow-sm">
-                            <div className="card-header">
-                                <h5 className="my-0 font-weight-normal">FULL</h5>
-                            </div>
-                            <div className="card-body">
-                                <h1 className="card-title pricing-card-title">$1,849.99 <small className="text-muted">/ mes</small></h1>
-                                <button type="button" onClick={this.handlePlanSelect} className="mb-4 btn btn-lg btn-block btn-primary">Seleccionar</button>
-                                
-                                <p><strong>Plan Básico + </strong><br /><strong>Monitoreo y Notificación&nbsp;</strong>a las Autoridades.<br /><strong>Respuesta Armada**&nbsp;</strong>por Security Force.</p>
-                            </div>
-                        </div>
-                        <div className="card mb-4 shadow-sm">
-                            <div className="card-header">
-                                <h5 className="my-0 font-weight-normal">FULL + FORCE SOS</h5>
-                            </div>
-                            <div className="card-body">
-                                <h1 className="card-title pricing-card-title">$2,449.99 <small className="text-muted">/ mes</small></h1>
-                                <button type="button" onClick={this.handlePlanSelect} className="mb-4 btn btn-lg btn-block btn-primary">Seleccionar</button>
-                                
-                                <p><strong>Plan FULL </strong>+ <br /><strong>ForceSOS: MultiAsistencia</strong>&nbsp;Hogar, Legal, Viajes, Mascotas, Salud, Bicicleta, Seguridad y Asistencia Vial, para toda la familia.&nbsp;</p>
-                            </div>
-                        </div>
-                    </div>
-                </Container>
             </React.Fragment>
         );
     }

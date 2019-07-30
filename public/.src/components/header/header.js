@@ -6,13 +6,19 @@ import {
     NavbarBrand,
     Nav,
     NavItem,
-    NavLink } from 'reactstrap';
+    NavLink 
+} from 'reactstrap';
+import Store from "../../redux/store";
 
 class Header extends React.Component {
+    static contextType = Store;
+
+    
     constructor(props) {
         super(props);
     
         this.toggle = this.toggle.bind(this);
+        
         this.state = {
           isOpen: false
         };
@@ -23,6 +29,10 @@ class Header extends React.Component {
         });
     }
     render() {
+        const { state } = this.context;
+        const formatter = new Intl.NumberFormat('es-US', { style: "currency", currency: "USD"});
+        const total = formatter.format( state.data.total || 0);
+
         return (
             <React.Fragment>
                 <Navbar dark expand="md" style={{backgroundColor:"rgb(173, 48, 31)"}}>
@@ -31,7 +41,7 @@ class Header extends React.Component {
                         <Collapse isOpen={this.state.isOpen} navbar>
                             <Nav className="ml-auto" navbar>
                                 <NavItem>
-                                    <NavLink>Total $RD 0.00</NavLink>
+                                    <NavLink>Total RD {total}</NavLink>
                                 </NavItem>
                             </Nav>
                         </Collapse>

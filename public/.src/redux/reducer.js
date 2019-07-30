@@ -1,4 +1,5 @@
 import constants from "../constants";
+import { getTotal } from "./middlewares.js";
 
 export const initialState = {
     data: {
@@ -14,7 +15,7 @@ export const initialState = {
 };
 
 const Reducer = (state = initialState, action) => {
-    
+
     /**
      * Simple log for our reducer
      */
@@ -27,7 +28,15 @@ const Reducer = (state = initialState, action) => {
             ...state,
             step: action.data
         };
-            
+    case constants.SELECT_PLAN: 
+        return {
+            ...state,
+            data: {
+                ...state.data,
+                selection: action.data,
+                total: getTotal(action.data)
+            }
+        }
     default:
         return state;
     }

@@ -12,10 +12,12 @@ class ForceAlarmWizard extends React.Component {
 
         dispatch({ type: constants.STEP, data: 1 });
     }
-    handleSecondStep = () => {
-        const { dispatch } = this.context;
-
-        dispatch({ type: constants.STEP, data: 2 });
+    handleSecondStep = (plan) => {
+        const {state, dispatch} = this.context;
+        console.log("DATA ", state );
+        state.data.selection.push(plan);
+        dispatch({ type: constants.SELECT_PLAN, data: state.data.selection });
+        // dispatch({ type: constants.STEP, data: 2 });
     }
 
     render() {
