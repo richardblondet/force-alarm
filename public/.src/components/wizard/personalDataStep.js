@@ -12,6 +12,7 @@ import {
 import es from "date-fns/locale/es";
 import "react-datepicker/dist/react-datepicker.css";
 import "./datepicker-fix-styles.css";
+
 registerLocale("es", es);
 setDefaultLocale("es");
 
@@ -23,41 +24,33 @@ import {
     Form, FormGroup, Label, Input, FormText
 } from "reactstrap";
 
-const MONTHS = [
-    'Enero',
-    'Febrero',
-    'Marzo',
-    'Abril',
-    'Mayo',
-    'Junio',
-    'Julio',
-    'Agosto',
-    'Septiembre',
-    'Octobre',
-    'Noviembre',
-    'Diciembre',
+const PROVINCIAS = [
+    'Santo Domingo',
+    'Santiago',
+    'Punta Cana'
 ];
-const WEEKDAYS_LONG = [
-    'Domingo',
-    'Lunes',
-    'Martes',
-    'Miércoles',
-    'Jueves',
-    'Viernes',
-    'Sábado',
-];
-
-const WEEKDAYS_SHORT = ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sáb'];
 
 class PersonalDataForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            name: "",
+            email: "",
+            phone: "",
+            address: "",
+            sector: "",
             date: addDays(new Date(), 1),
             time: setHours( setMinutes( new Date(), 0), 8),
             datePickerOpen: false,
             dateTimeOpen: false
         };
+    }
+    handleOnChange = (e) => {
+        e.preventDefault();
+        // console.log(e.target.name);
+        this.setState({
+            [e.target.name]: e.target.value
+        });
     }
     handleDateChange = ( date ) => {
         this.setState({
@@ -73,10 +66,6 @@ class PersonalDataForm extends React.Component {
     }
     handleBackButton = (e) => {
         e.preventDefault();
-    }
-    handleSubmitButton = (e, addon) => {
-        e.preventDefault();
-        this.props.handleStep(addon);
     }
     handleFocusOpenDatePicker = (e) => {
         e.preventDefault();
@@ -94,7 +83,27 @@ class PersonalDataForm extends React.Component {
         const day = getDay(date);
         return day !== 0 && day !== 6;
     }
+    getProvincias = () => {
+        return PROVINCIAS;
+    }
+    handleSubmitButton = (e) => {
+        e.preventDefault();
+        const form = this.state;
+        let errors = [];
+        console.log("form", form);
+        for (let index = 0; index < form.length; index++) {
+            const field = form[index];
+            if(field === "") {
+                errors.push(index);
+            }
+        }
+        console.log("form data errors", errors );
+    }
     render() {
+        const renderProvinciasOptions = this.getProvincias().map((provincia, indx) => {
+            return <option key={`provincia-key-${indx}`}>{provincia}</option>;
+        });
+        console.log(this.state);
         return (
             <React.Fragment>
                 <Jumbotron tag="section" style={{backgroundColor:"white", borderRadius:"none"}}>
@@ -106,58 +115,96 @@ class PersonalDataForm extends React.Component {
                                     
                                     <FormGroup>
                                         <Label for="fa-app-name">Nombre</Label>
-                                        <Input type="text" name="name" id="fa-app-name" placeholder="Nombre y Apellido" />
+                                        <Input 
+                                            id="fa-app-name" 
+                                            type="text" 
+                                            name="name" 
+                                            value={this.state.name}
+                                            onChange={this.handleOnChange}
+                                            placeholder="Nombre y Apellido" />
                                     </FormGroup>
 
                                     <FormGroup>
                                         <Label for="fa-app-email">Email</Label>
-                                        <Input type="email" name="email" id="fa-app-email" placeholder="ejemplo@email.com" />
+                                        <Input  
+                                            id="fa-app-email" 
+                                            type="email" 
+                                            name="email" 
+                                            value={this.state.email}
+                                            onChange={this.handleOnChange}
+                                            placeholder="ejemplo@email.com" />
                                     </FormGroup>
 
                                     <FormGroup>
                                         <Label for="fa-app-phone">Teléfono de Contacto</Label>
-                                        <Input type="text" name="phone" id="fa-app-phone" placeholder="8095557777" />
+                                        <Input  
+                                            id="fa-app-phone"
+                                            type="text" 
+                                            name="phone" 
+                                            value={this.state.phone}
+                                            onChange={this.handleOnChange}
+                                            placeholder="8095557777" />
                                     </FormGroup>
 
                                     <legend className="mt-4">Lugar de la Instalación</legend>
 
                                     <FormGroup>
                                         <Label for="fa-app-province">Provincia</Label>
-                                        <Input type="select" name="select" id="fa-app-province">
-                                            <option>Provincia 1</option>
-                                            <option>Provincia 2</option>
-                                            <option>Provincia 3</option>
-                                            <option>Provincia 4</option>
-                                            <option>Provincia 5</option>
+                                        <Input  
+                                            id="fa-app-province"
+                                            type="select" 
+                                            name="province" 
+                                            value={this.state.province}
+                                            onChange={this.handleOnChange}
+                                            >
+                                            {renderProvinciasOptions}
                                         </Input>
                                     </FormGroup>
                                     
                                     <FormGroup>
                                         <Label for="fa-app-address">Calle y número local o casa</Label>
-                                        <Input type="text" name="address" id="fa-app-address" placeholder="local, casa o residencial" />
+                                        <Input  
+                                            id="fa-app-address" 
+                                            type="text" 
+                                            name="address" 
+                                            value={this.state.address}
+                                            onChange={this.handleOnChange}
+                                            placeholder="local, casa o residencial" />
                                     </FormGroup>
 
                                     <FormGroup>
                                         <Label for="fa-app-sector">Sector</Label>
-                                        <Input type="text" name="sector" id="fa-app-sector" placeholder="Sector" />
+                                        <Input  
+                                            id="fa-app-sector" 
+                                            type="text" 
+                                            name="sector" 
+                                            value={this.state.sector}
+                                            onChange={this.handleOnChange}
+                                            placeholder="Sector" />
                                     </FormGroup>
 
                                     <FormGroup>
                                         <Label for="fa-app-reference">Referencia</Label>
-                                        <Input type="textarea" name="name" id="fa-app-reference" placeholder="Cerca de... frente a..." />
+                                        <Input  
+                                            id="fa-app-reference" 
+                                            type="textarea" 
+                                            name="reference" 
+                                            value={this.state.reference}
+                                            onChange={this.handleOnChange}
+                                            placeholder="Cerca de... frente a..." />
                                     </FormGroup>
 
                                     <legend className="mt-4">Fecha y día de Instalación</legend>
 
                                     <FormGroup>
                                         <Label for="fa-app-date">Fecha Instalación</Label>
-                                        <Input 
+                                        <Input  
                                             id="fa-app-date" 
                                             type="text" 
                                             name="date" 
                                             placeholder="Seleccionar fecha" 
                                             value={format(this.state.date, "dd/MM/yyyy")}
-                                            onChange={this.handleDateChange}
+                                            onChange={this.handleOnChange}
                                             onFocus={this.handleFocusOpenDatePicker} />
                                         
                                         {this.state.datePickerOpen && <DatePicker
@@ -176,13 +223,13 @@ class PersonalDataForm extends React.Component {
 
                                     <FormGroup>
                                         <Label for="fa-app-time">Hora Instalación</Label>
-                                        <Input 
+                                        <Input  
                                             id="fa-app-time"
                                             type="text"
                                             name="time"
                                             placeholder="Seleccionar hora"
                                             value={format(this.state.time, "h:mm aa")}
-                                            onChange={this.handleTimeChange}
+                                            onChange={this.handleOnChange}
                                             onFocus={this.handleFocusOpenTimePicker} />
                                         
                                         {this.state.dateTimeOpen && <DatePicker
@@ -214,6 +261,24 @@ class PersonalDataForm extends React.Component {
                                             ]}
                                             timeCaption="Hora" />
                                         }
+                                    </FormGroup>
+
+                                    <FormGroup check>
+                                        <Label check>
+                                            <Input type="checkbox"  />{' '}
+                                            <span className="text-primary">Aceptos los términos y condiciones</span>
+                                        </Label>
+                                    </FormGroup>
+
+                                    <FormGroup className="mt-4">
+                                        <Row>
+                                            <Col>
+                                                <Button block type="button" color="secondary">Atrás</Button>
+                                            </Col>
+                                            <Col>
+                                                <Button block type="submit" color="danger">Siguiente</Button>
+                                            </Col>
+                                        </Row>
                                     </FormGroup>
                                 </Form>
                             </Col>
