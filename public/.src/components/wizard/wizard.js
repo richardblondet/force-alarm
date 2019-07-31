@@ -1,6 +1,11 @@
 import React from "react";
 import Store from "../../redux/store";
-import { StepView, Step1, Step2 } from "./";
+import { 
+    StepView, 
+    Step1, 
+    Step2,
+    Step3
+} from "./";
 
 import constants from "../../constants";
 
@@ -12,10 +17,16 @@ class ForceAlarmWizard extends React.Component {
 
         dispatch({ type: constants.STEP, data: 1 });
     }
-    handleSecondStep = (plan) => {
+    handleSecondStep = ( plan ) => {
         const {state, dispatch} = this.context;
-        console.log("DATA ", state );
         state.data.selection.push(plan);
+        dispatch({ type: constants.SELECT_PLAN, data: state.data.selection });
+        dispatch({ type: constants.STEP, data: 2 });
+    }
+    handleThirdStep = ( addon ) => {
+        console.log("Third step triggers and addon", addon);
+        const {state, dispatch} = this.context;
+        state.data.selection.push(addon);
         dispatch({ type: constants.SELECT_PLAN, data: state.data.selection });
         // dispatch({ type: constants.STEP, data: 2 });
     }
@@ -30,6 +41,9 @@ class ForceAlarmWizard extends React.Component {
                 </StepView>
                 <StepView step={1}>
                     <Step2 handleStep={this.handleSecondStep} />
+                </StepView>
+                <StepView step={2}>
+                    <Step3 handleStep={this.handleThirdStep} />
                 </StepView>
             </React.Fragment>
         );

@@ -5,7 +5,8 @@ import {
     Container,
     Jumbotron,
     Row, Col,
-    Button
+    Button,
+    CardDeck, Card, CardBody, CardText
 } from "reactstrap";
 
 const ADDONS = [
@@ -18,33 +19,32 @@ const ADDONS = [
     }
 ];
 
-const PlanName = styled.div`
+const PlanName = styled(CardText)`
     color: #c32c1e;
     font-size: 22px;
 `;
 
 class SelectAddons extends React.Component {
-
     handleBackButton = (e) => {
         e.preventDefault();
     }
     handleNoButton = (e) => {
         e.preventDefault();
     }
-    handlePlanSelect = (e, plan) => {
+    handleAddonSelect = (e, addon) => {
         e.preventDefault();
-        this.props.handleStep(plan);
+        this.props.handleStep(addon);
     }
     getAddons = () => {
         return ADDONS;
     }
     render() {
         const addons = this.getAddons();
-        const renderAddons = addons.map( (plan, indx) => {
+        const renderAddons = addons.map( (addon, indx) => {
             const formatter = new Intl.NumberFormat('en-US', { style: 'currency', currency:'USD' });
-            const PriceFormatted = formatter.format(plan.price);
+            const PriceFormatted = formatter.format(addon.price);
             return (
-                <Col xs="12" sm="4" key={indx} className="mt-5">
+                <Card className="mt-5 border-0" key={`addon-card-${indx}`}>
                     <div className="mb-3">
                         <center>
                             <img 
@@ -53,16 +53,16 @@ class SelectAddons extends React.Component {
                                 width="125" />
                         </center>
                     </div>
-                    <PlanName>
-                        <span className="text-uppercase font-weight-bold text-center">{plan.title}</span>
-                    </PlanName>
-                    <div>
+                    <CardBody>
+                        <PlanName>
+                            <span className="text-uppercase font-weight-bold text-center">{addon.title}</span>
+                        </PlanName>
                         <p className="my-3 h3 text-center">
                             {PriceFormatted} <span className="text-black-50 h6">/mes</span>
                         </p>
-                    </div>
-                    <Button color="danger" onClick={e=>this.handlePlanSelect(e, plan)}>Seleccionar</Button>
-                </Col>
+                        <Button color="danger" onClick={e=>this.handleAddonSelect(e, addon)}>Seleccionar</Button>
+                    </CardBody>
+                </Card>
             );
         });
         return (
@@ -74,9 +74,9 @@ class SelectAddons extends React.Component {
                     <Container fluid>
                         <Row>
                             <Col xs="12" md={{ size: 8, offset: 2 }}>
-                                <Row>
+                                <CardDeck>
                                     {renderAddons}
-                                </Row>
+                                </CardDeck>
                             </Col>
                         </Row>
                     </Container>    

@@ -44,7 +44,7 @@ class SelectPlan extends React.Component {
     }
     handlePlanSelect = (e, plan) => {
         e.preventDefault();
-        this.props.handleStep(plan);
+        this.props.handleStep( plan );
     }
     getPlans = () => {
         return PLANS;
