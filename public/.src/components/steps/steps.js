@@ -82,11 +82,11 @@ class Steps extends React.Component {
                 title: "Seleccionar Plan"
             },
             {
-                step: 2,
+                step: 3,
                 title: "Ingresar tus datos"
             },
             {
-                step: 3,
+                step: 4,
                 title: "Finalizar Orden"
             }
         ];

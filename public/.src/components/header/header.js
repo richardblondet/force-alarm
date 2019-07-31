@@ -13,7 +13,6 @@ import Store from "../../redux/store";
 class Header extends React.Component {
     static contextType = Store;
 
-    
     constructor(props) {
         super(props);
     
@@ -22,12 +21,14 @@ class Header extends React.Component {
         this.state = {
           isOpen: false
         };
-      }
+    }
+
     toggle() {
         this.setState({
             isOpen: !this.state.isOpen
         });
     }
+    
     render() {
         const { state } = this.context;
         const formatter = new Intl.NumberFormat('es-US', { style: "currency", currency: "USD"});

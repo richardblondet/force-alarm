@@ -8,26 +8,12 @@ import {
     Button
 } from "reactstrap";
 
-const PLANS = [
+const ADDONS = [
     {
-        title: "Básico",
+        title: "Contra Robo",
         excerpt: "<p>Alarma* para tu hogar, <b>SIN</b>&nbsp;la respuesta armada de<strong> SecurityForce™</strong></p>",
         content: "<p><strong>Panel de Control</strong>&nbsp;con teclado táctil.<br /> <strong>1 Sensor </strong>de Puerta / Ventana.<br /> <strong>1 Detector</strong>&nbsp;de Movimientos<b>&nbsp;IR.</b><br /> <strong>2 Controles Remotos&nbsp;</strong>tipo Llavero.<br /><strong>1 Adaptador </strong>de Corriente.<br /> <strong>Aplicación Móvil</strong>&nbsp;para iOS o Android.<br />Instalación<strong> Gratis</strong></p>",
-        price: 1299.99,
-        status: ""
-    },
-    {
-        title: "FULL",
-        excerpt: "<p>Alarma* para tu hogar, <strong>CON</strong> la respuesta armada de<strong> SecurityForce™</strong></p>Alarma* para tu hogar, CON la respuesta armada de SecurityForce™",
-        content: "<p><strong>Panel de Control</strong>&nbsp;con teclado táctil.<br> <strong>1 Sensor </strong>de Puerta / Ventana.<br> <strong>1 Detector</strong>&nbsp;de Movimientos<b>&nbsp;IR.</b><br> <strong>2 Controles Remotos&nbsp;</strong>tipo Llavero.<br><strong>1 Adaptador </strong>de Corriente.<br> <strong>Aplicación Móvil</strong>&nbsp;para iOS o Android.<br>Instalación<strong> Gratis.<br>Monitoreo y Notificación&nbsp;</strong>a las Autoridades.<br><strong>Respuesta Armada**&nbsp;</strong>por Security Force.</p>",
-        price: 1849.99,
-        status: ""
-    },
-    {
-        title: "FULL + FORCE SOS",
-        excerpt: "<p>Alarma* para tu hogar, <strong>MAS</strong>&nbsp;servicio <strong>ForceSOS: MultiAsistencia</strong></p>",
-        content: "<p><strong>Panel de Control</strong>&nbsp;con teclado táctil.<br> <strong>1 Sensor </strong>de Puerta / Ventana.<br> <strong>1 Detector</strong>&nbsp;de Movimientos<b>&nbsp;IR.</b><br> <strong>2 Controles Remotos&nbsp;</strong>tipo Llavero.<br><strong>1 Adaptador </strong>de Corriente.<br> <strong>Aplicación Móvil</strong>&nbsp;para iOS o Android.<br>Instalación<strong> Gratis.<br>Monitoreo y Notificación&nbsp;</strong>a las Autoridades.<br><strong>Respuesta Armada**&nbsp;</strong>por Security Force.<br><strong>ForceSOS: MultiAsistencia</strong>&nbsp;Hogar, Legal, Viajes, Mascotas, Salud, Bicicleta, Seguridad y Asistencia Vial, para toda la familia.&nbsp;</p>",
-        price: 2449.99,
+        price: 200,
         status: ""
     }
 ];
@@ -37,21 +23,24 @@ const PlanName = styled.div`
     font-size: 22px;
 `;
 
-class SelectPlan extends React.Component {
+class SelectAddons extends React.Component {
 
     handleBackButton = (e) => {
+        e.preventDefault();
+    }
+    handleNoButton = (e) => {
         e.preventDefault();
     }
     handlePlanSelect = (e, plan) => {
         e.preventDefault();
         this.props.handleStep(plan);
     }
-    getPlans = () => {
-        return PLANS;
+    getAddons = () => {
+        return ADDONS;
     }
     render() {
-        const plans = this.getPlans();
-        const renderPlans = plans.map( (plan, indx) => {
+        const addons = this.getAddons();
+        const renderAddons = addons.map( (plan, indx) => {
             const formatter = new Intl.NumberFormat('en-US', { style: 'currency', currency:'USD' });
             const PriceFormatted = formatter.format(plan.price);
             return (
@@ -80,13 +69,13 @@ class SelectPlan extends React.Component {
             <React.Fragment>
                 <Jumbotron tag="section" className="text-center" style={{backgroundColor:"white", borderRadius:"none"}}>
                     <Container>
-                        <h2 className="jumbotron-heading display-5 mb-4">¿Con cuál plan desea proteger su hogar?</h2>
+                        <h2 className="jumbotron-heading display-5 mb-4">¿Agregamos nuestro <strong>seguro contra robo</strong>?</h2>
                     </Container>
                     <Container fluid>
                         <Row>
                             <Col xs="12" md={{ size: 8, offset: 2 }}>
                                 <Row>
-                                    {renderPlans}
+                                    {renderAddons}
                                 </Row>
                             </Col>
                         </Row>
@@ -97,4 +86,4 @@ class SelectPlan extends React.Component {
     }
 }
 
-export default SelectPlan;
+export default SelectAddons;
