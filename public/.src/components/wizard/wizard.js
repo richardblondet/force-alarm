@@ -4,7 +4,8 @@ import {
     StepView, 
     Step1, 
     Step2,
-    Step3
+    Step3,
+    Step4
 } from "./";
 
 import constants from "../../constants";
@@ -28,7 +29,10 @@ class ForceAlarmWizard extends React.Component {
         const {state, dispatch} = this.context;
         state.data.selection.push(addon);
         dispatch({ type: constants.SELECT_PLAN, data: state.data.selection });
-        // dispatch({ type: constants.STEP, data: 2 });
+        dispatch({ type: constants.STEP, data: 3 });
+    }
+    handleForthStep = () => {
+        console.log("Forth step");
     }
 
     render() {
@@ -44,6 +48,9 @@ class ForceAlarmWizard extends React.Component {
                 </StepView>
                 <StepView step={2}>
                     <Step3 handleStep={this.handleThirdStep} />
+                </StepView>
+                <StepView step={3}>
+                    <Step4 handleStep={this.handleForthStep} />
                 </StepView>
             </React.Fragment>
         );

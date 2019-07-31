@@ -11,7 +11,7 @@ export const initialState = {
         status: ""
     },
     plans: [],
-    step: 1
+    step: 3
 };
 
 const Reducer = (state = initialState, action) => {
