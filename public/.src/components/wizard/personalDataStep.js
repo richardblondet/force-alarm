@@ -1,7 +1,13 @@
 import React from "react";
 import styled from "styled-components";
+/**
+ * @see {@link https://reactdatepicker.com/}
+ */
 import DatePicker from "react-datepicker";
 import { registerLocale, setDefaultLocale } from  "react-datepicker";
+/**
+ * @see {@link https://date-fns.org/docs/Getting-Started}
+ */
 import { 
     format,
     setHours,
@@ -30,42 +36,76 @@ const PROVINCIAS = [
     'Punta Cana'
 ];
 
+const TODAY = new Date();
+
+const initialDataTest = {
+    name: "Richard Blondet",
+    email: "developer@richardblondet.com",
+    phone: "8094758085",
+    address: "Calle San Juan Bautista",
+    sector: "Mirador Norte",
+    reference: "Frente a la casa",
+    date: addDays( TODAY, 1),
+    time: setHours( setMinutes( TODAY, 0), 8)
+};
+
 class PersonalDataForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            name: "",
-            email: "",
-            phone: "",
-            address: "",
-            sector: "",
-            date: addDays(new Date(), 1),
-            time: setHours( setMinutes( new Date(), 0), 8),
+            TODAY,
+            form: {
+                name: "",
+                email: "",
+                phone: "",
+                address: "",
+                sector: "",
+                reference: "",
+                date: addDays( TODAY, 1),
+                time: setHours( setMinutes( TODAY, 0), 8),
+            },
             datePickerOpen: false,
-            dateTimeOpen: false
+            dateTimeOpen: false,
+            errors: []
         };
+    }
+    componentDidMount() {
+        let { form } = this.props;
+
+        if( form ) {
+            this.setState({
+                form
+            });
+        } else {
+            this.setState({
+                form: initialDataTest
+            });
+        }
+        
     }
     handleOnChange = (e) => {
         e.preventDefault();
-        // console.log(e.target.name);
+        let { form } = this.state;
+        form[e.target.name] = e.target.value
         this.setState({
-            [e.target.name]: e.target.value
+            form
         });
     }
     handleDateChange = ( date ) => {
+        let { form } = this.state;
+        form.date = date;
         this.setState({
-            date,
+            form,
             datePickerOpen: false
         });
     }
     handleTimeChange = ( date ) => {
+        let { form } = this.state; 
+        form.time = date;
         this.setState({
-            time: date,
+            form,
             dateTimeOpen: false
         });
-    }
-    handleBackButton = (e) => {
-        e.preventDefault();
     }
     handleFocusOpenDatePicker = (e) => {
         e.preventDefault();
@@ -86,24 +126,35 @@ class PersonalDataForm extends React.Component {
     getProvincias = () => {
         return PROVINCIAS;
     }
+    handleBackButton = (e) => {
+        e.preventDefault();
+    }
     handleSubmitButton = (e) => {
         e.preventDefault();
-        const form = this.state;
+        const { form } = this.state;
+        let keys = Object.keys(form);
         let errors = [];
-        console.log("form", form);
-        for (let index = 0; index < form.length; index++) {
-            const field = form[index];
-            if(field === "") {
-                errors.push(index);
+        for (let index = 0; index < keys.length; index++) {
+            const fieldName = keys[index];
+            if( "" === form[fieldName] ) {
+                errors.push( fieldName );
             }
         }
-        console.log("form data errors", errors );
+        if( errors.length ) {
+            this.setState({
+                errors
+            });
+        } else { 
+            // form.date = format(form.date, "dd/MM/yyyy");
+            // form.time = format(form.time, "h:mm aa");
+            this.props.handleStep( form );
+        }
     }
     render() {
         const renderProvinciasOptions = this.getProvincias().map((provincia, indx) => {
             return <option key={`provincia-key-${indx}`}>{provincia}</option>;
         });
-        console.log(this.state);
+        const { form } = this.state;
         return (
             <React.Fragment>
                 <Jumbotron tag="section" style={{backgroundColor:"white", borderRadius:"none"}}>
@@ -115,33 +166,33 @@ class PersonalDataForm extends React.Component {
                                     
                                     <FormGroup>
                                         <Label for="fa-app-name">Nombre</Label>
-                                        <Input 
+                                        <Input required 
                                             id="fa-app-name" 
                                             type="text" 
                                             name="name" 
-                                            value={this.state.name}
+                                            value={form.name}
                                             onChange={this.handleOnChange}
                                             placeholder="Nombre y Apellido" />
                                     </FormGroup>
 
                                     <FormGroup>
                                         <Label for="fa-app-email">Email</Label>
-                                        <Input  
+                                        <Input required  
                                             id="fa-app-email" 
                                             type="email" 
                                             name="email" 
-                                            value={this.state.email}
+                                            value={form.email}
                                             onChange={this.handleOnChange}
                                             placeholder="ejemplo@email.com" />
                                     </FormGroup>
 
                                     <FormGroup>
                                         <Label for="fa-app-phone">Teléfono de Contacto</Label>
-                                        <Input  
+                                        <Input required  
                                             id="fa-app-phone"
                                             type="text" 
                                             name="phone" 
-                                            value={this.state.phone}
+                                            value={form.phone}
                                             onChange={this.handleOnChange}
                                             placeholder="8095557777" />
                                     </FormGroup>
@@ -150,11 +201,11 @@ class PersonalDataForm extends React.Component {
 
                                     <FormGroup>
                                         <Label for="fa-app-province">Provincia</Label>
-                                        <Input  
+                                        <Input required  
                                             id="fa-app-province"
                                             type="select" 
                                             name="province" 
-                                            value={this.state.province}
+                                            value={form.province}
                                             onChange={this.handleOnChange}
                                             >
                                             {renderProvinciasOptions}
@@ -163,33 +214,33 @@ class PersonalDataForm extends React.Component {
                                     
                                     <FormGroup>
                                         <Label for="fa-app-address">Calle y número local o casa</Label>
-                                        <Input  
+                                        <Input required  
                                             id="fa-app-address" 
                                             type="text" 
                                             name="address" 
-                                            value={this.state.address}
+                                            value={form.address}
                                             onChange={this.handleOnChange}
                                             placeholder="local, casa o residencial" />
                                     </FormGroup>
 
                                     <FormGroup>
                                         <Label for="fa-app-sector">Sector</Label>
-                                        <Input  
+                                        <Input required  
                                             id="fa-app-sector" 
                                             type="text" 
                                             name="sector" 
-                                            value={this.state.sector}
+                                            value={form.sector}
                                             onChange={this.handleOnChange}
                                             placeholder="Sector" />
                                     </FormGroup>
 
                                     <FormGroup>
                                         <Label for="fa-app-reference">Referencia</Label>
-                                        <Input  
+                                        <Input required  
                                             id="fa-app-reference" 
                                             type="textarea" 
                                             name="reference" 
-                                            value={this.state.reference}
+                                            value={form.reference}
                                             onChange={this.handleOnChange}
                                             placeholder="Cerca de... frente a..." />
                                     </FormGroup>
@@ -198,19 +249,19 @@ class PersonalDataForm extends React.Component {
 
                                     <FormGroup>
                                         <Label for="fa-app-date">Fecha Instalación</Label>
-                                        <Input  
+                                        <Input required  
                                             id="fa-app-date" 
                                             type="text" 
                                             name="date" 
                                             placeholder="Seleccionar fecha" 
-                                            value={format(this.state.date, "dd/MM/yyyy")}
+                                            value={format(form.date, "dd/MM/yyyy")}
                                             onChange={this.handleOnChange}
                                             onFocus={this.handleFocusOpenDatePicker} />
                                         
                                         {this.state.datePickerOpen && <DatePicker
                                             id="fa-app-date"
                                             className="form-control d-block"
-                                            selected={this.state.date}
+                                            selected={form.date}
                                             dateFormat="dd/MM/yyyy"
                                             withPortal
                                             inline
@@ -223,19 +274,19 @@ class PersonalDataForm extends React.Component {
 
                                     <FormGroup>
                                         <Label for="fa-app-time">Hora Instalación</Label>
-                                        <Input  
+                                        <Input required  
                                             id="fa-app-time"
                                             type="text"
                                             name="time"
                                             placeholder="Seleccionar hora"
-                                            value={format(this.state.time, "h:mm aa")}
+                                            value={format(form.time, "h:mm aa")}
                                             onChange={this.handleOnChange}
                                             onFocus={this.handleFocusOpenTimePicker} />
                                         
                                         {this.state.dateTimeOpen && <DatePicker
                                             id="fa-app-time"
                                             className="form-control"
-                                            selected={this.state.time}
+                                            selected={form.time}
                                             onChange={this.handleTimeChange}
                                             showTimeSelect
                                             showTimeSelectOnly
@@ -245,19 +296,19 @@ class PersonalDataForm extends React.Component {
                                             withPortal
                                             inline
                                             excludeTimes={[ 
-                                                setHours(setMinutes(new Date(), 0), 0), 
-                                                setHours(setMinutes(new Date(), 0), 1), 
-                                                setHours(setMinutes(new Date(), 0), 2), 
-                                                setHours(setMinutes(new Date(), 0), 3),
-                                                setHours(setMinutes(new Date(), 0), 4),
-                                                setHours(setMinutes(new Date(), 0), 5),
-                                                setHours(setMinutes(new Date(), 0), 6),
-                                                setHours(setMinutes(new Date(), 0), 7),
-                                                setHours(setMinutes(new Date(), 0), 19),
-                                                setHours(setMinutes(new Date(), 0), 20),
-                                                setHours(setMinutes(new Date(), 0), 21),
-                                                setHours(setMinutes(new Date(), 0), 22),
-                                                setHours(setMinutes(new Date(), 0), 23)
+                                                setHours(setMinutes(TODAY, 0), 0), 
+                                                setHours(setMinutes(TODAY, 0), 1), 
+                                                setHours(setMinutes(TODAY, 0), 2), 
+                                                setHours(setMinutes(TODAY, 0), 3),
+                                                setHours(setMinutes(TODAY, 0), 4),
+                                                setHours(setMinutes(TODAY, 0), 5),
+                                                setHours(setMinutes(TODAY, 0), 6),
+                                                setHours(setMinutes(TODAY, 0), 7),
+                                                setHours(setMinutes(TODAY, 0), 19),
+                                                setHours(setMinutes(TODAY, 0), 20),
+                                                setHours(setMinutes(TODAY, 0), 21),
+                                                setHours(setMinutes(TODAY, 0), 22),
+                                                setHours(setMinutes(TODAY, 0), 23)
                                             ]}
                                             timeCaption="Hora" />
                                         }
@@ -265,8 +316,8 @@ class PersonalDataForm extends React.Component {
 
                                     <FormGroup check>
                                         <Label check>
-                                            <Input type="checkbox"  />{' '}
-                                            <span className="text-primary">Aceptos los términos y condiciones</span>
+                                            <Input required type="checkbox"  />{' '}
+                                            Acepto los <a className="text-primary">términos y condiciones</a> de contrato.
                                         </Label>
                                     </FormGroup>
 

@@ -19,12 +19,8 @@ class App extends React.Component {
         return (
             <StoreProvider config={{}}>
                 <Header />
-                <Container>
-                    <Steps />
-                </Container>
-                
+                <Steps />
                 <ForceAlarmWizard />
-                
             </StoreProvider>
         );
     }

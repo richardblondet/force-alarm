@@ -6,12 +6,12 @@ export const initialState = {
         total: 0,
         province: false,
         selection: [],
-        form: {},
+        form: null,
         payment: {},
         status: ""
     },
     plans: [],
-    step: 3
+    step: 4
 };
 
 const Reducer = (state = initialState, action) => {
@@ -35,6 +35,14 @@ const Reducer = (state = initialState, action) => {
                 ...state.data,
                 selection: action.data,
                 total: getTotal(action.data)
+            }
+        }
+    case constants.SET_USER_DATA: 
+        return {
+            ...state,
+            data: {
+                ...state.data,
+                form: action.data
             }
         }
     default:

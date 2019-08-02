@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { Nav, NavItem, NavLink } from 'reactstrap';
+import { Nav, NavItem, NavLink, Container } from 'reactstrap';
 import Store from "../../redux/store";
 
 const Section = styled.section`
@@ -108,9 +108,11 @@ class Steps extends React.Component {
         });
         return (
             <Section padding="1em 0">
-                <Nav fill justified>
-                    {renderSteps}
-                </Nav>
+                <Container>
+                    <Nav fill justified>
+                        {renderSteps}
+                    </Nav>
+                </Container>
             </Section>
         );
     }

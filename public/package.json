@@ -37,8 +37,10 @@
   },
   "dependencies": {
     "date-fns": "^v2.0.0-beta.1",
+    "payment": "^2.3.0",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
+    "react-credit-cards": "^0.7.0",
     "react-datepicker": "^2.8.0",
     "react-dom": "^16.8.6",
     "reactstrap": "^8.0.1",
