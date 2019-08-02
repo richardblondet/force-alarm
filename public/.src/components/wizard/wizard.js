@@ -13,7 +13,13 @@ import constants from "../../constants";
 
 class ForceAlarmWizard extends React.Component {
     static contextType = Store;
-
+    componentDidMount() {
+        const {dispatch} = this.context;
+        setTimeout(() => {
+            dispatch({ type: constants.LOADING_OFF });
+        }, 2000 );
+        
+    }
     handleFirstStep = () => {
         const { dispatch } = this.context;
 

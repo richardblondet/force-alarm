@@ -12,7 +12,7 @@ export const initialState = {
     },
     plans: [],
     step: 4,
-    isLoading: false
+    isLoading: true
 };
 
 const Reducer = (state = initialState, action) => {

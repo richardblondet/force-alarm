@@ -5,6 +5,7 @@ import Store from "../../redux/store";
 
 class Loading extends React.Component {
     static contextType = Store;
+    
     render() {
         const Container = styled.div`
             position: absolute;
@@ -18,7 +19,7 @@ class Loading extends React.Component {
         `;
 
         const { state } = this.context;
-        console.log("Loading Context");
+
         return state.isLoading && (
             <Container className="h-100 d-flex">
                 <img src={spinner} width={50} className="justify-content-center align-self-center mx-auto d-block" />
