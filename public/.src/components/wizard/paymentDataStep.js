@@ -77,7 +77,7 @@ class PaymentDataForm extends React.Component {
                 <Jumbotron tag="section" style={{backgroundColor:"white", borderRadius:"none"}}>
                     <Container fluid>
                         <Row>
-                            <Col xs="12" sm={{ size: 8, offset: 2 }} md={{ size: 6, offset: 3 }}>
+                            <Col xs="12" sm={{ size: 8, offset: 2 }} md={{ size: 4, offset: 4 }}>
                                 <Form ref={c => (this.form = c)} onSubmit={this.handleSubmitButton}>
                                     <FormGroup className="mb-4">
                                         <Cards

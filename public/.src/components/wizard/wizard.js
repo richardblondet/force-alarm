@@ -38,11 +38,13 @@ class ForceAlarmWizard extends React.Component {
     }
     handleFithStep = ( data ) => {
         console.log("Handling fith step data", data );
+        const {dispatch} = this.context;
+        dispatch({ type: constants.LOADING_ON });
     }
 
     render() {
         const { state } = this.context;
-        
+
         return (
             <React.Fragment>
                 <StepView step={0}>

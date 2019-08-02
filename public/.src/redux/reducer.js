@@ -11,7 +11,8 @@ export const initialState = {
         status: ""
     },
     plans: [],
-    step: 4
+    step: 4,
+    isLoading: false
 };
 
 const Reducer = (state = initialState, action) => {
@@ -44,6 +45,16 @@ const Reducer = (state = initialState, action) => {
                 ...state.data,
                 form: action.data
             }
+        }
+    case constants.LOADING_ON: 
+        return {
+            ...state,
+            isLoading: true
+        }
+    case constants.LOADING_OFF:
+        return {
+            ...state,
+            isLoading: false
         }
     default:
         return state;
