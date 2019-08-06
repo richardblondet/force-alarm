@@ -46,6 +46,7 @@ class ForceAlarmWizard extends React.Component {
         console.log("Handling fith step data", data );
         const {dispatch} = this.context;
         dispatch({ type: constants.LOADING_ON });
+        dispatch({ type: constants.SET_PAYMENT_DATA, data });
     }
 
     render() {

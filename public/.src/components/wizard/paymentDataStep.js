@@ -4,8 +4,7 @@ import 'react-credit-cards/es/styles-compiled.css';
 import {
     formatCreditCardNumber,
     formatCVC,
-    formatExpirationDate,
-    formatFormData,
+    formatExpirationDate
   } from "../../functions";
 import {
     Container,
@@ -32,7 +31,6 @@ class PaymentDataForm extends React.Component {
 
         };
     }
-    componentDidMount() {}
     handleOnChange = ({ target }) => {
         if (target.name === "number") {
             target.value = formatCreditCardNumber(target.value);
@@ -51,23 +49,24 @@ class PaymentDataForm extends React.Component {
         if (isValid) {
           this.setState({ issuer });
         }
-    };
+    }
     handleInputFocus = ({ target }) => {
         this.setState({
           focused: target.name,
         });
-    };
+    }
     handleBackButton = (e) => {
         e.preventDefault();
     }
     handleSubmitButton = (e) => {
         e.preventDefault();
-    
+        
         const data = [...e.target.elements].filter(d => d.name).reduce((acc, d) => {
+            console.log("field", d.name, d.value);
             acc[d.name] = d.value;
             return acc;
         }, {});
-        // this.setState({ data });
+
         this.props.handleStep( data );
     }
     render() {
@@ -142,7 +141,7 @@ class PaymentDataForm extends React.Component {
                                                 />
                                             </Col>
                                         </Row>
-                                        <input type="hidden" name="issuer" value={issuer} />
+                                        <input type="hidden" name="issuer" value={issuer} onChange={this.handleOnChange} />
                                     </FormGroup>
                                     <FormGroup>
                                         <hr />
@@ -161,10 +160,11 @@ class PaymentDataForm extends React.Component {
                                         <Row>
                                             <Col xs="12" sm="6">
                                                 <Input
-                                                    type="text"
+                                                    type="number"
                                                     name="no_comprobante"
                                                     value={no_comprobante}
                                                     placeholder="Número Comprobante"
+                                                    pattern={/\d/}
                                                     required
                                                     onChange={this.handleOnChange}
                                                 />
