@@ -151,6 +151,10 @@ class PersonalDataForm extends React.Component {
             this.props.handleStep( form );
         }
     }
+    handleTermsClick = (e) => {
+        e.preventDefault();
+        this.props.showTermsModal();
+    }
     render() {
         const renderProvinciasOptions = this.getProvincias().map((provincia, indx) => {
             return <option key={`provincia-key-${indx}`}>{provincia}</option>;
@@ -318,7 +322,7 @@ class PersonalDataForm extends React.Component {
                                     <FormGroup check>
                                         <Label check>
                                             <Input required type="checkbox"  />{' '}
-                                            Acepto los <a className="text-primary">términos y condiciones</a> de contrato.
+                                            Acepto los <a className="text-primary" onClick={this.handleTermsClick}>términos y condiciones</a> de contrato.
                                         </Label>
                                     </FormGroup>
 

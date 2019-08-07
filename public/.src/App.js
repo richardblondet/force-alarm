@@ -5,6 +5,7 @@ import Loading from "./components/loading";
 import Header from "./components/header";
 import Steps from "./components/steps";
 import ForceAlarmWizard from "./components/wizard";
+import Terms from "./components/terms";
 
 class App extends React.Component {
     constructor(props) {
@@ -13,6 +14,7 @@ class App extends React.Component {
     render() {
         return (
             <StoreProvider config={{}}>
+                <Terms />
                 <Loading />
                 <Header />
                 <Steps />

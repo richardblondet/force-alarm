@@ -12,7 +12,8 @@ export const initialState = {
     },
     plans: [],
     step: 0,
-    isLoading: true
+    isLoading: true,
+    showTerms: false
 };
 
 const Reducer = (state = initialState, action) => {
@@ -63,6 +64,16 @@ const Reducer = (state = initialState, action) => {
                     payment: action.data
                 }
             }
+        case constants.SHOW_TERMS:
+            return {
+                ...state,
+                showTerms: true
+            };
+        case constants.HIDE_TERMS:
+            return {
+                ...state,
+                showTerms: false
+            };
         default:
             return state;
     }

@@ -67,7 +67,10 @@ class ForceAlarmWizard extends React.Component {
         dispatch({ type: constants.LOADING_ON });
         dispatch({ type: constants.SET_PAYMENT_DATA, data });
     }
-
+    showTermsModal = () => {
+        const {dispatch} = this.context;
+        dispatch({ type: constants.SHOW_TERMS });
+    }
     render() {
         const { state } = this.context;
 
@@ -83,7 +86,11 @@ class ForceAlarmWizard extends React.Component {
                     <Step3 handleStep={this.handleThirdStep} handleForward={this.handleForward} handleBack={this.handleBackStep} />
                 </StepView>
                 <StepView step={3}>
-                    <Step4 handleStep={this.handleForthStep} form={state.data.form} handleBack={this.handleBackStep} />
+                    <Step4 
+                        handleStep={this.handleForthStep} 
+                        form={state.data.form} 
+                        handleBack={this.handleBackStep} 
+                        showTermsModal={this.showTermsModal} />
                 </StepView>
                 <StepView step={4}>
                     <Step5 handleStep={this.handleFithStep} handleBack={this.handleBackStep} />
