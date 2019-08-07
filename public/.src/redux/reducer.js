@@ -13,7 +13,14 @@ export const initialState = {
     plans: [],
     step: 0,
     isLoading: true,
-    showTerms: false
+    showTerms: false,
+    showModalService: true,
+    modalService: {
+        title: "",
+        excerpt: "",
+        content: "",
+        price: ""
+    }
 };
 
 const Reducer = (state = initialState, action) => {
@@ -73,6 +80,16 @@ const Reducer = (state = initialState, action) => {
             return {
                 ...state,
                 showTerms: false
+            };
+        case constants.SHOW_MODAL_SERVICE:
+            return {
+                ...state,
+                showModalService: true
+            };
+        case constants.HIDE_MODAL_SERVICE:
+            return {
+                ...state,
+                showModalService: false
             };
         default:
             return state;

@@ -73,6 +73,7 @@ class SelectPlan extends React.Component {
                         </p>
                     </div>
                     <Button color="danger" onClick={e=>this.handlePlanSelect(e, plan)}>Seleccionar</Button>
+                    <div><a href="">ver más</a></div>
                 </Col>
             );
         });
