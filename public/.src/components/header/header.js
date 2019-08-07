@@ -31,13 +31,13 @@ class Header extends React.Component {
     
     render() {
         const { state } = this.context;
-        const formatter = new Intl.NumberFormat('es-US', { style: "currency", currency: "USD"});
+        const formatter = new Intl.NumberFormat('es-US', { style: "currency", currency: "USD" });
         const total = formatter.format( state.data.total || 0);
 
         return (
             <React.Fragment>
                 <Navbar dark expand="md" style={{backgroundColor:"rgb(173, 48, 31)"}}>
-                    <NavbarBrand href="/">volver</NavbarBrand>
+                    {/* <NavbarBrand href="/">volver</NavbarBrand> */}
                         <NavbarToggler onClick={this.toggle} />
                         <Collapse isOpen={this.state.isOpen} navbar>
                             <Nav className="ml-auto" navbar>

@@ -27,8 +27,8 @@ class PaymentDataForm extends React.Component {
             formData: null,
             comprobante: false,
             no_comprobante: "",
-            nombre_comprobante: ""
-
+            nombre_comprobante: "",
+            isValid: false
         };
     }
     handleOnChange = ({ target }) => {
@@ -39,15 +39,13 @@ class PaymentDataForm extends React.Component {
         } else if (target.name === "cvc") {
             target.value = formatCVC(target.value);
         }
-      
         this.setState({ 
             [target.name]: target.type === "checkbox" ? target.checked : target.value 
         });
     }
-    handleCallback = ({ issuer }, isValid) => {
-        console.log("issuer ", issuer);
-        if (isValid) {
-          this.setState({ issuer });
+    handleCallback = ({ issuer }, isValid ) => {
+        if( isValid ) {
+            this.setState({ issuer, isValid });
         }
     }
     handleInputFocus = ({ target }) => {
@@ -57,12 +55,12 @@ class PaymentDataForm extends React.Component {
     }
     handleBackButton = (e) => {
         e.preventDefault();
+        this.props.handleBack();
     }
     handleSubmitButton = (e) => {
         e.preventDefault();
-        
+
         const data = [...e.target.elements].filter(d => d.name).reduce((acc, d) => {
-            console.log("field", d.name, d.value);
             acc[d.name] = d.value;
             return acc;
         }, {});
@@ -184,7 +182,7 @@ class PaymentDataForm extends React.Component {
                                     <FormGroup className="mt-4">
                                         <Row>
                                             <Col xs="4">
-                                                <Button block type="button" color="secondary">Atrás</Button>
+                                                <Button onClick={this.handleBackButton} block type="button" color="secondary">Atrás</Button>
                                             </Col>
                                             <Col xs="8">
                                                 <Button block type="submit" color="danger">Procesar Pago</Button>

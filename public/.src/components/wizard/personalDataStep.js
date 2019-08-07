@@ -128,6 +128,7 @@ class PersonalDataForm extends React.Component {
     }
     handleBackButton = (e) => {
         e.preventDefault();
+        this.props.handleBack();
     }
     handleSubmitButton = (e) => {
         e.preventDefault();
@@ -324,7 +325,7 @@ class PersonalDataForm extends React.Component {
                                     <FormGroup className="mt-4">
                                         <Row>
                                             <Col>
-                                                <Button block type="button" color="secondary">Atrás</Button>
+                                                <Button onClick={this.handleBackButton} block type="button" color="secondary">Atrás</Button>
                                             </Col>
                                             <Col>
                                                 <Button block type="submit" color="danger">Siguiente</Button>

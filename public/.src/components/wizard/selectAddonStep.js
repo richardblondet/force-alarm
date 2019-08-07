@@ -27,6 +27,7 @@ const PlanName = styled(CardText)`
 class SelectAddons extends React.Component {
     handleBackButton = (e) => {
         e.preventDefault();
+        this.props.handleBack();
     }
     handleNoButton = (e) => {
         e.preventDefault();
@@ -77,6 +78,9 @@ class SelectAddons extends React.Component {
                                 <CardDeck>
                                     {renderAddons}
                                 </CardDeck>
+                                <div className="text-center">
+                                    <Button onClick={this.handleBackButton} color="link">volver</Button>
+                                </div>
                             </Col>
                         </Row>
                     </Container>    
