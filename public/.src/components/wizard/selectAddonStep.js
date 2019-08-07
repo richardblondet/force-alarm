@@ -11,6 +11,7 @@ import {
 
 const ADDONS = [
     {
+        id: "contra-robo",
         title: "Contra Robo",
         excerpt: "<p>Alarma* para tu hogar, <b>SIN</b>&nbsp;la respuesta armada de<strong> SecurityForce™</strong></p>",
         content: "<p><strong>Panel de Control</strong>&nbsp;con teclado táctil.<br /> <strong>1 Sensor </strong>de Puerta / Ventana.<br /> <strong>1 Detector</strong>&nbsp;de Movimientos<b>&nbsp;IR.</b><br /> <strong>2 Controles Remotos&nbsp;</strong>tipo Llavero.<br /><strong>1 Adaptador </strong>de Corriente.<br /> <strong>Aplicación Móvil</strong>&nbsp;para iOS o Android.<br />Instalación<strong> Gratis</strong></p>",
@@ -35,6 +36,10 @@ class SelectAddons extends React.Component {
     handleAddonSelect = (e, addon) => {
         e.preventDefault();
         this.props.handleStep(addon);
+    }
+    handleForwardButton = (e) => {
+        e.preventDefault();
+        this.props.handleForward();
     }
     getAddons = () => {
         return ADDONS;
@@ -78,9 +83,18 @@ class SelectAddons extends React.Component {
                                 <CardDeck>
                                     {renderAddons}
                                 </CardDeck>
-                                <div className="text-center">
-                                    <Button onClick={this.handleBackButton} color="link">volver</Button>
-                                </div>
+                                <Row className="mt-4 text-center">
+                                    <Col xs="12" md={{ size: 6, offset: 3 }}>
+                                        <Row>
+                                            <Col>  
+                                                <Button block onClick={this.handleBackButton} color="secondary">Atrás</Button>
+                                            </Col>
+                                            <Col>
+                                                <Button block onClick={this.handleForwardButton} color="danger">No, Continuemos</Button>
+                                            </Col>
+                                        </Row>
+                                    </Col>
+                                </Row>
                             </Col>
                         </Row>
                     </Container>    

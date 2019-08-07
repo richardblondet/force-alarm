@@ -20,6 +20,10 @@ class ForceAlarmWizard extends React.Component {
         }, 2000 );
         
     }
+    goToStep = ( step ) => {
+        const {dispatch} = this.context;
+        dispatch({ type: constants.STEP, data: step });
+    }
     handleBackStep = () => {
         const { dispatch, state} = this.context;
         const returnToStep = state.step - 1;
@@ -27,33 +31,35 @@ class ForceAlarmWizard extends React.Component {
         // Check if user is trying to go back to step 2 or tree to reset the seleccion
         if( returnToStep === 1 || returnToStep === 2 ) {
             dispatch({ type: constants.SELECT_PLAN, data: []});
-            dispatch({ type: constants.STEP, data: 1 });    
+            this.goToStep( 1 );
         } else {
-            dispatch({ type: constants.STEP, data: state.step === 0 ? 0 : returnToStep });
+            this.goToStep( state.step === 0 ? 0 : returnToStep );
         }
     }
+    handleForward = () => {
+        const {state} = this.context;
+        this.goToStep(state.step + 1);
+    }
     handleFirstStep = () => {
-        const { dispatch } = this.context;
-
-        dispatch({ type: constants.STEP, data: 1 });
+        this.goToStep(1);
     }
     handleSecondStep = ( plan ) => {
         const {state, dispatch} = this.context;
         state.data.selection.push(plan);
         dispatch({ type: constants.SELECT_PLAN, data: state.data.selection });
-        dispatch({ type: constants.STEP, data: 2 });
+        this.goToStep(2);
     }
     handleThirdStep = ( addon ) => {
         console.log("Third step triggers and addon", addon );
         const {state, dispatch} = this.context;
         state.data.selection.push( addon );
         dispatch({ type: constants.SELECT_PLAN, data: state.data.selection });
-        dispatch({ type: constants.STEP, data: 3 });
+        this.goToStep(3);
     }
     handleForthStep = ( data ) => {
         const {dispatch} = this.context;
         dispatch({ type: constants.SET_USER_DATA, data });
-        dispatch({ type: constants.STEP, data: 4 });
+        this.goToStep(4);
     }
     handleFithStep = ( data ) => {
         console.log("Handling fith step data", data );
@@ -74,7 +80,7 @@ class ForceAlarmWizard extends React.Component {
                     <Step2 handleStep={this.handleSecondStep} handleBack={this.handleBackStep} />
                 </StepView>
                 <StepView step={2}>
-                    <Step3 handleStep={this.handleThirdStep} handleBack={this.handleBackStep} />
+                    <Step3 handleStep={this.handleThirdStep} handleForward={this.handleForward} handleBack={this.handleBackStep} />
                 </StepView>
                 <StepView step={3}>
                     <Step4 handleStep={this.handleForthStep} form={state.data.form} handleBack={this.handleBackStep} />
