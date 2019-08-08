@@ -49,6 +49,11 @@ class SelectPlan extends React.Component {
     getPlans = () => {
         return PLANS;
     }
+    showServiceModal = (plan) => {
+        console.log("showServiceModal plan", plan );
+        this.props.showServiceModal(plan);
+
+    }
     render() {
         const plans = this.getPlans();
         const renderPlans = plans.map( (plan, indx) => {
@@ -73,7 +78,10 @@ class SelectPlan extends React.Component {
                         </p>
                     </div>
                     <Button color="danger" onClick={e=>this.handlePlanSelect(e, plan)}>Seleccionar</Button>
-                    <div><a href="">ver más</a></div>
+                    <div><a href="" onClick={e=> {
+                        e.preventDefault();
+                        this.showServiceModal(plan);
+                    }} title={plan.title} price={plan.price}>ver más</a></div>
                 </Col>
             );
         });

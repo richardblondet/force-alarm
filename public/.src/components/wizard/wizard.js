@@ -71,6 +71,11 @@ class ForceAlarmWizard extends React.Component {
         const {dispatch} = this.context;
         dispatch({ type: constants.SHOW_TERMS });
     }
+    showServiceModal = ( plan ) => {
+        const {dispatch} = this.context;
+        dispatch({ type: constants.SET_MODAL_SERVICE, data: plan });
+        dispatch({ type: constants.SHOW_MODAL_SERVICE  });
+    }
     render() {
         const { state } = this.context;
 
@@ -80,10 +85,16 @@ class ForceAlarmWizard extends React.Component {
                     <Step1 handleStep={this.handleFirstStep} />
                 </StepView>
                 <StepView step={1}>
-                    <Step2 handleStep={this.handleSecondStep} handleBack={this.handleBackStep} />
+                    <Step2 
+                        handleStep={this.handleSecondStep} 
+                        handleBack={this.handleBackStep} 
+                        showServiceModal={this.showServiceModal} />
                 </StepView>
                 <StepView step={2}>
-                    <Step3 handleStep={this.handleThirdStep} handleForward={this.handleForward} handleBack={this.handleBackStep} />
+                    <Step3 
+                        handleStep={this.handleThirdStep} 
+                        handleForward={this.handleForward} 
+                        handleBack={this.handleBackStep} />
                 </StepView>
                 <StepView step={3}>
                     <Step4 

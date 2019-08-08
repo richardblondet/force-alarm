@@ -17,7 +17,6 @@ class Terms extends React.Component {
         const toggle = state.showTerms ? constants.HIDE_TERMS : constants.SHOW_TERMS;
 
         dispatch({ type: toggle });
-
     }
 
     render() {

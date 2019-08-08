@@ -1,49 +1,40 @@
 import React from "react";
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Row, Col } from "reactstrap";
 import constants from "../../constants";
 import Store from "../../redux/store";
 
 class ServicesModal extends React.Component {
     static contextType = Store;
 
-    constructor(props) {
-        super(props);
-        
-        this.state = {
-            modal: true
-        };
-    
-        this.toggle = this.toggle.bind(this);
-    }
-    
-    toggle() {
-        // 
-        this.setState(prevState => ({
-            modal: !prevState.modal
-        }));
+    toggle = () => {
+        const {state,dispatch} = this.context;
+        const toggle = state.showModalService ? constants.HIDE_MODAL_SERVICE : constants.SHOW_MODAL_SERVICE;
+
+        dispatch({ type: toggle });
     }
     render() {
-        const {serviceTitle, serviceExcerpt, serviceContent} = this.props;
+        const {state} = this.context;
 
         return (
-            <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
-                <ModalHeader toggle={this.toggle} className="border-0 text-center">
-                    <img 
-                        className="py-5" 
-                        src="https://forcealarm.interactiva.com.do/wp-content/uploads/2019/07/Logo-ForceAlarm.png" 
-                        width="125" />
-                </ModalHeader>
+            <Modal isOpen={state.showModalService} toggle={this.toggle} className={this.props.className}>
+                
                 <ModalBody className="text-center">
-                    {serviceTitle}
+                    <div>
+                        <img 
+                            className="pt-5 pb-2 mx-auto d-block" 
+                            src="https://forcealarm.interactiva.com.do/wp-content/uploads/2019/07/Logo-ForceAlarm.png" 
+                            width="125" />
+                    </div>
+                    <div dangerouslySetInnerHTML={{__html: state.modalService.title}} />
                 </ModalBody>
                 <ModalBody className="text-center">
-                    {serviceExcerpt}
+                    <div dangerouslySetInnerHTML={{__html: state.modalService.excerpt}} />
                 </ModalBody>
-                <ModalBody className="text-center border-top">
-                    {serviceContent}
+                <ModalBody className="text-center">
+                    <div dangerouslySetInnerHTML={{__html: state.modalService.content}} />
                 </ModalBody>
-                <ModalFooter>
-                    <Button color="danger" onClick={this.toggle}>Do Something</Button>{' '}
+                <ModalFooter className="text-center border-0">
+                    <Button color="danger" onClick={this.toggle} className="mx-auto">Cerrar</Button>
                 </ModalFooter>
             </Modal>
         );

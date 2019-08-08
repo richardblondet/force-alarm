@@ -14,7 +14,7 @@ export const initialState = {
     step: 0,
     isLoading: true,
     showTerms: false,
-    showModalService: true,
+    showModalService: false,
     modalService: {
         title: "",
         excerpt: "",
@@ -91,6 +91,11 @@ const Reducer = (state = initialState, action) => {
                 ...state,
                 showModalService: false
             };
+        case constants.SET_MODAL_SERVICE:
+            return {
+                ...state,
+                modalService: action.data
+            }
         default:
             return state;
     }
