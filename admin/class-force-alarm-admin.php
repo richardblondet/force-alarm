@@ -195,6 +195,7 @@ class Force_Alarm_Admin {
 			'hierarchical'          => false,
 			'public'                => true,
 			'show_ui'               => true,
+			'show_in_rest'			=> true,
 			'show_in_menu'          => true,
 			'menu_position'         => 15,
 			'show_in_admin_bar'     => true,
@@ -250,10 +251,11 @@ class Force_Alarm_Admin {
 			'label'                 => __( 'Service Plan', 'force-alarm' ),
 			'description'           => __( 'Force Alarms Services', 'force-alarm' ),
 			'labels'                => $labels,
-			'supports'              => array( 'title', 'editor', 'thumbnail', 'comments', 'revisions', 'custom-fields', 'page-attributes', 'post-formats' ),
+			'supports'              => array( 'title', 'editor', 'thumbnail', 'comments', 'revisions', 'custom-fields', 'page-attributes', 'post-formats', 'excerpt' ),
 			'hierarchical'          => false,
 			'public'                => true,
 			'show_ui'               => true,
+			'show_in_rest'			=> true,
 			'show_in_menu'          => true,
 			'menu_position'         => 10,
 			'menu_icon'             => 'dashicons-shield',
@@ -330,6 +332,7 @@ class Force_Alarm_Admin {
 			'hierarchical'          => false,
 			'public'                => true,
 			'show_ui'               => true,
+			'show_in_rest'			=> true,
 			'show_in_menu'          => true,
 			'menu_position'         => 25,
 			'menu_icon'             => 'dashicons-sos',
@@ -345,6 +348,5 @@ class Force_Alarm_Admin {
 		register_post_type( 'fa_ticket', $args );
 
 	}
-
 
 }

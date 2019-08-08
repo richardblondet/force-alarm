@@ -53,3 +53,12 @@ export function formatExpirationDate(value) {
 export function formatFormData(data) {
     return Object.keys(data).map(d => `${d}: ${data[d]}`);
 }
+
+/**
+ * Helper function for query strings
+ * @param  {obj} object 
+ * @return {string}        
+ */
+export function getQueryString( object ) {
+    return Object.keys( object ).map( key => key + '=' + object[ key ] ).join('&');
+}

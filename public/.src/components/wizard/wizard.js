@@ -11,13 +11,38 @@ import {
 
 import constants from "../../constants";
 
+import PlansService from "../../services/plans";
+
+const Plans = new PlansService('http://localhost/wp-admin/admin-ajax.php');
+
 class ForceAlarmWizard extends React.Component {
     static contextType = Store;
+    constructor( props ) {
+        super( props );
+
+        this.state = {
+            plans: [],
+            addons: []
+        };
+    }
     componentDidMount() {
         const {dispatch} = this.context;
-        setTimeout(() => {
-            dispatch({ type: constants.LOADING_OFF });
-        }, 2000 );
+        
+        Plans.getPlans({ 
+            type: "plan" 
+        }).then( plansresponse => {
+            Plans.getPlans({ 
+                type: "addon" 
+            }).then( addonsresponse => {
+                this.setState({ 
+                    plans: plansresponse.data,
+                    addons: addonsresponse.data 
+                });
+                dispatch({ type: constants.LOADING_OFF });
+            });
+        });
+
+        
         
     }
     goToStep = ( step ) => {
@@ -85,13 +110,15 @@ class ForceAlarmWizard extends React.Component {
                     <Step1 handleStep={this.handleFirstStep} />
                 </StepView>
                 <StepView step={1}>
-                    <Step2 
+                    <Step2
+                        plans={this.state.plans}
                         handleStep={this.handleSecondStep} 
                         handleBack={this.handleBackStep} 
                         showServiceModal={this.showServiceModal} />
                 </StepView>
                 <StepView step={2}>
                     <Step3 
+                        addons={this.state.addons}
                         handleStep={this.handleThirdStep} 
                         handleForward={this.handleForward} 
                         handleBack={this.handleBackStep} />

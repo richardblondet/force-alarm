@@ -25,14 +25,14 @@ class ServicesModal extends React.Component {
                             src="https://forcealarm.interactiva.com.do/wp-content/uploads/2019/07/Logo-ForceAlarm.png" 
                             width="125" />
                     </div>
-                    <div dangerouslySetInnerHTML={{__html: state.modalService.title}} />
+                    <div dangerouslySetInnerHTML={{__html: state.modalService.post_title}} />
                     <h3>{state.modalService.price}</h3>
                 </ModalBody>
                 <ModalBody className="text-center">
-                    <div dangerouslySetInnerHTML={{__html: state.modalService.excerpt}} />
+                    <div dangerouslySetInnerHTML={{__html: state.modalService.post_excerpt}} />
                 </ModalBody>
                 <ModalBody className="text-center">
-                    <div dangerouslySetInnerHTML={{__html: state.modalService.content}} />
+                    <div dangerouslySetInnerHTML={{__html: state.modalService.post_content}} />
                 </ModalBody>
                 <ModalFooter className="text-center border-0">
                     <Button color="danger" onClick={this.toggle} className="mx-auto">Cerrar</Button>

@@ -38,7 +38,12 @@ const PlanName = styled.div`
 `;
 
 class SelectPlan extends React.Component {
-
+    constructor( props ) {
+        super( props );
+        this.state = {
+            plans: []
+        }
+    }
     handleBackButton = (e) => {
         e.preventDefault();
     }
@@ -47,18 +52,17 @@ class SelectPlan extends React.Component {
         this.props.handleStep( plan );
     }
     getPlans = () => {
-        return PLANS;
+        return this.props.plans;
     }
     showServiceModal = (plan) => {
-        console.log("showServiceModal plan", plan );
         this.props.showServiceModal(plan);
 
     }
     render() {
         const plans = this.getPlans();
         const renderPlans = plans.map( (plan, indx) => {
-            const formatter = new Intl.NumberFormat('en-US', { style: 'currency', currency:'USD' });
-            const PriceFormatted = formatter.format(plan.price);
+        const formatter = new Intl.NumberFormat('en-US', { style: 'currency', currency:'USD' });
+        const PriceFormatted = formatter.format(plan.price);
             return (
                 <Col xs="12" sm="4" key={indx} className="mt-5">
                     <div className="mb-3">
@@ -70,7 +74,7 @@ class SelectPlan extends React.Component {
                         </center>
                     </div>
                     <PlanName>
-                        <span className="text-uppercase font-weight-bold text-center">{plan.title}</span>
+                        <span className="text-uppercase font-weight-bold text-center">{plan.post_title}</span>
                     </PlanName>
                     <div>
                         <p className="my-3 h3 text-center">
@@ -78,10 +82,14 @@ class SelectPlan extends React.Component {
                         </p>
                     </div>
                     <Button color="danger" onClick={e=>this.handlePlanSelect(e, plan)}>Seleccionar</Button>
-                    <div><a href="" onClick={e=> {
-                        e.preventDefault();
-                        this.showServiceModal(plan);
-                    }} title={plan.title} price={plan.price}>ver más</a></div>
+                    <div>
+                        <a href="" 
+                            className="mt-3"
+                            onClick={e=> {
+                                e.preventDefault();
+                                this.showServiceModal(plan);
+                            }} title={plan.title} price={plan.price}>ver más</a>
+                    </div>
                 </Col>
             );
         });

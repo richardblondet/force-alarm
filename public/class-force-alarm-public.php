@@ -122,4 +122,67 @@ class Force_Alarm_Public {
 		echo '<div id="fd_app"></div>';
 	}
 
+	/**
+	 * Services Ajax Handler
+	 * 
+	 * @since 1.6
+	 */
+	public function fa_ajax_get_service_handler() {
+		// $nonce = wp_verify_nonce( $_POST['_nonce'], 'force-alarm-ajax' );
+		$type = $_POST['type'];
+		$response = array();
+
+		// WP_Query arguments
+		$args = array(
+			'post_type'              => array( 'fa_service_plan' ),
+			'post_status'            => array( 'publish' ),
+		);
+
+		// The Query
+		$services_result = get_posts( $args );
+		$services = [];
+
+		/**
+		 * Add ACF
+		 */
+		foreach( $services_result as $service ) {
+			$service->price = (float) get_field('price', $service->ID );
+			$service->type = get_field('type', $service->ID );
+			if( $service->type === $type ) {
+				$services[] = $service;
+			}
+		}
+
+		return wp_send_json_success( $services );
+	}
+
+	/**
+	 * Create Javascript Globals
+	 * 
+	 * @since 1.6.0
+	 */
+	public function fa_wp_head_global_variables() {
+		$output  = '<script id="fa-global-vars" type="text/javascript">';
+		$output .= 'var FA_GLOBALS = %s;';
+		$output .= '</script>';
+	
+		printf( $output, 
+			json_encode( array(
+				'AJAX_URL'=> admin_url( "admin-ajax.php" ),
+				'NONCE' => wp_create_nonce( 'force-alarm-ajax' )
+			)
+		));
+	}
+
+	/**
+	 * Add origins to allow requests 
+	 * 
+	 * @since 1.6.0
+	 */
+	public function fa_allowed_origins( $origins ) {
+		$origins[] = 'http://localhost:8080';
+		$origins[] = 'http://localhost:8081';
+		return $origins;
+	}
+
 }
