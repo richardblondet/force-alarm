@@ -26,6 +26,7 @@ class ServicesModal extends React.Component {
                             width="125" />
                     </div>
                     <div dangerouslySetInnerHTML={{__html: state.modalService.title}} />
+                    <h3>{state.modalService.price}</h3>
                 </ModalBody>
                 <ModalBody className="text-center">
                     <div dangerouslySetInnerHTML={{__html: state.modalService.excerpt}} />

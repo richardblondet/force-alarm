@@ -18,7 +18,7 @@ const PLANS = [
     },
     {
         title: "FULL",
-        excerpt: "<p>Alarma* para tu hogar, <strong>CON</strong> la respuesta armada de<strong> SecurityForce™</strong></p>Alarma* para tu hogar, CON la respuesta armada de SecurityForce™",
+        excerpt: "<p>Alarma* para tu hogar, <strong>CON</strong> la respuesta armada de<strong> SecurityForce™</strong></p>",
         content: "<p><strong>Panel de Control</strong>&nbsp;con teclado táctil.<br> <strong>1 Sensor </strong>de Puerta / Ventana.<br> <strong>1 Detector</strong>&nbsp;de Movimientos<b>&nbsp;IR.</b><br> <strong>2 Controles Remotos&nbsp;</strong>tipo Llavero.<br><strong>1 Adaptador </strong>de Corriente.<br> <strong>Aplicación Móvil</strong>&nbsp;para iOS o Android.<br>Instalación<strong> Gratis.<br>Monitoreo y Notificación&nbsp;</strong>a las Autoridades.<br><strong>Respuesta Armada**&nbsp;</strong>por Security Force.</p>",
         price: 1849.99,
         status: ""
