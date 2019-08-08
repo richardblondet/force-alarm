@@ -65,7 +65,9 @@ class PaymentDataForm extends React.Component {
             return acc;
         }, {});
 
-        this.props.handleStep( data );
+        if( data.issuer ) {
+            this.props.handleStep( data );
+        }
     }
     render() {
         const { name, number, expiry, cvc, focused, issuer, comprobante, no_comprobante, nombre_comprobante } = this.state;

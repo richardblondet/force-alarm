@@ -8,12 +8,17 @@ import {
     Step4,
     Step5
 } from "./";
-
 import constants from "../../constants";
+import { 
+    format
+} from "date-fns";
+
 
 import PlansService from "../../services/plans";
+import OrderService from "../../services/orders";
 
 const Plans = new PlansService('http://localhost/wp-admin/admin-ajax.php');
+const Order = new OrderService('http://localhost/wp-admin/admin-ajax.php');
 
 class ForceAlarmWizard extends React.Component {
     static contextType = Store;
@@ -52,7 +57,6 @@ class ForceAlarmWizard extends React.Component {
     handleBackStep = () => {
         const { dispatch, state} = this.context;
         const returnToStep = state.step - 1;
-        console.log("%c STEP: %s", "font-size:2em;", returnToStep );
         // Check if user is trying to go back to step 2 or tree to reset the seleccion
         if( returnToStep === 1 || returnToStep === 2 ) {
             dispatch({ type: constants.SELECT_PLAN, data: []});
@@ -75,7 +79,6 @@ class ForceAlarmWizard extends React.Component {
         this.goToStep(2);
     }
     handleThirdStep = ( addon ) => {
-        console.log("Third step triggers and addon", addon );
         const {state, dispatch} = this.context;
         state.data.selection.push( addon );
         dispatch({ type: constants.SELECT_PLAN, data: state.data.selection });
@@ -87,10 +90,12 @@ class ForceAlarmWizard extends React.Component {
         this.goToStep(4);
     }
     handleFithStep = ( data ) => {
-        console.log("Handling fith step data", data );
         const {dispatch} = this.context;
+        console.log("payment_data", data )
         dispatch({ type: constants.LOADING_ON });
-        dispatch({ type: constants.SET_PAYMENT_DATA, data });
+        let test = dispatch({ type: constants.SET_PAYMENT_DATA, data });
+        console.log(test);
+        this.process( data );
     }
     showTermsModal = () => {
         const {dispatch} = this.context;
@@ -100,6 +105,33 @@ class ForceAlarmWizard extends React.Component {
         const {dispatch} = this.context;
         dispatch({ type: constants.SET_MODAL_SERVICE, data: plan });
         dispatch({ type: constants.SHOW_MODAL_SERVICE  });
+    }
+    process = ( payment ) => {
+        const {state} = this.context;
+        const data = state.data;
+
+        // Clean selected items
+        data.selection.forEach( item => {
+            delete item.post_content;
+            delete item.post_excerpt;
+            delete item.guid;
+        });
+        console.log( "data", data );
+        // Format selected date
+        data.form.date = format(data.form.date, "dd/MM/yyyy");
+        data.form.time = format(data.form.time, "h:mm aa");
+
+        // Get payment info
+        data.payment = payment;
+
+        console.log("Send to backend", data );
+        
+        Order.sendOrder({
+            data: JSON.stringify( data )
+        }).then( res=>res.data ).then( response => {
+            console.log( "Server Response", response );
+        });
+
     }
     render() {
         const { state } = this.context;

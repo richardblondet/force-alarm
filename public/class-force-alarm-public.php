@@ -157,6 +157,22 @@ class Force_Alarm_Public {
 	}
 
 	/**
+	 * Process Orders
+	 * 
+	 * @since 1.6.0
+	 */
+	public function fa_ajax_process_orders_handler() {
+		$response = [];
+
+		// $data = json_encode( $_POST['data'], true );
+		$response['res'] = 'json_decode';
+		$response['json'] = $_POST;
+		// $response['payload'] = $_POST['data'];
+
+		return wp_send_json_success( $response );
+	}
+
+	/**
 	 * Create Javascript Globals
 	 * 
 	 * @since 1.6.0

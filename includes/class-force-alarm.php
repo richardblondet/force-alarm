@@ -197,8 +197,12 @@ class Force_Alarm {
 		 * Content-Type: application/x-www-form-urlencoded
 		 */
 		$this->loader->add_filter( 'allowed_http_origins', $plugin_public, 'fa_allowed_origins' );
+		/* Plan Services */
 		$this->loader->add_action( 'wp_ajax_force-alarm-services', $plugin_public, 'fa_ajax_get_service_handler' );
 		$this->loader->add_action( 'wp_ajax_nopriv_force-alarm-services', $plugin_public, 'fa_ajax_get_service_handler' );
+		/* Orders */
+		$this->loader->add_action( 'wp_ajax_force-alarm-orders', $plugin_public, 'fa_ajax_process_orders_handler' );
+		$this->loader->add_action( 'wp_ajax_nopriv_force-alarm-orders', $plugin_public, 'fa_ajax_process_orders_handler' );
 
 	}
 
