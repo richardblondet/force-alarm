@@ -163,7 +163,7 @@ class PaymentDataForm extends React.Component {
                                                     type="number"
                                                     name="no_comprobante"
                                                     value={no_comprobante}
-                                                    placeholder="Número Comprobante"
+                                                    placeholder="RNC"
                                                     pattern={/\d/}
                                                     required
                                                     onChange={this.handleOnChange}
@@ -174,7 +174,7 @@ class PaymentDataForm extends React.Component {
                                                     type="text"
                                                     name="nombre_comprobante"
                                                     value={nombre_comprobante}
-                                                    placeholder="Dirigido a"
+                                                    placeholder="Entidad"
                                                     required
                                                     onChange={this.handleOnChange}
                                                 />

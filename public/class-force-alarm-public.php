@@ -165,10 +165,10 @@ class Force_Alarm_Public {
 		$response = [];
 
 		// Receive data for the first time from client
-		$data = json_decode( stripslashes($_POST['data'] ));
+		$data = json_decode( stripslashes( $_POST['data'] ), $decode_to_array = true );
 
 		// Perform Call to the external service for credit card
-		$date_approved = date();
+		$date_approved = date('d/m/Y H:i:s');
 		// End
 
 		/**
@@ -190,7 +190,7 @@ class Force_Alarm_Public {
 			'user_pass'		=>	NULL,
 			'show_admin_bar_front' => false
 		);
-		$new_user_id = wp_update_user( $new_user_data );
+		$new_user_id = wp_insert_user( $new_user_data );
 
 		/**
 		 * If user creation is error, return nicely
@@ -273,23 +273,90 @@ class Force_Alarm_Public {
 		);
 
 		// Iterate and add all user metas
-		foreach ($new_user_meta as $array_key => $array_value) {
-			add_user_meta( $new_user_id, $array_value['meta_key'], $array_value['meta_value'], $array_value['unique'] );
+		foreach ($new_user_metas as $array_key => $array_value) {
+			$new_user_metas[$array_key]['result'] = add_user_meta( $new_user_id, $array_value['meta_key'], $array_value['meta_value'], $array_value['unique'] );
 		}
-		
-		// Save new user id in response
-		$response['user_id'] = $new_user_id;
+		// Instance user in this system
+		$wp_user = new WP_User( $new_user_id );
+		$wp_user->set_role( 'client' );
+
+		// Save new user id in response and its metas
+		$response['user'] = $new_user_data;
+		$response['user']['id'] = $new_user_id;
+		$response['user']['user_metas'] = $new_user_metas;
 
 		/**
-		 * Create order post
+		 * Create order post to save order
 		 */
-		wp_insert_post( array(
+		$order_name = sprintf("%s — %s"
+			,$new_user_data['display_name']
+			,$date_approved
+		);
+		$new_order_data = array(
+			'post_title' => $order_name,
+			'post_author' =>  $new_user_id,
+			'post_type' => 'fa_orders',
+			'post_status' => 'publish'
+		);
+		$order_id = wp_insert_post( $new_order_data, true );
+		
+		// Verify that the order inserted correctly and return gently if it is
+		if( is_wp_error( $order_id ) ) {
+			$response['code']		= 'FA-00' . __LINE__;
+			$response['message']	= $order_id->get_error_message();
+			$response['user_data']	= $new_user_data;
+			$response['raw']		= $data;
+	
+			return wp_send_json_error( $response );
+		}
 
-		), true );
+		// Lets add all data related with this order
+		$post_metas = array(
+			array(
+				'meta_key' => 'fa_order_total',
+				'meta_value' => $data['total']
+			),
+			array(
+				'meta_key' => 'fa_order_installation_date',
+				'meta_value' => date("D d/m/Y", strtotime( $data['form']['date'] ))
+			),
+			array(
+				'meta_key' => 'fa_order_installation_time',
+				'meta_value' => date("h:i a", strtotime( $data['form']['time'] ))
+			),
+			array(
+				'meta_key' => 'fa_order_installation_time',
+				'meta_value' => date("h:i a", strtotime( $data['form']['time'] ))
+			),
+			array(
+				'meta_key' => 'fa_order_status',
+				'meta_value' => 'pendiente'
+			),
+			array(
+				'meta_key' => 'fa_order_items',
+				'meta_value' => $data['selection'] // save entire array
+			)
+		);
 
-		$response['data'] = $data;
+		// Iterate and add all order as post metas
+		foreach ($post_metas as $array_key => $array_value) {
+			$post_metas[$array_key]['result'] = update_post_meta( $order_id, $array_value['meta_key'], $array_value['meta_value'] );
+		}
+
+		// Save post id and its meta in the result
+		$response['order'] = $new_order_data;
+		$response['order']['id'] = $order_id;
+		$response['order']['order_metas'] = $post_metas;
+
+		/**
+		 * If nothing stopped us until here, return to the user with 
+		 * success
+		 */
+
+		$response['raw'] = $data;
 		
 		return wp_send_json_success( $response );
+		
 	}
 
 	/**

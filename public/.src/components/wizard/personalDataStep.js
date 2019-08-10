@@ -40,7 +40,7 @@ const TODAY = new Date();
 
 const initialDataTest = {
     name: "Richard Blondet",
-    email: "developer@richardblondet.com",
+    email: "test0@richardblondet.com",
     phone: "8094758085",
     address: "Calle San Juan Bautista",
     sector: "Mirador Norte",
