@@ -164,14 +164,129 @@ class Force_Alarm_Public {
 	public function fa_ajax_process_orders_handler() {
 		$response = [];
 
-		$method = filter_input(INPUT_SERVER, 'REQUEST_METHOD', FILTER_SANITIZE_STRING);
-		$data = json_decode(file_get_contents('php://input'));
+		// Receive data for the first time from client
+		$data = json_decode( stripslashes($_POST['data'] ));
 
-		// $response['payload'] = $_POST['data'];
-		// Retrieve HTTP method
-		// Retrieve JSON payload
+		// Perform Call to the external service for credit card
+		$date_approved = date();
+		// End
 
-		$response['method'] = $method;
+		/**
+		 * Create the new user making a WP_User
+		 * 
+		 * In theory the external service response
+		 * will determine if we should proceed or not.
+		 * Because order is a post like data, it needs 
+		 * a post_author user, so we create the user 
+		 * first and then the post order. 
+		 *
+		 * from the @author
+		 */
+		$new_user_data = array(
+			'user_login'	=>	$data['form']['email'],
+			'user_email'	=>	$data['form']['email'],
+			'user_nicename'	=>	$data['form']['name'],
+			'display_name'	=>  $data['form']['name'],
+			'user_pass'		=>	NULL,
+			'show_admin_bar_front' => false
+		);
+		$new_user_id = wp_update_user( $new_user_data );
+
+		/**
+		 * If user creation is error, return nicely
+		 */
+		if( is_wp_error( $new_user_id )) {
+			$response['code']		= 'FA-00' . __LINE__;
+			$response['message']	= $new_user_id->get_error_message();
+			$response['user_data']	= $new_user_data;
+			$response['raw']		= $data;
+	
+			return wp_send_json_error( $response );
+		}
+
+		/**
+		 * Create or update meta values
+		 * To know about the existing keys please @see {@link https://stackoverflow.com/questions/25315125/reserved-keys-for-user-meta-in-wordpress-about-me}
+		 */
+		// Setup all of out user meta information
+		$new_user_metas = array(
+			array(
+				'meta_key' => 'show_welcome_panel',
+				'meta_value' => FALSE,
+				'unique' => TRUE
+			),
+			array(
+				'meta_key' => 'show_admin_bar_front',
+				'meta_value' => FALSE,
+				'unique' => TRUE
+			),
+			array(
+				'meta_key' => '_fa_has_logged_in',
+				'meta_value' => FALSE,
+				'unique' => TRUE
+			),
+			array(
+				'meta_key' => 'fa_address',
+				'meta_value' => $data['form']['address'],
+				'unique' => TRUE
+			),
+			array(
+				'meta_key' => '_fa_created_at',
+				'meta_value' => date(),
+				'unique' => TRUE
+			),
+			array(
+				'meta_key' => 'fa_phone',
+				'meta_value' => $data['form']['phone'],
+				'unique' => TRUE
+			),
+			array(
+				'meta_key' => 'fa_sector',
+				'meta_value' => $data['form']['sector'],
+				'unique' => TRUE
+			),
+			array(
+				'meta_key' => 'fa_reference',
+				'meta_value' => $data['form']['reference'],
+				'unique' => TRUE
+			),
+			array(
+				'meta_key' => 'fa_cc_token',
+				'meta_value' => "", // Tokenize the CC save here
+				'unique' => TRUE
+			),
+			array(
+				'meta_key' => 'fa_province',
+				'meta_value' => $data['form']['province'],
+				'unique' => TRUE
+			),
+			array(
+				'meta_key' => '_fa_has_logged_in',
+				'meta_value' => FALSE,
+				'unique' => TRUE
+			),
+			array(
+				'meta_key' => '_fd_date_approved',
+				'meta_value' => $date_approved,
+				'unique' => TRUE
+			)
+		);
+
+		// Iterate and add all user metas
+		foreach ($new_user_meta as $array_key => $array_value) {
+			add_user_meta( $new_user_id, $array_value['meta_key'], $array_value['meta_value'], $array_value['unique'] );
+		}
+		
+		// Save new user id in response
+		$response['user_id'] = $new_user_id;
+
+		/**
+		 * Create order post
+		 */
+		wp_insert_post( array(
+
+		), true );
+
 		$response['data'] = $data;
 		
 		return wp_send_json_success( $response );

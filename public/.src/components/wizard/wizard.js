@@ -94,8 +94,7 @@ class ForceAlarmWizard extends React.Component {
         const {dispatch} = this.context;
         console.log("payment_data", data )
         dispatch({ type: constants.LOADING_ON });
-        let test = dispatch({ type: constants.SET_PAYMENT_DATA, data });
-        console.log(test);
+        // dispatch({ type: constants.SET_PAYMENT_DATA, data });
         this.process( data );
     }
     showTermsModal = () => {
@@ -109,7 +108,19 @@ class ForceAlarmWizard extends React.Component {
     }
     process = ( payment ) => {
         const {state} = this.context;
-        const data = state.data;
+        const data = {};
+
+        // Copy data
+        for( let d in state.data ) {
+            // format date
+            if( d === "date" ) {
+                data[d] = format(state.data[d], "dd/MM/yyyy"); 
+            } else if( d === "time" ) {
+                data[d] = format(state.data[d], "h:mm aa");
+            } else {
+                data[d] = state.data[d];
+            }
+        }
 
         // Clean selected items
         data.selection.forEach( item => {
@@ -118,36 +129,18 @@ class ForceAlarmWizard extends React.Component {
             delete item.guid;
         });
         console.log( "data", data );
-        // Format selected date
-        data.form.date = format(data.form.date, "dd/MM/yyyy");
-        data.form.time = format(data.form.time, "h:mm aa");
+        
 
         // Get payment info
         data.payment = payment;
 
         console.log("Send to backend", data );
-
-        axios({
-            url: 'http://localhost/wp-admin/admin-ajax.php',
-            method: "POST",
-            params: {
-                action: 'force-alarm-orders'
-            },
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            data
-        }).then( res => res.data ).then( response => {
+        
+        Order.sendOrder( data ).then( response => {
             console.log( "Server Response", response );
         }).catch(error => {
             console.log( "Error Handling", error );
         });
-        
-        // Order.sendOrder( data ).then( response => {
-        //     console.log( "Server Response", response );
-        // }).catch(error => {
-        //     console.log( "Error Handling", error );
-        // });
 
     }
     render() {

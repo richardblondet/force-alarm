@@ -62,7 +62,7 @@ class PersonalDataForm extends React.Component {
                 sector: "",
                 reference: "",
                 date: addDays( TODAY, 1),
-                time: setHours( setMinutes( TODAY, 0), 8),
+                time: setHours( setMinutes( TODAY, 0), 8)
             },
             datePickerOpen: false,
             dateTimeOpen: false,
@@ -100,8 +100,12 @@ class PersonalDataForm extends React.Component {
         });
     }
     handleTimeChange = ( date ) => {
-        let { form } = this.state; 
+        let { form } = this.state;
+        // match date
+        date.setMonth( form.date.getMonth() );
+        date.setDate( form.date.getDate() );
         form.time = date;
+        console.log("date", date );
         this.setState({
             form,
             dateTimeOpen: false
