@@ -15,9 +15,9 @@ class App extends React.Component {
     render() {
         return (
             <StoreProvider config={{}}>
+                {/* <Loading /> */}
                 <Terms />
                 <ServicesModal />
-                <Loading />
                 <Header />
                 <Steps />
                 <ForceAlarmWizard />

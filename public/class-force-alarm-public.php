@@ -164,11 +164,16 @@ class Force_Alarm_Public {
 	public function fa_ajax_process_orders_handler() {
 		$response = [];
 
-		// $data = json_encode( $_POST['data'], true );
-		$response['res'] = 'json_decode';
-		$response['json'] = $_POST;
-		// $response['payload'] = $_POST['data'];
+		$method = filter_input(INPUT_SERVER, 'REQUEST_METHOD', FILTER_SANITIZE_STRING);
+		$data = json_decode(file_get_contents('php://input'));
 
+		// $response['payload'] = $_POST['data'];
+		// Retrieve HTTP method
+		// Retrieve JSON payload
+
+		$response['method'] = $method;
+		$response['data'] = $data;
+		
 		return wp_send_json_success( $response );
 	}
 

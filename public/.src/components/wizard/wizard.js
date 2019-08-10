@@ -16,6 +16,7 @@ import {
 
 import PlansService from "../../services/plans";
 import OrderService from "../../services/orders";
+import axios from "axios";
 
 const Plans = new PlansService('http://localhost/wp-admin/admin-ajax.php');
 const Order = new OrderService('http://localhost/wp-admin/admin-ajax.php');
@@ -125,12 +126,28 @@ class ForceAlarmWizard extends React.Component {
         data.payment = payment;
 
         console.log("Send to backend", data );
-        
-        Order.sendOrder({
-            data: JSON.stringify( data )
-        }).then( res=>res.data ).then( response => {
+
+        axios({
+            url: 'http://localhost/wp-admin/admin-ajax.php',
+            method: "POST",
+            params: {
+                action: 'force-alarm-orders'
+            },
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data
+        }).then( res => res.data ).then( response => {
             console.log( "Server Response", response );
+        }).catch(error => {
+            console.log( "Error Handling", error );
         });
+        
+        // Order.sendOrder( data ).then( response => {
+        //     console.log( "Server Response", response );
+        // }).catch(error => {
+        //     console.log( "Error Handling", error );
+        // });
 
     }
     render() {
