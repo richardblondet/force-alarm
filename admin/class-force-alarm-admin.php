@@ -52,7 +52,7 @@ class Force_Alarm_Admin {
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
 
-		// $this->create_admin_settings_pages();
+		$this->create_admin_settings_pages();
 	}
 
 	/**
@@ -135,14 +135,28 @@ class Force_Alarm_Admin {
 		return false;
 	}
 
+	/**
+	 * Add custom options pages for ForceAlarm
+	 */
 	public function create_admin_settings_pages() {
+		
 		acf_add_options_page(array(
-			'page_title' 	=> 'Theme General Settings',
-			'menu_title'	=> 'Theme Settings',
-			'menu_slug' 	=> 'theme-general-settings',
-			'capability'	=> 'edit_posts',
-			'redirect'		=> false
+			'page_title' 	=> 'Force Alarm Settings',
+			'menu_title'	=> 'Force Alarm Settings',
+			'menu_slug' 	=> 'force-alarm-page',
+			'position'		=> 14,
+			'capability'	=> 'manage_options',
+			'parent_slug'	=> 'options-general.php',
+			'redirect'		=> true
 		));
+	}
+
+	/**
+	 * Map all CPT to be child of custom options Force Alarm
+	 */
+	public function fa_create_submenus_map() {
+		// add_submenu_page( $parent_slug:string, $page_title:string, $menu_title:string, $capability:string, $menu_slug:string, $function:callable )
+		// add_submenu_page('admin.php?page=force-alarm-page', 'Orders', 'Orders', 'edit_posts', 'edit.php?post_type=fa_orders');
 	}
 
 	/**
@@ -196,7 +210,7 @@ class Force_Alarm_Admin {
 			'public'                => true,
 			'show_ui'               => true,
 			'show_in_rest'			=> true,
-			'show_in_menu'          => true,
+			'show_in_menu' 			=> true,
 			'menu_position'         => 15,
 			'show_in_admin_bar'     => true,
 			'show_in_nav_menus'     => true,
@@ -257,7 +271,7 @@ class Force_Alarm_Admin {
 			'show_ui'               => true,
 			'show_in_rest'			=> true,
 			'show_in_menu'          => true,
-			'menu_position'         => 10,
+			'menu_position'         => 16,
 			'menu_icon'             => 'dashicons-shield',
 			'show_in_admin_bar'     => true,
 			'show_in_nav_menus'     => true,
@@ -334,7 +348,7 @@ class Force_Alarm_Admin {
 			'show_ui'               => true,
 			'show_in_rest'			=> true,
 			'show_in_menu'          => true,
-			'menu_position'         => 25,
+			'menu_position'         => 17,
 			'menu_icon'             => 'dashicons-sos',
 			'show_in_admin_bar'     => true,
 			'show_in_nav_menus'     => true,

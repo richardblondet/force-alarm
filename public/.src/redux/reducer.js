@@ -13,6 +13,7 @@ export const initialState = {
     plans: [],
     step: 0,
     isLoading: true,
+    showDisclaimer: false,
     showTerms: false,
     showModalService: false,
     modalService: {

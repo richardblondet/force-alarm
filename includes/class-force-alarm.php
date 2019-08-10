@@ -158,7 +158,7 @@ class Force_Alarm {
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 		$this->loader->add_filter( 'admin_footer_text', $plugin_admin, 'wp_admin_footer_text' );
-
+		$this->loader->add_action( 'admin_menu', $plugin_admin, 'fa_create_submenus_map', 99 );
 		/**
 		 * Adding ACF settings for current project
 		 */
