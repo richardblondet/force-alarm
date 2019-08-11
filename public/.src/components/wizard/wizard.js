@@ -16,28 +16,27 @@ import {
 
 import PlansService from "../../services/plans";
 import OrderService from "../../services/orders";
-import axios from "axios";
-
-const Plans = new PlansService('http://localhost/wp-admin/admin-ajax.php');
-const Order = new OrderService('http://localhost/wp-admin/admin-ajax.php');
 
 class ForceAlarmWizard extends React.Component {
     static contextType = Store;
     constructor( props ) {
         super( props );
-
+        this.Plans = null;
+        this.Order = null;
         this.state = {
             plans: [],
             addons: []
         };
     }
     componentDidMount() {
-        const {dispatch} = this.context;
-        
-        Plans.getPlans({ 
+        const {state, dispatch} = this.context;
+        this.Plans = new PlansService("force-alarm-services", state.AJAX_URL);
+        this.Order = new OrderService("force-alarm-services", state.AJAX_URL);
+
+        this.Plans.getPlans({ 
             type: "plan" 
         }).then( plansresponse => {
-            Plans.getPlans({ 
+            this.Plans.getPlans({ 
                 type: "addon" 
             }).then( addonsresponse => {
                 this.setState({ 
@@ -47,13 +46,15 @@ class ForceAlarmWizard extends React.Component {
                 dispatch({ type: constants.LOADING_OFF });
             });
         });
-
-        
         
     }
     goToStep = ( step ) => {
         const {dispatch} = this.context;
         dispatch({ type: constants.STEP, data: step });
+    }
+    handleDisclaimer = () => {
+        const {dispatch} = this.context;
+        dispatch({ type: constants.SHOW_DISCLAIMER });
     }
     handleBackStep = () => {
         const { dispatch, state} = this.context;
@@ -130,13 +131,12 @@ class ForceAlarmWizard extends React.Component {
         });
         console.log( "data", data );
         
-
         // Get payment info
         data.payment = payment;
 
         console.log("Send to backend", data );
         
-        Order.sendOrder( data ).then( response => {
+        this.Order.sendOrder( data ).then( response => {
             console.log( "Server Response", response );
         }).catch(error => {
             console.log( "Error Handling", error );
@@ -149,7 +149,7 @@ class ForceAlarmWizard extends React.Component {
         return (
             <React.Fragment>
                 <StepView step={0}>
-                    <Step1 handleStep={this.handleFirstStep} />
+                    <Step1 handleStep={this.handleFirstStep} handleDisclaimer={this.handleDisclaimer} />
                 </StepView>
                 <StepView step={1}>
                     <Step2

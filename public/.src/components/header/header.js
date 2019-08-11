@@ -8,7 +8,12 @@ import {
     NavItem,
     NavLink 
 } from 'reactstrap';
+import styled from "styled-components";
 import Store from "../../redux/store";
+
+const NavLinkStyled = styled(NavLink)`
+    color: #fff;
+`;
 
 class Header extends React.Component {
     static contextType = Store;
@@ -42,7 +47,7 @@ class Header extends React.Component {
                         <Collapse isOpen={this.state.isOpen} navbar>
                             <Nav className="ml-auto" navbar>
                                 <NavItem>
-                                    <NavLink>Total RD {total}</NavLink>
+                                    <NavLinkStyled>Total RD {total}</NavLinkStyled>
                                 </NavItem>
                             </Nav>
                         </Collapse>

@@ -1,7 +1,7 @@
-import AjaxService from "./";
+import AjaxService from ".";
 
-export default class Plans extends AjaxService{
-    getPlans( body = {}) {
+export default class ContentService extends AjaxService {
+    getContent( body = {}) {
         const payload = {
             action: this.action,
             ...this.payload,

@@ -62,7 +62,7 @@ class SelectAddons extends React.Component {
                     </div>
                     <CardBody>
                         <PlanName>
-                            <span className="text-uppercase font-weight-bold text-center">{addon.title}</span>
+                            <span className="text-uppercase font-weight-bold text-center">{addon.post_title}</span>
                         </PlanName>
                         <p className="my-3 h3 text-center">
                             {PriceFormatted} <span className="text-black-50 h6">/mes</span>
@@ -76,7 +76,7 @@ class SelectAddons extends React.Component {
             <React.Fragment>
                 <Jumbotron tag="section" className="text-center" style={{backgroundColor:"white", borderRadius:"none"}}>
                     <Container>
-                        <h2 className="jumbotron-heading display-5 mb-4">¿Agregamos nuestro <strong>seguro contra robo</strong>?</h2>
+                        <h2 className="text-center jumbotron-heading display-5 mb-4">¿Agregamos nuestro <strong>seguro contra robo</strong>?</h2>
                     </Container>
                     <Container fluid>
                         <Row>

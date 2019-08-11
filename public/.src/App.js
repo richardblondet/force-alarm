@@ -7,15 +7,18 @@ import Steps from "./components/steps";
 import ForceAlarmWizard from "./components/wizard";
 import Terms from "./components/terms";
 import ServicesModal from "./components/servicesModal";
+import Disclaimer from "./components/disclaimer";
 
 class App extends React.Component {
     constructor(props) {
         super(props);
     }
     render() {
+        const { globals } = this.props;
         return (
-            <StoreProvider config={{}}>
+            <StoreProvider config={globals}>
                 {/* <Loading /> */}
+                <Disclaimer />
                 <Terms />
                 <ServicesModal />
                 <Header />

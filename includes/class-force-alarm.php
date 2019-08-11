@@ -203,6 +203,10 @@ class Force_Alarm {
 		/* Orders */
 		$this->loader->add_action( 'wp_ajax_force-alarm-orders', $plugin_public, 'fa_ajax_process_orders_handler' );
 		$this->loader->add_action( 'wp_ajax_nopriv_force-alarm-orders', $plugin_public, 'fa_ajax_process_orders_handler' );
+		/* Contents for wizard */
+		$this->loader->add_action( 'wp_ajax_force-alarm-content', $plugin_public, 'fa_ajax_wizard_content' );
+		$this->loader->add_action( 'wp_ajax_nopriv_force-alarm-content', $plugin_public, 'fa_ajax_wizard_content' );
+
 
 	}
 

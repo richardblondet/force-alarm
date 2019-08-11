@@ -1,19 +1,8 @@
-import axios from "axios";
-import { getQueryString } from "../functions";
+import AjaxService from "./";
 
-export default class Orders {
-    constructor( URL ) {
-        this.url = URL;
-        this.action = "force-alarm-orders";
-        this.axios = axios.create({
-            baseURL: URL,
-            headers: {
-                "Content-Type": "application/json"
-            }
-        });
-    }
+export default class Orders extends AjaxService {
     sendOrder( body = {} ) {
-        console.log("%c Sending to wordpress", "font-size:2em", body );
+        // console.log("%c Sending to wordpress", "font-size:2em", body );
 
         return this.axios({
             method: "POST",
@@ -22,14 +11,5 @@ export default class Orders {
             },
             data: this.getFormDataFromObject( body )
         });
-    }
-    getQueryString( params ) {
-        return getQueryString( params );
-    }
-    getFormDataFromObject( object ) {
-        var formData = new FormData();
-        formData.append("action", this.action);
-        formData.append("data", JSON.stringify( object ));
-        return formData;
     }
 }

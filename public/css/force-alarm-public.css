@@ -2,3 +2,23 @@
  * All of the CSS for your public-facing functionality should be
  * included in this file.
  */
+
+#fd_app .container {
+    padding-top: 0 !important;
+}
+#fd_app .container:before,
+#fd_app .container:after {
+    display: none !important;
+}
+#main-header {
+    z-index: 10 !important;
+}
+#fd_app .navbar-nav {
+    padding: 0 !important;
+    list-style: none !important;
+    list-style-type: none !important;
+    -webkit-appearance: none !important;
+}
+.modal.show .modal-dialog {
+    margin-top: 10em !important;
+}

@@ -360,6 +360,39 @@ class Force_Alarm_Public {
 	}
 
 	/**
+	 * Get CMS content for wizard
+	 * 
+	 * @since 1.6.2
+	 */
+	public function fa_ajax_wizard_content() {
+		$response = [];
+		$content_available = [
+			'disclaimer' => 'fa_disclaimer_content',
+			'terms' => 'fa_disclaimer_content'
+		];
+		$content_request = sanitize_text_field( $_POST['content'] );
+		
+		/**
+		 * Check if content exists in the set of contents
+		 */
+		if( !isset( $content_available[ $content_request ])) {
+			$response['code']		= 'FA-00' . __LINE__;
+			$response['message']	= "The content requested doesn't exist";
+			$response['raw']		= $content_request;
+			
+			return wp_send_json_error( $response );
+		}
+
+		$response['content'] = get_field( $content_available[ $content_request ], 'option' );
+
+		/**
+		 * Return to the client with the corresponding content
+		 */
+		return wp_send_json_success( $response );
+
+	}
+
+	/**
 	 * Create Javascript Globals
 	 * 
 	 * @since 1.6.0

@@ -11,6 +11,7 @@ const Section = styled.section`
 const NavItemStyle = styled(NavItem)`
     position: relative;
     margin: 1em 0;
+    list-style: none;
 
     &:after {
         content: "";
@@ -64,9 +65,16 @@ const Dot = styled.a`
             height: 14px;
             font-size: 20px;
             color: #fff;
+            position: relative;
+            top: 7px;
         }
     `}
 
+`;
+const ContainerStyled = styled(Container)`
+    &:before {
+        display: none;
+    }
 `;
 class Steps extends React.Component {
     static contextType = Store;
@@ -108,11 +116,11 @@ class Steps extends React.Component {
         });
         return (
             <Section padding="1em 0">
-                <Container>
+                <ContainerStyled>
                     <Nav fill justified>
                         {renderSteps}
                     </Nav>
-                </Container>
+                </ContainerStyled>
             </Section>
         );
     }

@@ -52,7 +52,7 @@ class SelectPlan extends React.Component {
         this.props.handleStep( plan );
     }
     getPlans = () => {
-        return this.props.plans;
+        return this.props.plans.reverse();
     }
     showServiceModal = (plan) => {
         this.props.showServiceModal(plan);
@@ -60,6 +60,7 @@ class SelectPlan extends React.Component {
     }
     render() {
         const plans = this.getPlans();
+        console.log("order? ", plans);
         const renderPlans = plans.map( (plan, indx) => {
         const formatter = new Intl.NumberFormat('en-US', { style: 'currency', currency:'USD' });
         const PriceFormatted = formatter.format(plan.price);
@@ -97,7 +98,7 @@ class SelectPlan extends React.Component {
             <React.Fragment>
                 <Jumbotron tag="section" className="text-center" style={{backgroundColor:"white", borderRadius:"none"}}>
                     <Container>
-                        <h2 className="jumbotron-heading display-5 mb-4">¿Con cuál plan desea proteger su hogar?</h2>
+                        <h2 className="text-center jumbotron-heading display-5 mb-4">¿Con cuál plan desea proteger su hogar?</h2>
                     </Container>
                     <Container fluid>
                         <Row>

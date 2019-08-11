@@ -97,6 +97,16 @@ const Reducer = (state = initialState, action) => {
                 ...state,
                 modalService: action.data
             }
+        case constants.SHOW_DISCLAIMER:
+            return {
+                ...state,
+                showDisclaimer: true
+            };
+        case constants.HIDE_DISCLAIMER:
+            return {
+                ...state,
+                showDisclaimer: false
+            };
         default:
             return state;
     }
