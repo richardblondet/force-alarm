@@ -2108,7 +2108,7 @@ function (_React$Component) {
           className: "my-3 h3 text-center"
         }, PriceFormatted, " ", _react["default"].createElement("span", {
           className: "text-black-50 h6"
-        }, "/mes")), _react["default"].createElement(_reactstrap.Button, {
+        }, "/mes adicionales")), _react["default"].createElement(_reactstrap.Button, {
           color: "danger",
           onClick: function onClick(e) {
             return _this2.handleAddonSelect(e, addon);

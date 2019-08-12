@@ -22,3 +22,6 @@
 .modal.show .modal-dialog {
     margin-top: 10em !important;
 }
+#fd_app .form-control {
+    padding: 5px !important;
+}

@@ -65,7 +65,7 @@ class SelectAddons extends React.Component {
                             <span className="text-uppercase font-weight-bold text-center">{addon.post_title}</span>
                         </PlanName>
                         <p className="my-3 h3 text-center">
-                            {PriceFormatted} <span className="text-black-50 h6">/mes</span>
+                            {PriceFormatted} <span className="text-black-50 h6">/mes adicionales</span>
                         </p>
                         <Button color="danger" onClick={e=>this.handleAddonSelect(e, addon)}>Seleccionar</Button>
                     </CardBody>
