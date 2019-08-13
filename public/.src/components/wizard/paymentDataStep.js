@@ -86,6 +86,7 @@ class PaymentDataForm extends React.Component {
                                             cvc={cvc}
                                             focused={focused}
                                             callback={this.handleCallback}
+                                            issuer="visa|mastercard"
                                             locale={{
                                                 valid: "Expira"
                                             }}

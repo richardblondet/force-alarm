@@ -1426,6 +1426,7 @@ function (_React$Component) {
         cvc: cvc,
         focused: focused,
         callback: this.handleCallback,
+        issuer: "visa|mastercard",
         locale: {
           valid: "Expira"
         },
@@ -1592,14 +1593,24 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 (0, _reactDatepicker.registerLocale)("es", _es["default"]);
 (0, _reactDatepicker.setDefaultLocale)("es");
 var PROVINCIAS = ['Santo Domingo', 'Santiago', 'Punta Cana'];
-var TODAY = new Date();
+var TODAY = new Date(); // const initialDataTest = {
+//     name: "Richard Blondet",
+//     email: "test0@richardblondet.com",
+//     phone: "8094758085",
+//     address: "Calle San Juan Bautista",
+//     sector: "Mirador Norte",
+//     reference: "Frente a la casa",
+//     date: addDays( TODAY, 1),
+//     time: setHours( setMinutes( TODAY, 0), 8)
+// };
+
 var initialDataTest = {
-  name: "Richard Blondet",
-  email: "test0@richardblondet.com",
-  phone: "8094758085",
-  address: "Calle San Juan Bautista",
-  sector: "Mirador Norte",
-  reference: "Frente a la casa",
+  name: "",
+  email: "",
+  phone: "",
+  address: "",
+  sector: "",
+  reference: "",
   date: (0, _dateFns.addDays)(TODAY, 1),
   time: (0, _dateFns.setHours)((0, _dateFns.setMinutes)(TODAY, 0), 8)
 };
@@ -2069,6 +2080,8 @@ var _react = _interopRequireDefault(__webpack_require__(/*! react */ "./node_mod
 
 var _styledComponents = _interopRequireDefault(__webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js"));
 
+var _forceAlarmAddons = _interopRequireDefault(__webpack_require__(/*! ../../static/force-alarm-addons.png */ "./.src/static/force-alarm-addons.png"));
+
 var _reactstrap = __webpack_require__(/*! reactstrap */ "./node_modules/reactstrap/es/index.js");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
@@ -2093,14 +2106,6 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-var ADDONS = [{
-  id: "contra-robo",
-  title: "Contra Robo",
-  excerpt: "<p>Alarma* para tu hogar, <b>SIN</b>&nbsp;la respuesta armada de<strong> SecurityForce™</strong></p>",
-  content: "<p><strong>Panel de Control</strong>&nbsp;con teclado táctil.<br /> <strong>1 Sensor </strong>de Puerta / Ventana.<br /> <strong>1 Detector</strong>&nbsp;de Movimientos<b>&nbsp;IR.</b><br /> <strong>2 Controles Remotos&nbsp;</strong>tipo Llavero.<br /><strong>1 Adaptador </strong>de Corriente.<br /> <strong>Aplicación Móvil</strong>&nbsp;para iOS o Android.<br />Instalación<strong> Gratis</strong></p>",
-  price: 200,
-  status: ""
-}];
 var PlanName = (0, _styledComponents["default"])(_reactstrap.CardText).withConfig({
   displayName: "selectAddonStep__PlanName",
   componentId: "sc-1pku0o6-0"
@@ -2171,9 +2176,11 @@ function (_React$Component) {
         }, _react["default"].createElement("div", {
           className: "mb-3"
         }, _react["default"].createElement("center", null, _react["default"].createElement("img", {
-          className: "img-thumbnail py-5",
-          src: "https://forcealarm.interactiva.com.do/wp-content/uploads/2019/07/Logo-ForceAlarm.png",
-          width: "125"
+          className: "img-thumbnail p-4",
+          src: _forceAlarmAddons["default"],
+          style: {
+            backgroundColor: "#691206"
+          }
         }))), _react["default"].createElement(_reactstrap.CardBody, null, _react["default"].createElement(PlanName, null, _react["default"].createElement("span", {
           className: "text-uppercase font-weight-bold text-center"
         }, addon.post_title)), _react["default"].createElement("p", {
@@ -2252,6 +2259,8 @@ var _react = _interopRequireDefault(__webpack_require__(/*! react */ "./node_mod
 
 var _styledComponents = _interopRequireDefault(__webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js"));
 
+var _forceAlarmPlans = _interopRequireDefault(__webpack_require__(/*! ../../static/force-alarm-plans.png */ "./.src/static/force-alarm-plans.png"));
+
 var _reactstrap = __webpack_require__(/*! reactstrap */ "./node_modules/reactstrap/es/index.js");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
@@ -2275,26 +2284,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-var PLANS = [{
-  title: "Básico",
-  excerpt: "<p>Alarma* para tu hogar, <b>SIN</b>&nbsp;la respuesta armada de<strong> SecurityForce™</strong></p>",
-  content: "<p><strong>Panel de Control</strong>&nbsp;con teclado táctil.<br /> <strong>1 Sensor </strong>de Puerta / Ventana.<br /> <strong>1 Detector</strong>&nbsp;de Movimientos<b>&nbsp;IR.</b><br /> <strong>2 Controles Remotos&nbsp;</strong>tipo Llavero.<br /><strong>1 Adaptador </strong>de Corriente.<br /> <strong>Aplicación Móvil</strong>&nbsp;para iOS o Android.<br />Instalación<strong> Gratis</strong></p>",
-  price: 1299.99,
-  status: ""
-}, {
-  title: "FULL",
-  excerpt: "<p>Alarma* para tu hogar, <strong>CON</strong> la respuesta armada de<strong> SecurityForce™</strong></p>",
-  content: "<p><strong>Panel de Control</strong>&nbsp;con teclado táctil.<br> <strong>1 Sensor </strong>de Puerta / Ventana.<br> <strong>1 Detector</strong>&nbsp;de Movimientos<b>&nbsp;IR.</b><br> <strong>2 Controles Remotos&nbsp;</strong>tipo Llavero.<br><strong>1 Adaptador </strong>de Corriente.<br> <strong>Aplicación Móvil</strong>&nbsp;para iOS o Android.<br>Instalación<strong> Gratis.<br>Monitoreo y Notificación&nbsp;</strong>a las Autoridades.<br><strong>Respuesta Armada**&nbsp;</strong>por Security Force.</p>",
-  price: 1849.99,
-  status: ""
-}, {
-  title: "FULL + FORCE SOS",
-  excerpt: "<p>Alarma* para tu hogar, <strong>MAS</strong>&nbsp;servicio <strong>ForceSOS: MultiAsistencia</strong></p>",
-  content: "<p><strong>Panel de Control</strong>&nbsp;con teclado táctil.<br> <strong>1 Sensor </strong>de Puerta / Ventana.<br> <strong>1 Detector</strong>&nbsp;de Movimientos<b>&nbsp;IR.</b><br> <strong>2 Controles Remotos&nbsp;</strong>tipo Llavero.<br><strong>1 Adaptador </strong>de Corriente.<br> <strong>Aplicación Móvil</strong>&nbsp;para iOS o Android.<br>Instalación<strong> Gratis.<br>Monitoreo y Notificación&nbsp;</strong>a las Autoridades.<br><strong>Respuesta Armada**&nbsp;</strong>por Security Force.<br><strong>ForceSOS: MultiAsistencia</strong>&nbsp;Hogar, Legal, Viajes, Mascotas, Salud, Bicicleta, Seguridad y Asistencia Vial, para toda la familia.&nbsp;</p>",
-  price: 2449.99,
-  status: ""
-}];
 
 var PlanName = _styledComponents["default"].div.withConfig({
   displayName: "selectPlanStep__PlanName",
@@ -2358,9 +2347,8 @@ function (_React$Component) {
         }, _react["default"].createElement("div", {
           className: "mb-3"
         }, _react["default"].createElement("center", null, _react["default"].createElement("img", {
-          className: "img-thumbnail py-5",
-          src: "https://forcealarm.interactiva.com.do/wp-content/uploads/2019/07/Logo-ForceAlarm.png",
-          width: "125"
+          className: "img-thumbnail p-5",
+          src: _forceAlarmPlans["default"]
         }))), _react["default"].createElement(PlanName, null, _react["default"].createElement("span", {
           className: "text-uppercase font-weight-bold text-center"
         }, plan.post_title)), _react["default"].createElement("div", null, _react["default"].createElement("p", {
@@ -3516,6 +3504,17 @@ module.exports = __webpack_require__.p + "53c24f233321b9335f86f68bb6c4db96.png";
 
 /***/ }),
 
+/***/ "./.src/static/force-alarm-addons.png":
+/*!********************************************!*\
+  !*** ./.src/static/force-alarm-addons.png ***!
+  \********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "c0cb4235a12690636610273ce0864a99.png";
+
+/***/ }),
+
 /***/ "./.src/static/force-alarm-logo-white.png":
 /*!************************************************!*\
   !*** ./.src/static/force-alarm-logo-white.png ***!
@@ -3524,6 +3523,17 @@ module.exports = __webpack_require__.p + "53c24f233321b9335f86f68bb6c4db96.png";
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "ce2b765db3ce8706b6cb19386ed77344.png";
+
+/***/ }),
+
+/***/ "./.src/static/force-alarm-plans.png":
+/*!*******************************************!*\
+  !*** ./.src/static/force-alarm-plans.png ***!
+  \*******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "60c8de8ea1396ec17b75dfce3ec02c83.png";
 
 /***/ }),
 

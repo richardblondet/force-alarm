@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import addon_image from "../../static/force-alarm-addons.png";
 
 import {
     Container,
@@ -8,17 +9,6 @@ import {
     Button,
     CardDeck, Card, CardBody, CardText
 } from "reactstrap";
-
-const ADDONS = [
-    {
-        id: "contra-robo",
-        title: "Contra Robo",
-        excerpt: "<p>Alarma* para tu hogar, <b>SIN</b>&nbsp;la respuesta armada de<strong> SecurityForce™</strong></p>",
-        content: "<p><strong>Panel de Control</strong>&nbsp;con teclado táctil.<br /> <strong>1 Sensor </strong>de Puerta / Ventana.<br /> <strong>1 Detector</strong>&nbsp;de Movimientos<b>&nbsp;IR.</b><br /> <strong>2 Controles Remotos&nbsp;</strong>tipo Llavero.<br /><strong>1 Adaptador </strong>de Corriente.<br /> <strong>Aplicación Móvil</strong>&nbsp;para iOS o Android.<br />Instalación<strong> Gratis</strong></p>",
-        price: 200,
-        status: ""
-    }
-];
 
 const PlanName = styled(CardText)`
     color: #c32c1e;
@@ -55,9 +45,8 @@ class SelectAddons extends React.Component {
                     <div className="mb-3">
                         <center>
                             <img 
-                                className="img-thumbnail py-5" 
-                                src="https://forcealarm.interactiva.com.do/wp-content/uploads/2019/07/Logo-ForceAlarm.png" 
-                                width="125" />
+                                className="img-thumbnail p-4" 
+                                src={addon_image} style={{backgroundColor:"#691206"}} />
                         </center>
                     </div>
                     <CardBody>
