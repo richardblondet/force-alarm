@@ -171,6 +171,24 @@ class Force_Alarm {
 		$this->loader->add_action( 'init', $plugin_admin, 'fa_orders_custom_post_type', 0 );
 		$this->loader->add_action( 'init', $plugin_admin, 'fa_service_plan_custom_post_type', 0 );
 		$this->loader->add_action( 'init', $plugin_admin, 'fa_ticket_custom_post_type', 0 );
+
+		/**
+		 * Let us create a new template for our wizard to handle our application logic page separately
+		 */
+		// Add a filter to the attributes metabox to inject template into the cache.
+		if ( version_compare( floatval( get_bloginfo( 'version' ) ), '4.7', '<' ) ) {
+			$this->loader->add_filter( 'page_attributes_dropdown_pages_args', $plugin_admin, 'register_project_templates' );
+		} else {
+			// Add a filter to the wp 4.7 version attributes metabox
+			$this->loader->add_filter( 'theme_page_templates', $plugin_admin, 'add_new_template' );
+		}
+
+		// Add a filter to the save post to inject out template into the page cache
+		$this->loader->add_filter( 'wp_insert_post_data', $plugin_admin, 'register_project_templates' );
+
+		// Add a filter to the template include to determine if the page has our
+		// template assigned and return it's path
+		$this->loader->add_filter( 'template_include', $plugin_admin, 'view_project_template');
 		
 	}
 
@@ -206,7 +224,8 @@ class Force_Alarm {
 		/* Contents for wizard */
 		$this->loader->add_action( 'wp_ajax_force-alarm-content', $plugin_public, 'fa_ajax_wizard_content' );
 		$this->loader->add_action( 'wp_ajax_nopriv_force-alarm-content', $plugin_public, 'fa_ajax_wizard_content' );
-
+		
+		
 
 	}
 

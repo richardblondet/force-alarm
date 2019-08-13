@@ -41,7 +41,7 @@ class Header extends React.Component {
 
         return (
             <React.Fragment>
-                <Navbar dark expand="md" style={{backgroundColor:"rgb(173, 48, 31)"}}>
+                <Navbar dark expand="md" style={{backgroundColor:"#AD301F"}}>
                     {/* <NavbarBrand href="/">volver</NavbarBrand> */}
                         <NavbarToggler onClick={this.toggle} />
                         <Collapse isOpen={this.state.isOpen} navbar>

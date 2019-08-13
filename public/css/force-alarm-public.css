@@ -3,25 +3,14 @@
  * included in this file.
  */
 
-#fd_app .container {
-    padding-top: 0 !important;
+.btn {
+    border-radius: 0;
 }
-#fd_app .container:before,
-#fd_app .container:after {
-    display: none !important;
+.btn-secondary {
+    background-color: #C2C1C3;
+    border-color: #C2C1C3;
 }
-#main-header {
-    z-index: 10 !important;
-}
-#fd_app .navbar-nav {
-    padding: 0 !important;
-    list-style: none !important;
-    list-style-type: none !important;
-    -webkit-appearance: none !important;
-}
-.modal.show .modal-dialog {
-    margin-top: 10em !important;
-}
-#fd_app .form-control {
-    padding: 5px !important;
+.btn-danger {
+    background-color: #AD301F;
+    border-color: #AD301F;
 }

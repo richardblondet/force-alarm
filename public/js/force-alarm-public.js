@@ -430,7 +430,7 @@ function (_React$Component) {
         dark: true,
         expand: "md",
         style: {
-          backgroundColor: "rgb(173, 48, 31)"
+          backgroundColor: "#AD301F"
         }
       }, _react["default"].createElement(_reactstrap.NavbarToggler, {
         onClick: this.toggle
