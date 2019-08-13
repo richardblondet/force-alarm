@@ -168,7 +168,7 @@ function (_React$Component) {
       var globals = this.props.globals;
       return _react["default"].createElement(_store.StoreProvider, {
         config: globals
-      }, _react["default"].createElement(_disclaimer["default"], null), _react["default"].createElement(_terms["default"], null), _react["default"].createElement(_servicesModal["default"], null), _react["default"].createElement(_header["default"], null), _react["default"].createElement(_steps["default"], null), _react["default"].createElement(_wizard["default"], null));
+      }, _react["default"].createElement(_loading["default"], null), _react["default"].createElement(_disclaimer["default"], null), _react["default"].createElement(_terms["default"], null), _react["default"].createElement(_servicesModal["default"], null), _react["default"].createElement(_header["default"], null), _react["default"].createElement(_steps["default"], null), _react["default"].createElement(_wizard["default"], null));
     }
   }]);
 
@@ -828,6 +828,8 @@ var _reactstrap = __webpack_require__(/*! reactstrap */ "./node_modules/reactstr
 
 var _store = _interopRequireDefault(__webpack_require__(/*! ../../redux/store */ "./.src/redux/store.js"));
 
+var _checked = _interopRequireDefault(__webpack_require__(/*! ../../static/checked.png */ "./.src/static/checked.png"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -857,30 +859,43 @@ var Section = _styledComponents["default"].section.withConfig({
   return props.padding ? props.padding : "0px";
 });
 
+var green = "#2E9842";
+var pink = "#ffb1a7";
+var red = "#93261b";
 var NavItemStyle = (0, _styledComponents["default"])(_reactstrap.NavItem).withConfig({
   displayName: "steps__NavItemStyle",
   componentId: "fkafa1-1"
-})(["position:relative;margin:1em 0;list-style:none;&:after{content:\"\";position:absolute;z-index:1;height:5px;width:100%;background-color:", ";top:-2.5px;left:0;}&:first-child:after{left:50%;width:50%;}&:last-child:after{left:0;width:50%;}"], function (props) {
-  return props.done ? "#93261b" : "#ffb1a7";
+})(["position:relative;margin:1em 0;list-style:none;&:after,&:before{content:\"\";position:absolute;z-index:1;height:10px;background-color:#ffb1a7;top:3px;width:50%;", "}&:after{left:50%;background-color:", ";}&:before{left:0;background-color:", ";}&:first-child:before{display:none;}&:last-child:after{display:none;}"], function (_ref) {
+  var active = _ref.active;
+  return active && "\n            background-color: #93261b;\n        ";
+}, function (props) {
+  return props.done ? green : pink;
+}, function (props) {
+  return props.active ? green : props.done ? green : pink;
 });
 
-var Dot = _styledComponents["default"].a.withConfig({
+var Dot = _styledComponents["default"].div.withConfig({
   displayName: "steps__Dot",
   componentId: "fkafa1-2"
-})(["position:relative;width:30px;height:30px;display:block;background-color:", ";top:0;left:50%;margin-top:-15px;margin-left:-15px;border-radius:50%;z-index:2;box-shadow:0 3px 5px 0px #999;", " ", ""], function (props) {
+})(["position:relative;width:45px;height:45px;display:block;background-color:", ";top:0;left:calc( 50% - 7px );right:auto;margin-top:-15px;margin-left:-15px;border-radius:50%;z-index:2;box-shadow:0 3px 5px 0px #999;.isActive,.isDone{display:none;}", " ", ""], function (props) {
   return props.done ? "#2e9842" : "#fff";
-}, function (_ref) {
-  var active = _ref.active;
-  return active && "\n        &:after {\n            content: '';\n            width: 14px;\n            height: 14px;\n            background: #93261b;\n            border-radius: 50px;\n            position: absolute;\n            top: 8px;\n            left: 8px;\n        }\n    ";
 }, function (_ref2) {
-  var done = _ref2.done;
-  return done && "\n        &:after {\n            content: \"\\2713\";\n            width: 14px;\n            height: 14px;\n            font-size: 20px;\n            color: #fff;\n            position: relative;\n            top: 7px;\n        }\n    ";
+  var active = _ref2.active;
+  return active && "\n        .isActive { display: inline-block; }\n    ";
+}, function (_ref3) {
+  var done = _ref3.done;
+  return done && "\n        .isDone { display: inline-block; }\n    ";
 });
 
-var ContainerStyled = (0, _styledComponents["default"])(_reactstrap.Container).withConfig({
-  displayName: "steps__ContainerStyled",
+var CheckMark = _styledComponents["default"].img.withConfig({
+  displayName: "steps__CheckMark",
   componentId: "fkafa1-3"
-})(["&:before{display:none;}"]);
+})(["position:absolute;left:10px;top:14px;"]);
+
+var RedDot = _styledComponents["default"].div.withConfig({
+  displayName: "steps__RedDot",
+  componentId: "fkafa1-4"
+})(["display:inline-block;width:23px;height:23px;background:#93261b;border-radius:50px;position:absolute;top:11px;left:11px;"]);
 
 var Steps =
 /*#__PURE__*/
@@ -925,19 +940,43 @@ function (_React$Component) {
       var state = this.context.state;
       var steps = this.getSteps();
       var renderSteps = steps.map(function (step) {
+        var isActive = step.step === state.step;
+        var isDone = step.step < state.step;
+        var count = step.step > 2 ? step.step : step.step + 1;
         return _react["default"].createElement(NavItemStyle, {
-          key: "step-key-".concat(step.step)
+          key: "step-key-".concat(step.step),
+          active: isActive,
+          done: isDone
         }, _react["default"].createElement(Dot, {
-          active: step.step === state.step,
-          done: step.step < state.step
-        }), _react["default"].createElement(_reactstrap.NavLink, null, step.title));
+          active: isActive,
+          done: isDone
+        }, _react["default"].createElement(CheckMark, {
+          className: "isDone",
+          src: _checked["default"]
+        }), _react["default"].createElement(RedDot, {
+          className: "isActive"
+        })), _react["default"].createElement(_reactstrap.NavLink, {
+          className: "text-center h6 text-secondary font-weight-bold"
+        }, _react["default"].createElement("div", null, count), step.title));
       });
       return _react["default"].createElement(Section, {
         padding: "1em 0"
-      }, _react["default"].createElement(ContainerStyled, null, _react["default"].createElement(_reactstrap.Nav, {
+      }, _react["default"].createElement(_reactstrap.Container, {
+        fluid: true
+      }, _react["default"].createElement(_reactstrap.Row, null, _react["default"].createElement(_reactstrap.Col, {
+        xs: "12",
+        sm: {
+          size: 8,
+          offset: 2
+        },
+        lg: {
+          size: 6,
+          offset: 3
+        }
+      }, _react["default"].createElement(_reactstrap.Nav, {
         fill: true,
         justified: true
-      }, renderSteps)));
+      }, renderSteps)))));
     }
   }]);
 
@@ -1981,8 +2020,8 @@ function (_React$Component) {
       }, "\xBFSu propiedad es mayor de 200mts", _react["default"].createElement("sup", null, "2"), "?")), _react["default"].createElement(_reactstrap.Container, null, _react["default"].createElement(_reactstrap.Row, null, _react["default"].createElement(_reactstrap.Col, {
         sm: "12",
         md: {
-          size: 8,
-          offset: 2
+          size: 6,
+          offset: 3
         }
       }, _react["default"].createElement(_reactstrap.Row, null, _react["default"].createElement(_reactstrap.Col, {
         xs: "12",
@@ -3463,6 +3502,17 @@ function (_AjaxService) {
 
 exports["default"] = Plans;
 module.exports = exports["default"];
+
+/***/ }),
+
+/***/ "./.src/static/checked.png":
+/*!*********************************!*\
+  !*** ./.src/static/checked.png ***!
+  \*********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "53c24f233321b9335f86f68bb6c4db96.png";
 
 /***/ }),
 

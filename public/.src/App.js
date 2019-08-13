@@ -17,7 +17,7 @@ class App extends React.Component {
         const { globals } = this.props;
         return (
             <StoreProvider config={globals}>
-                {/* <Loading /> */}
+                <Loading />
                 <Disclaimer />
                 <Terms />
                 <ServicesModal />

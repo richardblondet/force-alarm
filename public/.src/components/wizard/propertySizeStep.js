@@ -33,7 +33,7 @@ class PropertySize extends React.Component {
                 </Container>
                 <Container>
                     <Row>
-                        <Col sm="12" md={{ size: 8, offset: 2 }}>
+                        <Col sm="12" md={{ size: 6, offset: 3 }}>
                             <Row>
                                 <Col xs="12" sm="6">
                                     <Button block color="secondary" onClick={this.handleDisclaimer}>Si</Button>

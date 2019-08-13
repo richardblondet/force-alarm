@@ -4,7 +4,7 @@
  */
  @import url('https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap');
 
- body {
+body {
     font-family: 'Montserrat', sans-serif !important;
 }
 .btn {
@@ -17,4 +17,9 @@
 .btn-danger {
     background-color: #AD301F;
     border-color: #AD301F;
+}
+@media (min-width: 576px) {
+    .jumbotron {
+        padding: 2rem 2rem;
+    }
 }
