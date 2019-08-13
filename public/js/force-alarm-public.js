@@ -443,9 +443,9 @@ function (_React$Component) {
       });
       var total = formatter.format(state.data.total || 0);
       return _react["default"].createElement(_react["default"].Fragment, null, _react["default"].createElement(HeaderContainer, {
-        className: "px-5"
+        className: "px-5 mb-4"
       }, _react["default"].createElement("div", {
-        className: "row justify-content-between align-items-center pt-3"
+        className: "row justify-content-between align-items-center pt-4"
       }, _react["default"].createElement("div", {
         className: "col-4"
       }, _react["default"].createElement("div", null, _react["default"].createElement("img", {
@@ -459,31 +459,21 @@ function (_React$Component) {
       })), _react["default"].createElement("span", {
         className: "ml-2"
       }, state.data.selection.length))), _react["default"].createElement("div", {
-        className: "row justify-content-between align-items-center pt-5 pb-3"
+        className: "row justify-content-between align-items-center pt-4 pb-3"
       }, _react["default"].createElement("div", {
         className: "col-4"
       }, _react["default"].createElement("div", null, _react["default"].createElement("a", {
         className: "text-white",
         href: "/"
       }, "Volver a P\xE1gina Principal"))), _react["default"].createElement("div", {
-        className: "col-4 text-right h3"
-      }, _react["default"].createElement("span", {
-        className: "ml-2"
-      }, "Total RD ", total)))), _react["default"].createElement(_reactstrap.Navbar, {
-        dark: true,
-        expand: "md",
+        className: "col-4 text-right"
+      }, _react["default"].createElement("div", {
+        className: "mb-0 h4 font-weight-bold"
+      }, "RD ", total), _react["default"].createElement("small", {
         style: {
-          backgroundColor: ""
+          color: "#E87E70"
         }
-      }, _react["default"].createElement(_reactstrap.NavbarToggler, {
-        onClick: this.toggle
-      }), _react["default"].createElement(_reactstrap.Collapse, {
-        isOpen: this.state.isOpen,
-        navbar: true
-      }, _react["default"].createElement(_reactstrap.Nav, {
-        className: "ml-auto",
-        navbar: true
-      }, _react["default"].createElement(_reactstrap.NavItem, null, _react["default"].createElement(NavLinkStyled, null, "Total RD ", total))))));
+      }, "total a pagar"), _react["default"].createElement("div", null)))));
     }
   }]);
 

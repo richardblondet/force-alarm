@@ -48,8 +48,8 @@ class Header extends React.Component {
 
         return (
             <React.Fragment>
-                <HeaderContainer className="px-5">
-                    <div className="row justify-content-between align-items-center pt-3">
+                <HeaderContainer className="px-5 mb-4">
+                    <div className="row justify-content-between align-items-center pt-4">
                         <div className="col-4">
                             <div>
                                 <img src={logo} width="175" />
@@ -63,28 +63,20 @@ class Header extends React.Component {
                             <span className="ml-2">{state.data.selection.length}</span>
                         </div>
                     </div>
-                    <div className="row justify-content-between align-items-center pt-5 pb-3">
+                    <div className="row justify-content-between align-items-center pt-4 pb-3">
                         <div className="col-4">
                             <div>
                                 <a className="text-white" href="/">Volver a Página Principal</a>
                             </div>
                         </div>
-                        <div className="col-4 text-right h3">
-                            <span className="ml-2">Total RD {total}</span>
+                        <div className="col-4 text-right">
+                            <div className="mb-0 h4 font-weight-bold">RD {total}</div>
+                                <small style={{color: "#E87E70"}}>total a pagar</small>
+                            <div>
+                            </div>
                         </div>
                     </div>
                 </HeaderContainer>
-                <Navbar dark expand="md" style={{backgroundColor:""}}>
-                    {/* <NavbarBrand href="/">volver</NavbarBrand> */}
-                        <NavbarToggler onClick={this.toggle} />
-                        <Collapse isOpen={this.state.isOpen} navbar>
-                            <Nav className="ml-auto" navbar>
-                                <NavItem>
-                                    <NavLinkStyled>Total RD {total}</NavLinkStyled>
-                                </NavItem>
-                            </Nav>
-                        </Collapse>
-                    </Navbar>
             </React.Fragment>
         );
     }
