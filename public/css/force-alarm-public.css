@@ -2,7 +2,11 @@
  * All of the CSS for your public-facing functionality should be
  * included in this file.
  */
+ @import url('https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap');
 
+ body {
+    font-family: 'Montserrat', sans-serif !important;
+}
 .btn {
     border-radius: 0;
 }

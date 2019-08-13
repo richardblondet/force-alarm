@@ -352,6 +352,10 @@ var _react = _interopRequireDefault(__webpack_require__(/*! react */ "./node_mod
 
 var _reactstrap = __webpack_require__(/*! reactstrap */ "./node_modules/reactstrap/es/index.js");
 
+var _forceAlarmLogoWhite = _interopRequireDefault(__webpack_require__(/*! ../../static/force-alarm-logo-white.png */ "./.src/static/force-alarm-logo-white.png"));
+
+var _forceAlarmShoppingCart = _interopRequireDefault(__webpack_require__(/*! ../../static/force-alarm-shopping-cart.png */ "./.src/static/force-alarm-shopping-cart.png"));
+
 var _styledComponents = _interopRequireDefault(__webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js"));
 
 var _store = _interopRequireDefault(__webpack_require__(/*! ../../redux/store */ "./.src/redux/store.js"));
@@ -378,6 +382,16 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+function _templateObject2() {
+  var data = _taggedTemplateLiteral(["\n    background-color: #AD301F;\n    color: #fff;\n"]);
+
+  _templateObject2 = function _templateObject2() {
+    return data;
+  };
+
+  return data;
+}
+
 function _templateObject() {
   var data = _taggedTemplateLiteral(["\n    color: #fff;\n"]);
 
@@ -391,6 +405,8 @@ function _templateObject() {
 function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
 var NavLinkStyled = (0, _styledComponents["default"])(_reactstrap.NavLink)(_templateObject());
+
+var HeaderContainer = _styledComponents["default"].div(_templateObject2());
 
 var Header =
 /*#__PURE__*/
@@ -426,11 +442,38 @@ function (_React$Component) {
         currency: "USD"
       });
       var total = formatter.format(state.data.total || 0);
-      return _react["default"].createElement(_react["default"].Fragment, null, _react["default"].createElement(_reactstrap.Navbar, {
+      return _react["default"].createElement(_react["default"].Fragment, null, _react["default"].createElement(HeaderContainer, {
+        className: "px-5"
+      }, _react["default"].createElement("div", {
+        className: "row justify-content-between align-items-center pt-3"
+      }, _react["default"].createElement("div", {
+        className: "col-4"
+      }, _react["default"].createElement("div", null, _react["default"].createElement("img", {
+        src: _forceAlarmLogoWhite["default"],
+        width: "175"
+      })), _react["default"].createElement("div", null, _react["default"].createElement("small", null, "Tu seguridad en tus manos."))), _react["default"].createElement("div", {
+        className: "col-4 text-right"
+      }, _react["default"].createElement("span", null, _react["default"].createElement("img", {
+        src: _forceAlarmShoppingCart["default"],
+        width: "22"
+      })), _react["default"].createElement("span", {
+        className: "ml-2"
+      }, state.data.selection.length))), _react["default"].createElement("div", {
+        className: "row justify-content-between align-items-center pt-5 pb-3"
+      }, _react["default"].createElement("div", {
+        className: "col-4"
+      }, _react["default"].createElement("div", null, _react["default"].createElement("a", {
+        className: "text-white",
+        href: "/"
+      }, "Volver a P\xE1gina Principal"))), _react["default"].createElement("div", {
+        className: "col-4 text-right h3"
+      }, _react["default"].createElement("span", {
+        className: "ml-2"
+      }, "Total RD ", total)))), _react["default"].createElement(_reactstrap.Navbar, {
         dark: true,
         expand: "md",
         style: {
-          backgroundColor: "#AD301F"
+          backgroundColor: ""
         }
       }, _react["default"].createElement(_reactstrap.NavbarToggler, {
         onClick: this.toggle
@@ -3430,6 +3473,28 @@ function (_AjaxService) {
 
 exports["default"] = Plans;
 module.exports = exports["default"];
+
+/***/ }),
+
+/***/ "./.src/static/force-alarm-logo-white.png":
+/*!************************************************!*\
+  !*** ./.src/static/force-alarm-logo-white.png ***!
+  \************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "ce2b765db3ce8706b6cb19386ed77344.png";
+
+/***/ }),
+
+/***/ "./.src/static/force-alarm-shopping-cart.png":
+/*!***************************************************!*\
+  !*** ./.src/static/force-alarm-shopping-cart.png ***!
+  \***************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "8c2cd183a443c93f6d1fec4d72d898ca.png";
 
 /***/ }),
 
