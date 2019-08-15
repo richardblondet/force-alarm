@@ -33,6 +33,8 @@ class Header extends React.Component {
         this.state = {
           isOpen: false
         };
+
+        console.log("%c shopping_cart", "font-size:2em;", shopping_cart );
     }
 
     toggle() {

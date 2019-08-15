@@ -41,13 +41,20 @@ const config = {
                 use: [{
                     loader: 'file-loader',
                     options: {
-                        name(file) {
-                            if (process.env.NODE_ENV === 'development') {
-                                return '[path][name].[ext]';
+                        publicPath: (url, resourcePath, context) => {
+                            function Logger(url, resourcePath, context) {
+                                this.url = url;
+                                this.resourcePath = resourcePath;
+                                this.context = context;
                             }
-                            
-                            return '[hash].[ext]';
-                        }
+                            var log = new Logger(url, resourcePath, context);
+                            console.table(log);
+                            if( /static/.test( resourcePath )) {
+                                return `${context}/js/${url}`;
+                            }
+                            return '/wp-content/plugins/force-alarm/public/js/';
+                        },
+                        name: '[hash].[ext]'
                     }
                 }]
             },
@@ -58,7 +65,7 @@ const config = {
         ]
     },
     resolve: {
-        modules: [path.resolve('./node_modules'), path.resolve('./src')],
+        modules: [path.resolve('./node_modules'), path.resolve('./.src')],
         extensions: ['*', '.js', '.jsx']
     },
     // watch: watch,

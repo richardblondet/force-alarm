@@ -382,31 +382,15 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-function _templateObject2() {
-  var data = _taggedTemplateLiteral(["\n    background-color: #AD301F;\n    color: #fff;\n"]);
+var NavLinkStyled = (0, _styledComponents["default"])(_reactstrap.NavLink).withConfig({
+  displayName: "header__NavLinkStyled",
+  componentId: "vj4nn0-0"
+})(["color:#fff;"]);
 
-  _templateObject2 = function _templateObject2() {
-    return data;
-  };
-
-  return data;
-}
-
-function _templateObject() {
-  var data = _taggedTemplateLiteral(["\n    color: #fff;\n"]);
-
-  _templateObject = function _templateObject() {
-    return data;
-  };
-
-  return data;
-}
-
-function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
-
-var NavLinkStyled = (0, _styledComponents["default"])(_reactstrap.NavLink)(_templateObject());
-
-var HeaderContainer = _styledComponents["default"].div(_templateObject2());
+var HeaderContainer = _styledComponents["default"].div.withConfig({
+  displayName: "header__HeaderContainer",
+  componentId: "vj4nn0-1"
+})(["background-color:#AD301F;color:#fff;"]);
 
 var Header =
 /*#__PURE__*/
@@ -423,6 +407,7 @@ function (_React$Component) {
     _this.state = {
       isOpen: false
     };
+    console.log("%c shopping_cart", "font-size:2em;", _forceAlarmShoppingCart["default"]);
     return _this;
   }
 
@@ -3498,9 +3483,9 @@ module.exports = exports["default"];
   !*** ./.src/static/checked.png ***!
   \*********************************/
 /*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-module.exports = __webpack_require__.p + "53c24f233321b9335f86f68bb6c4db96.png";
+module.exports = "/Users/richardblondet/Projects/force-alarm/09-deliverables/00/wordpress/wp-content/plugins/force-alarm/public/js/53c24f233321b9335f86f68bb6c4db96.png";
 
 /***/ }),
 
@@ -3509,9 +3494,9 @@ module.exports = __webpack_require__.p + "53c24f233321b9335f86f68bb6c4db96.png";
   !*** ./.src/static/force-alarm-addons.png ***!
   \********************************************/
 /*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-module.exports = __webpack_require__.p + "c0cb4235a12690636610273ce0864a99.png";
+module.exports = "/Users/richardblondet/Projects/force-alarm/09-deliverables/00/wordpress/wp-content/plugins/force-alarm/public/js/c0cb4235a12690636610273ce0864a99.png";
 
 /***/ }),
 
@@ -3520,9 +3505,9 @@ module.exports = __webpack_require__.p + "c0cb4235a12690636610273ce0864a99.png";
   !*** ./.src/static/force-alarm-logo-white.png ***!
   \************************************************/
 /*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-module.exports = __webpack_require__.p + "ce2b765db3ce8706b6cb19386ed77344.png";
+module.exports = "/Users/richardblondet/Projects/force-alarm/09-deliverables/00/wordpress/wp-content/plugins/force-alarm/public/js/ce2b765db3ce8706b6cb19386ed77344.png";
 
 /***/ }),
 
@@ -3531,9 +3516,9 @@ module.exports = __webpack_require__.p + "ce2b765db3ce8706b6cb19386ed77344.png";
   !*** ./.src/static/force-alarm-plans.png ***!
   \*******************************************/
 /*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-module.exports = __webpack_require__.p + "60c8de8ea1396ec17b75dfce3ec02c83.png";
+module.exports = "/Users/richardblondet/Projects/force-alarm/09-deliverables/00/wordpress/wp-content/plugins/force-alarm/public/js/60c8de8ea1396ec17b75dfce3ec02c83.png";
 
 /***/ }),
 
@@ -3542,9 +3527,9 @@ module.exports = __webpack_require__.p + "60c8de8ea1396ec17b75dfce3ec02c83.png";
   !*** ./.src/static/force-alarm-shopping-cart.png ***!
   \***************************************************/
 /*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-module.exports = __webpack_require__.p + "8c2cd183a443c93f6d1fec4d72d898ca.png";
+module.exports = "/Users/richardblondet/Projects/force-alarm/09-deliverables/00/wordpress/wp-content/plugins/force-alarm/public/js/8c2cd183a443c93f6d1fec4d72d898ca.png";
 
 /***/ }),
 
@@ -3553,9 +3538,9 @@ module.exports = __webpack_require__.p + "8c2cd183a443c93f6d1fec4d72d898ca.png";
   !*** ./.src/static/spinner.gif ***!
   \*********************************/
 /*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-module.exports = __webpack_require__.p + "27ad10d256a4dc198a4c0bce942df6c9.gif";
+module.exports = "/Users/richardblondet/Projects/force-alarm/09-deliverables/00/wordpress/wp-content/plugins/force-alarm/public/js/27ad10d256a4dc198a4c0bce942df6c9.gif";
 
 /***/ }),
 
