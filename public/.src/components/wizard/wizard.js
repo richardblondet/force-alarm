@@ -6,7 +6,8 @@ import {
     Step2,
     Step3,
     Step4,
-    Step5
+    Step5,
+    Step6
 } from "./";
 import constants from "../../constants";
 import { 
@@ -174,6 +175,9 @@ class ForceAlarmWizard extends React.Component {
                 </StepView>
                 <StepView step={4}>
                     <Step5 handleStep={this.handleFithStep} handleBack={this.handleBackStep} />
+                </StepView>
+                <StepView step={5}>
+                    <Step6 />
                 </StepView>
             </React.Fragment>
         );

@@ -47,12 +47,12 @@ const config = {
                                 this.resourcePath = resourcePath;
                                 this.context = context;
                             }
-                            var log = new Logger(url, resourcePath, context);
+                            var log = new Logger(env, resourcePath, context);
                             console.table(log);
-                            if( /static/.test( resourcePath )) {
+                            if( env === "development" ) {
                                 return `${context}/js/${url}`;
                             }
-                            return '/wp-content/plugins/force-alarm/public/js/';
+                            return `/wp-content/plugins/force-alarm/public/js/${url}`;
                         },
                         name: '[hash].[ext]'
                     }

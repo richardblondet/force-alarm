@@ -407,7 +407,6 @@ function (_React$Component) {
     _this.state = {
       isOpen: false
     };
-    console.log("%c shopping_cart", "font-size:2em;", _forceAlarmShoppingCart["default"]);
     return _this;
   }
 
@@ -1125,6 +1124,100 @@ module.exports = exports["default"];
 
 /***/ }),
 
+/***/ "./.src/components/wizard/completedStep.js":
+/*!*************************************************!*\
+  !*** ./.src/components/wizard/completedStep.js ***!
+  \*************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = void 0;
+
+var _react = _interopRequireDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+
+var _reactstrap = __webpack_require__(/*! reactstrap */ "./node_modules/reactstrap/es/index.js");
+
+var _checkedGreen = _interopRequireDefault(__webpack_require__(/*! ../../static/checked-green.png */ "./.src/static/checked-green.png"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+var OrderCompleted =
+/*#__PURE__*/
+function (_React$Component) {
+  _inherits(OrderCompleted, _React$Component);
+
+  function OrderCompleted(props) {
+    var _this;
+
+    _classCallCheck(this, OrderCompleted);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(OrderCompleted).call(this, props));
+
+    _defineProperty(_assertThisInitialized(_this), "handleOkButton", function (e) {
+      e.preventDefault();
+    });
+
+    _this.state = {};
+    return _this;
+  }
+
+  _createClass(OrderCompleted, [{
+    key: "render",
+    value: function render() {
+      return _react["default"].createElement(_react["default"].Fragment, null, _react["default"].createElement(_reactstrap.Jumbotron, {
+        tag: "section",
+        style: {
+          backgroundColor: "white",
+          borderRadius: "none"
+        }
+      }, _react["default"].createElement(_reactstrap.Container, null, _react["default"].createElement("div", {
+        className: "text-center mb-3"
+      }, _react["default"].createElement("img", {
+        src: _checkedGreen["default"],
+        width: "50"
+      })), _react["default"].createElement("h2", {
+        className: "text-center jumbotron-heading display-5 mb-1 text-success"
+      }, "\xA1Pago realizado con \xE9xito!"), _react["default"].createElement("p", {
+        className: "text-center text-success"
+      }, "Recibir\xE1s un correo electr\xF3nico con tu recibo de pago."))));
+    }
+  }]);
+
+  return OrderCompleted;
+}(_react["default"].Component);
+
+var _default = OrderCompleted;
+exports["default"] = _default;
+module.exports = exports["default"];
+
+/***/ }),
+
 /***/ "./.src/components/wizard/datepicker-fix-styles.css":
 /*!**********************************************************!*\
   !*** ./.src/components/wizard/datepicker-fix-styles.css ***!
@@ -1204,6 +1297,12 @@ Object.defineProperty(exports, "Step5", {
     return _paymentDataStep["default"];
   }
 });
+Object.defineProperty(exports, "Step6", {
+  enumerable: true,
+  get: function get() {
+    return _completedStep["default"];
+  }
+});
 exports["default"] = void 0;
 
 var _wizard = _interopRequireDefault(__webpack_require__(/*! ./wizard */ "./.src/components/wizard/wizard.js"));
@@ -1219,6 +1318,8 @@ var _selectAddonStep = _interopRequireDefault(__webpack_require__(/*! ./selectAd
 var _personalDataStep = _interopRequireDefault(__webpack_require__(/*! ./personalDataStep */ "./.src/components/wizard/personalDataStep.js"));
 
 var _paymentDataStep = _interopRequireDefault(__webpack_require__(/*! ./paymentDataStep */ "./.src/components/wizard/paymentDataStep.js"));
+
+var _completedStep = _interopRequireDefault(__webpack_require__(/*! ./completedStep */ "./.src/components/wizard/completedStep.js"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -2735,7 +2836,9 @@ function (_React$Component) {
       }, _react["default"].createElement(_.Step5, {
         handleStep: this.handleFithStep,
         handleBack: this.handleBackStep
-      })));
+      })), _react["default"].createElement(_.StepView, {
+        step: 5
+      }, _react["default"].createElement(_.Step6, null)));
     }
   }]);
 
@@ -2992,7 +3095,7 @@ var initialState = {
     status: ""
   },
   plans: [],
-  step: 0,
+  step: 5,
   isLoading: true,
   showDisclaimer: false,
   showTerms: false,
@@ -3475,6 +3578,17 @@ function (_AjaxService) {
 
 exports["default"] = Plans;
 module.exports = exports["default"];
+
+/***/ }),
+
+/***/ "./.src/static/checked-green.png":
+/*!***************************************!*\
+  !*** ./.src/static/checked-green.png ***!
+  \***************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/Users/richardblondet/Projects/force-alarm/09-deliverables/00/wordpress/wp-content/plugins/force-alarm/public/js/c78fb0ed1b668c97c7affe9ead5b5977.png";
 
 /***/ }),
 

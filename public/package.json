@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "build": "NODE_ENV=production webpack --progress --colors",
-    "start": "webpack-dev-server --hot --host 0.0.0.0",
+    "start": "NODE_ENV=development webpack-dev-server --hot --host 0.0.0.0",
     "cypress": "cypress open",
-    "dev": "webpack --watch --progress --info-verbosity verbose",
+    "dev": "NODE_ENV=production webpack --watch --progress --info-verbosity verbose",
     "server": "webpack-dev-server --hot",
     "test": "cypress run",
     "lint": "eslint src/"

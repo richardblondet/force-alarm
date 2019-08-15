@@ -4,7 +4,7 @@
  * Description: Custom Page for Buying Process of Force Alarm
  */
 
-$script_url = plugins_url( 'force-alarm-public.js', 'force-alarm/public/js/force-alarm-public.js' );
+$script_url = plugins_url( 'force-alarm-public.min.js', 'force-alarm/public/js/force-alarm-public.min.js' );
 $style_url = plugins_url( 'force-alarm-public.css', 'force-alarm/public/css/force-alarm-public.css' );
 ?>
 <!DOCTYPE html>
