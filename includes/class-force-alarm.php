@@ -123,6 +123,10 @@ class Force_Alarm {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-force-alarm-public.php';
 
+		/**
+		 * The class responsible for handling and building emails load it here
+		 */
+
 		$this->loader = new Force_Alarm_Loader();
 
 	}

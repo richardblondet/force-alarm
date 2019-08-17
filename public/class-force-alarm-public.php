@@ -167,9 +167,10 @@ class Force_Alarm_Public {
 		// Receive data for the first time from client
 		$data = json_decode( stripslashes( $_POST['data'] ), $decode_to_array = true );
 
-		// Perform Call to the external service for credit card
+		// Perform Call to the external service for credit card --------------------------------
+		// return wp_send_json_error(  )
 		$date_approved = date('d/m/Y H:i:s');
-		// End
+		// Perform Call to the external service for credit card End ----------------------------
 
 		/**
 		 * Create the new user making a WP_User

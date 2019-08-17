@@ -34,7 +34,7 @@ class Header extends React.Component {
           isOpen: false
         };
 
-        console.log("%c shopping_cart", "font-size:2em;", shopping_cart );
+        // console.log("%c shopping_cart", "font-size:2em;", shopping_cart );
     }
 
     toggle() {

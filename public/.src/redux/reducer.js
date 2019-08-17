@@ -23,7 +23,19 @@ export const initialState = {
         price: ""
     }
 };
-
+/**
+payment=number: "",
+name: "",
+expiry: "", // mes/año (2 dígitos)
+cvc: "",
+issuer: "", // visa o mastercard
+focused: "",
+formData: null,
+comprobante: false,
+no_comprobante: "",
+nombre_comprobante: "",
+isValid: false
+ */
 const Reducer = (state = initialState, action) => {
 
     /**

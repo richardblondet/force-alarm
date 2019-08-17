@@ -89,6 +89,9 @@ const RedDot = styled.div`
     top: 11px;
     left: 11px;
 `;
+const StepNumber = styled.div`
+    font-size: 2em;
+`;
 class Steps extends React.Component {
     static contextType = Store;
 
@@ -128,7 +131,7 @@ class Steps extends React.Component {
                         <RedDot className="isActive" />
                     </Dot>
                     <NavLink className="text-center h6 text-secondary font-weight-bold">
-                        <div>{count}</div>
+                        <StepNumber>{count}</StepNumber>
                         {step.title}
                     </NavLink>
                 </NavItemStyle>

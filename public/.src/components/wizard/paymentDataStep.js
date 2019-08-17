@@ -13,16 +13,18 @@ import {
     Button,
     Form, FormGroup, Label, Input, FormText
 } from "reactstrap";
-
+/**
+ * Test cc with @see {@link https://www.easy400.net/js2/regexp/ccnums.html}
+ */
 class PaymentDataForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             number: "",
             name: "",
-            expiry: "",
+            expiry: "", // mes/año (2 dígitos)
             cvc: "",
-            issuer: "",
+            issuer: "", // visa o mastercard
             focused: "",
             formData: null,
             comprobante: false,
