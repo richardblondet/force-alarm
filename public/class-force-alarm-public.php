@@ -331,7 +331,7 @@ class Force_Alarm_Public {
 			),
 			array(
 				'meta_key' => 'fa_order_status',
-				'meta_value' => 'pendiente'
+				'meta_value' => 'pendiente' // 
 			),
 			array(
 				'meta_key' => 'fa_order_items',
@@ -343,6 +343,11 @@ class Force_Alarm_Public {
 		foreach ($post_metas as $array_key => $array_value) {
 			$post_metas[$array_key]['result'] = update_post_meta( $order_id, $array_value['meta_key'], $array_value['meta_value'] );
 		}
+
+		// --------------------------
+		// Call Randy's webservice with order_id
+		// [ order ]
+		// --------------------------
 
 		// Save post id and its meta in the result
 		$response['order'] = $new_order_data;

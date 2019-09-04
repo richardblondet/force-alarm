@@ -42,13 +42,6 @@ const config = {
                     loader: 'file-loader',
                     options: {
                         publicPath: (url, resourcePath, context) => {
-                            function Logger(url, resourcePath, context) {
-                                this.url = url;
-                                this.resourcePath = resourcePath;
-                                this.context = context;
-                            }
-                            var log = new Logger(env, resourcePath, context);
-                            console.table(log);
                             if( env === "development" ) {
                                 return `${context}/js/${url}`;
                             }
