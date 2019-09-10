@@ -109,6 +109,7 @@ class ForceAlarmWizard extends React.Component {
         dispatch({ type: constants.SHOW_MODAL_SERVICE  });
     }
     process = ( payment ) => {
+        const {dispatch} = this.context;
         const {state} = this.context;
         const data = {};
 
@@ -139,6 +140,8 @@ class ForceAlarmWizard extends React.Component {
         
         this.Order.sendOrder( data ).then( response => {
             console.log( "Server Response", response );
+            this.goToStep(5);
+            dispatch({ type: constants.LOADING_OFF });
         }).catch(error => {
             console.log( "Error Handling", error );
         });

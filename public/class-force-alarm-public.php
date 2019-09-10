@@ -51,7 +51,7 @@ class Force_Alarm_Public {
 
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
-
+		$this->load_dependencies();
 		/**
 		 * Front facing application react based
 		 * 
@@ -59,6 +59,18 @@ class Force_Alarm_Public {
 		 */
 		add_shortcode( 'fa_app', array( $this, 'fa_app_shortcode'));
 
+	}
+	/**
+	 * Load the required dependencies for this plugin.
+	 *
+	 * Include the following files that make up the plugin:
+	 *
+	 * - Force_Alarm_Email
+	 * @since    1.0.0
+	 * @access   private
+	 */
+	private function load_dependencies() {
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-force-alarm-email.php';
 	}
 
 	/**
@@ -171,7 +183,7 @@ class Force_Alarm_Public {
 		// return wp_send_json_error(  )
 		$date_approved = date('d/m/Y H:i:s');
 		// Perform Call to the external service for credit card End ----------------------------
-
+		return wp_send_json_success( ['date'=>$date_approved] );
 		/**
 		 * Create the new user making a WP_User
 		 * 
@@ -399,6 +411,41 @@ class Force_Alarm_Public {
 	}
 
 	/**
+	 * test some codes ajax
+	 * 
+	 * @since 0
+	 */
+	public function fa_ajax_TEST() {
+		$response = ['html' => '']; 
+
+		$email = new Force_Alarm_Email;
+
+		$table_data = array(
+			array(
+				'Name', 'Richard Blondet'
+			),
+			array(
+				'Addr', 'Mirador Norte'
+			)
+		);
+
+		$text = $email->add_module('table', array(
+			'table_header' => 'ASID DOLOR AMMET',
+			'table_data' => $table_data
+		));
+
+		$to = "richardblondet@gmail.com";
+		$subject = "TESTING";
+
+		wp_mail( $to, $subject, $text );
+
+		$response['html'] = $text;
+		$response['file'] = $file = sprintf( plugin_dir_path( dirname( __FILE__ ) ) . 'public/imgs/%s', $name = "force-alarm-logo-white.png" );
+		$response['exists'] = file_exists( $file );
+		return wp_send_json_success( $response );
+	}
+
+	/**
 	 * Create Javascript Globals
 	 * 
 	 * @since 1.6.0
@@ -425,6 +472,64 @@ class Force_Alarm_Public {
 		$origins[] = 'http://localhost:8080';
 		$origins[] = 'http://localhost:8081';
 		return $origins;
+	}
+
+	/**
+	 * Add filter to allow html emails
+	 * 
+	 * @since xxx
+	 */
+	public function fa_wp_mail_content_type_html() {
+		return "text/html";
+	}
+
+	/**
+	 * Add logo to Force Alarm emails
+	 * The logo is always true for every email
+	 * 
+	 * <!-- <img src="/Users/richardblondet/Projects/force-alarm/09-deliverables/00/wordpress/wp-content/plugins/force-alarm/public/imgs/force-alarm-logo-white.png" alt="Force Alarm" width="150px" /> -->
+	 * 
+	 * @since xxx
+	 */
+	public function fa_add_logo_to_email($phpmailer) {
+		$phpmailer->SMTPKeepAlive=true;
+		$uid  = "force-alarm-logo-white"; // cid:force-alarm-logo-white
+		$name = "force-alarm-logo-white.png";
+		$file = sprintf( plugin_dir_path( dirname( __FILE__ ) ) . 'public/imgs/%s', $name );
+
+		$phpmailer->AddEmbeddedImage( $file, $uid );
+		$phpmailer->AltBody = strip_tags($phpmailer->Body);
+
+		return $phpmailer;
+	}
+
+	/**
+	 * Override default text messages with html ones
+	 */
+	public function fa_wp_email_filter( $args ) {
+		$name = "force-alarm-logo-white.png";
+		$file = sprintf( plugin_dir_path( dirname( __FILE__ ) ) . 'public/imgs/%s', $name );
+
+		$email = new Force_Alarm_Email(array(
+			'subject' => $args['subject'], 
+			'template' => 'base'
+		));
+		$message = $email->add_module('content', array(
+			'title'=> '', 'message'=> $args['message']
+		))->get_html();
+		
+		$attachments = $args['attachments'];
+		$attachments[] = $file;
+
+		$wp_mail = array(
+			'to' 	      => $args['to'],
+			'subject'     => $args['subject'],
+			'message'     => $message,
+			'headers'     => $args['headers'],
+			'attachments' => $attachments,
+		);
+
+		return $wp_mail;
 	}
 
 }

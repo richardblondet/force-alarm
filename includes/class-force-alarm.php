@@ -228,8 +228,15 @@ class Force_Alarm {
 		/* Contents for wizard */
 		$this->loader->add_action( 'wp_ajax_force-alarm-content', $plugin_public, 'fa_ajax_wizard_content' );
 		$this->loader->add_action( 'wp_ajax_nopriv_force-alarm-content', $plugin_public, 'fa_ajax_wizard_content' );
-		
-		
+		$this->loader->add_action( 'wp_ajax_force-alarm-test', $plugin_public, 'fa_ajax_TEST' );
+		$this->loader->add_action( 'wp_ajax_nopriv_force-alarm-test', $plugin_public, 'fa_ajax_TEST' );
+
+		/* Add filter to allow html */
+		$this->loader->add_filter( 'wp_mail_content_type', $plugin_public, 'fa_wp_mail_content_type_html' );
+		/* Add the logo to all our emails :hehe */
+		$this->loader->add_action( 'phpmailer_init', $plugin_public, 'fa_add_logo_to_email' );
+		/* Update emails */
+		$this->loader->add_action( 'wp_mail', $plugin_public, 'fa_wp_email_filter' );
 
 	}
 

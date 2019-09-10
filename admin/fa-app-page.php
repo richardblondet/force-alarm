@@ -6,6 +6,7 @@
 
 $script_url = plugins_url( 'force-alarm-public.min.js', 'force-alarm/public/js/force-alarm-public.min.js' );
 $style_url = plugins_url( 'force-alarm-public.css', 'force-alarm/public/css/force-alarm-public.css' );
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -15,6 +16,18 @@ $style_url = plugins_url( 'force-alarm-public.css', 'force-alarm/public/css/forc
     <title>Force Alarm</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="<?php echo $style_url; ?>">
+    <?php 
+    $output  = '<script id="fa-global-vars" type="text/javascript">';
+    $output .= 'window.FA_GLOBALS = %s;';
+    $output .= '</script>';
+    
+    printf( $output, 
+      json_encode( array(
+        'AJAX_URL'=> admin_url( "admin-ajax.php" ),
+        'NONCE' => wp_create_nonce( 'force-alarm-ajax' )
+      )
+    ));
+    ?>
     </head>
     <body>
         <div id="fd_app"></div>
