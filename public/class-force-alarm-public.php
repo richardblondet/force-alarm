@@ -176,16 +176,18 @@ class Force_Alarm_Public {
 	 * @since 1.6.0
 	 */
 	public function fa_ajax_process_orders_handler() {
+		global $woocommerce;
+
 		$response = [];
 
 		// Receive data for the first time from client
 		$data = json_decode( stripslashes( $_POST['data'] ), $decode_to_array = true );
-		$date_requested = date('d/m/Y H:i:s');
+		// $date_requested = date('d/m/Y H:i:s');
 
 		/** Prepare and Send Emails */
+		// return wp_send_json_success( $data );
 
 
-		return wp_send_json_success( $data );
 		/**
 		 * Create the new user making a WP_User
 		 * 
@@ -298,7 +300,7 @@ class Force_Alarm_Public {
 		}
 		// Instance user in this system
 		$wp_user = new WP_User( $new_user_id );
-		$wp_user->set_role( 'client' );
+		$wp_user->set_role( 'customer' );
 
 		// Save new user id in response and its metas
 		$response['user'] = $new_user_data;
@@ -307,51 +309,80 @@ class Force_Alarm_Public {
 
 		/**
 		 * Create order post to save order
+		 * ----------------------------------------------------------------
 		 */
-		$order_name = sprintf("%s — %s"
-			,$new_user_data['display_name']
-			,$date_requested
+		$address = array(
+			'first_name' => $data['form']['name'],
+			'email'      => $data['form']['email'],
+			'phone'      => $data['form']['phone'],
+			'address_1'  => $data['form']['address'],
+			'address_2'  => $data['form']['reference'],
+			'city'       => $data['form']['sector'],
+			'state'      => $data['form']['province'],
+			'postcode'   => '100001',
+			'country'    => 'DO'
 		);
-		$new_order_data = array(
-			'post_title' => $order_name,
-			'post_author' =>  $new_user_id,
-			'post_type' => 'fa_orders',
-			'post_status' => 'publish'
-		);
-		$order_id = wp_insert_post( $new_order_data, true );
+		// Now we create the order
+		$order = wc_create_order();
+		$order_id = $order->get_id();
+		
+		// The add_product() function below is located in /plugins/woocommerce/includes/abstracts/abstract_wc_order.php
+		foreach ($data['selection'] as $key => $item) {
+			$order->add_product( get_product( $item['ID']), 1); // This is an existing product
+		}
+
+		$order->set_address( $address, 'billing' );
+		$order->calculate_totals();
+		$order->update_status("Pending", "", TRUE);  
+
+		// $order_name = sprintf("%s — %s"
+		// 	,$new_user_data['display_name']
+		// 	,$date_requested
+		// );
+		// $new_order_data = array(
+		// 	'post_title' => $order_name,
+		// 	'post_author' =>  $new_user_id,
+		// 	'post_type' => 'fa_orders',
+		// 	'post_status' => 'publish'
+		// );
+		// $order_id = wp_insert_post( $new_order_data, true );
 		
 		// Verify that the order inserted correctly and return gently if it is
-		if( is_wp_error( $order_id ) ) {
-			$response['code']		= 'FA-00' . __LINE__;
-			$response['message']	= $order_id->get_error_message();
-			$response['user_data']	= $new_user_data;
-			$response['raw']		= $data;
+		// if( is_wp_error( $order_id ) ) {
+		// 	$response['code']		= 'FA-00' . __LINE__;
+		// 	$response['message']	= $order_id->get_error_message();
+		// 	$response['user_data']	= $new_user_data;
+		// 	$response['raw']		= $data;
 	
-			return wp_send_json_error( $response );
-		}
+		// 	return wp_send_json_error( $response );
+		// }
 
 		// Lets add all data related with this order
 		$post_metas = array(
 			array(
-				'meta_key' => 'fa_order_total',
-				'meta_value' => $data['total']
-			),
-			array(
-				'meta_key' => 'fa_order_installation_date',
-				'meta_value' => date("D d/m/Y", strtotime( $data['form']['date'] ))
-			),
-			array(
-				'meta_key' => 'fa_order_installation_time',
-				'meta_value' => date("h:i a", strtotime( $data['form']['time'] ))
-			),
-			array(
-				'meta_key' => 'fa_order_status',
-				'meta_value' => 'pendiente' // 
-			),
-			array(
-				'meta_key' => 'fa_order_items',
-				'meta_value' => $data['selection'] // save entire array
+				'meta_key' => '_customer_user', 
+				'meta_value' => $new_user_id
 			)
+			// array(
+			// 	'meta_key' => 'fa_order_total',
+			// 	'meta_value' => $data['total']
+			// ),
+			// array(
+			// 	'meta_key' => 'fa_order_installation_date',
+			// 	'meta_value' => date("D d/m/Y", strtotime( $data['form']['date'] ))
+			// ),
+			// array(
+			// 	'meta_key' => 'fa_order_installation_time',
+			// 	'meta_value' => date("h:i a", strtotime( $data['form']['time'] ))
+			// ),
+			// array(
+			// 	'meta_key' => 'fa_order_status',
+			// 	'meta_value' => 'pendiente' // 
+			// ),
+			// array(
+			// 	'meta_key' => 'fa_order_items',
+			// 	'meta_value' => $data['selection'] // save entire array
+			// )
 		);
 
 		// Iterate and add all order as post metas
@@ -362,51 +393,51 @@ class Force_Alarm_Public {
 		// --------------------------
 		// PAYMENT WEBSERVICE ///////
 		// --------------------------
-		$url = ""; // Pending URL
+		// $url = ""; // Pending URL
 
-		// Map to create services
-		$services = array();
-		foreach ($data['selection'] as $index => $item) {
-			$services[] = array(
-				"name"  => $item["post_title"],
-				"price" => $item["price"],
-				"optional" => $item["type"] === "addon" ? true:false
-			);
-		}
+		// // Map to create services
+		// $services = array();
+		// foreach ($data['selection'] as $index => $item) {
+		// 	$services[] = array(
+		// 		"name"  => $item["post_title"],
+		// 		"price" => $item["price"],
+		// 		"optional" => $item["type"] === "addon" ? true:false
+		// 	);
+		// }
 
-		$payload = array(
-			"customer" => intval( $new_user_id ),
-			"services" => $services,
-			"credit_card_info" => array(
-				"number" => $data['payment']['number'],
-				"name" => $data['payment']['name'],
-				"expiry" => $data['payment']['expiry'],
-				"cvc" => $data['payment']['cvc'],
-				"issuer" => $data['payment']['issuer']
-			)
-		);
+		// $payload = array(
+		// 	"customer" => intval( $new_user_id ),
+		// 	"services" => $services,
+		// 	"credit_card_info" => array(
+		// 		"number" => $data['payment']['number'],
+		// 		"name" => $data['payment']['name'],
+		// 		"expiry" => $data['payment']['expiry'],
+		// 		"cvc" => $data['payment']['cvc'],
+		// 		"issuer" => $data['payment']['issuer']
+		// 	)
+		// );
 
 		// Perform call to service
-		$service_response = wp_remote_get( esc_url_raw( $url ) , array(
-			'method' 		=> 'POST',
-			'timeout' 		=> 45,
-			'httpversion'	=> '1.0',
-			'user-agent'  	=> 'ForceAlarm/1.0; ' . home_url(),
-			'sslverify'		=> false,
-			'cookies' 		=> array(),
-			'headers'		=> array('Content-Type' => 'application/json'),
-			'body' 			=> json_encode( $payload )
-		));
+		// $service_response = wp_remote_get( esc_url_raw( $url ) , array(
+		// 	'method' 		=> 'POST',
+		// 	'timeout' 		=> 45,
+		// 	'httpversion'	=> '1.0',
+		// 	'user-agent'  	=> 'ForceAlarm/1.0; ' . home_url(),
+		// 	'sslverify'		=> false,
+		// 	'cookies' 		=> array(),
+		// 	'headers'		=> array('Content-Type' => 'application/json'),
+		// 	'body' 			=> json_encode( $payload )
+		// ));
 
 		// Verify error on service communication and return nicely to the user
-		if( is_wp_error( $service_response )) {
-			$response['code']		 = 'FA-00'. __LINE__;
-			$response['message']	 = 'Ha ocurrido un error: ' . $res->get_error_message();
-			$response['url']		 = $url;
-			$response['request_body']=$request_body;
+		// if( is_wp_error( $service_response )) {
+		// 	$response['code']		 = 'FA-00'. __LINE__;
+		// 	$response['message']	 = 'Ha ocurrido un error: ' . $res->get_error_message();
+		// 	$response['url']		 = $url;
+		// 	$response['request_body']=$request_body;
 
-			return wp_send_json_error( $response );	
-		}
+		// 	return wp_send_json_error( $response );	
+		// }
 		// --------------------------
 		// PAYMENT WEBSERVICE ///////
 		// --------------------------
