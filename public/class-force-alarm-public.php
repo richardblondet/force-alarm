@@ -146,8 +146,9 @@ class Force_Alarm_Public {
 
 		// WP_Query arguments
 		$args = array(
-			'post_type'              => array( 'fa_service_plan' ),
+			'post_type'              => array( 'product' ),
 			'post_status'            => array( 'publish' ),
+			'product_cat'			 => $type
 		);
 
 		// The Query
@@ -158,11 +159,12 @@ class Force_Alarm_Public {
 		 * Add ACF
 		 */
 		foreach( $services_result as $service ) {
-			$service->price = (float) get_field('price', $service->ID );
-			$service->type = get_field('type', $service->ID );
-			if( $service->type === $type ) {
-				$services[] = $service;
-			}
+			// $service->price = (float) get_field('price', $service->ID );
+			// $service->metas = get_post_meta( $service->ID );
+			$service->price = get_post_meta( $service->ID, '_price', true );
+			$services[] = $service;
+			// if( $service->type === $type ) {
+			// }
 		}
 
 		return wp_send_json_success( $services );
@@ -180,7 +182,10 @@ class Force_Alarm_Public {
 		$data = json_decode( stripslashes( $_POST['data'] ), $decode_to_array = true );
 		$date_requested = date('d/m/Y H:i:s');
 
-		return wp_send_json_success( $data['payment'] );
+		/** Prepare and Send Emails */
+
+
+		return wp_send_json_success( $data );
 		/**
 		 * Create the new user making a WP_User
 		 * 
@@ -334,10 +339,6 @@ class Force_Alarm_Public {
 			array(
 				'meta_key' => 'fa_order_installation_date',
 				'meta_value' => date("D d/m/Y", strtotime( $data['form']['date'] ))
-			),
-			array(
-				'meta_key' => 'fa_order_installation_time',
-				'meta_value' => date("h:i a", strtotime( $data['form']['time'] ))
 			),
 			array(
 				'meta_key' => 'fa_order_installation_time',

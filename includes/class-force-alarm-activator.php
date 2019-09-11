@@ -67,7 +67,7 @@ class Force_Alarm_Activator {
 			'edit_ticket'		=> true,
 			'publish_tickets'	=> true
 		);
-		$client = add_role( 'client', __( 'Client' ), $client_capabilities );
+		// $client = add_role( 'client', __( 'Client' ), $client_capabilities );
 
 		/**
 		 * Force Alarm Agent Capabilities and Role
