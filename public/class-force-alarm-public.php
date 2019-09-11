@@ -178,12 +178,9 @@ class Force_Alarm_Public {
 
 		// Receive data for the first time from client
 		$data = json_decode( stripslashes( $_POST['data'] ), $decode_to_array = true );
+		$date_requested = date('d/m/Y H:i:s');
 
-		// Perform Call to the external service for credit card --------------------------------
-		// return wp_send_json_error(  )
-		$date_approved = date('d/m/Y H:i:s');
-		// Perform Call to the external service for credit card End ----------------------------
-		return wp_send_json_success( ['date'=>$date_approved] );
+		return wp_send_json_success( $data['payment'] );
 		/**
 		 * Create the new user making a WP_User
 		 * 
@@ -223,6 +220,11 @@ class Force_Alarm_Public {
 		 */
 		// Setup all of out user meta information
 		$new_user_metas = array(
+			array(
+				'meta_key' => 'fa_cedula',
+				'meta_value' => $data['form']['cedula'],
+				'unique' => TRUE
+			),
 			array(
 				'meta_key' => 'show_welcome_panel',
 				'meta_value' => FALSE,
@@ -279,8 +281,8 @@ class Force_Alarm_Public {
 				'unique' => TRUE
 			),
 			array(
-				'meta_key' => '_fd_date_approved',
-				'meta_value' => $date_approved,
+				'meta_key' => 'date_requested',
+				'meta_value' => $date_requested,
 				'unique' => TRUE
 			)
 		);
@@ -303,7 +305,7 @@ class Force_Alarm_Public {
 		 */
 		$order_name = sprintf("%s — %s"
 			,$new_user_data['display_name']
-			,$date_approved
+			,$date_requested
 		);
 		$new_order_data = array(
 			'post_title' => $order_name,
@@ -357,10 +359,57 @@ class Force_Alarm_Public {
 		}
 
 		// --------------------------
-		// Call Randy's webservice with order_id
-		// [ order ]
+		// PAYMENT WEBSERVICE ///////
 		// --------------------------
+		$url = ""; // Pending URL
 
+		// Map to create services
+		$services = array();
+		foreach ($data['selection'] as $index => $item) {
+			$services[] = array(
+				"name"  => $item["post_title"],
+				"price" => $item["price"],
+				"optional" => $item["type"] === "addon" ? true:false
+			);
+		}
+
+		$payload = array(
+			"customer" => intval( $new_user_id ),
+			"services" => $services,
+			"credit_card_info" => array(
+				"number" => $data['payment']['number'],
+				"name" => $data['payment']['name'],
+				"expiry" => $data['payment']['expiry'],
+				"cvc" => $data['payment']['cvc'],
+				"issuer" => $data['payment']['issuer']
+			)
+		);
+
+		// Perform call to service
+		$service_response = wp_remote_get( esc_url_raw( $url ) , array(
+			'method' 		=> 'POST',
+			'timeout' 		=> 45,
+			'httpversion'	=> '1.0',
+			'user-agent'  	=> 'ForceAlarm/1.0; ' . home_url(),
+			'sslverify'		=> false,
+			'cookies' 		=> array(),
+			'headers'		=> array('Content-Type' => 'application/json'),
+			'body' 			=> json_encode( $payload )
+		));
+
+		// Verify error on service communication and return nicely to the user
+		if( is_wp_error( $service_response )) {
+			$response['code']		 = 'FA-00'. __LINE__;
+			$response['message']	 = 'Ha ocurrido un error: ' . $res->get_error_message();
+			$response['url']		 = $url;
+			$response['request_body']=$request_body;
+
+			return wp_send_json_error( $response );	
+		}
+		// --------------------------
+		// PAYMENT WEBSERVICE ///////
+		// --------------------------
+		
 		// Save post id and its meta in the result
 		$response['order'] = $new_order_data;
 		$response['order']['id'] = $order_id;
@@ -386,7 +435,8 @@ class Force_Alarm_Public {
 		$response = [];
 		$content_available = [
 			'disclaimer' => 'fa_disclaimer_content',
-			'terms' => 'fa_disclaimer_content'
+			'terms' => 'fa_disclaimer_content',
+			'provincias' => 'fd_provincias'
 		];
 		$content_request = sanitize_text_field( $_POST['content'] );
 		
@@ -403,6 +453,10 @@ class Force_Alarm_Public {
 
 		$response['content'] = get_field( $content_available[ $content_request ], 'option' );
 
+		/** transform provincias into array */
+		if ( $content_request === "provincias" ) {
+			$response['content'] = explode("\n", $response['content']);
+		}
 		/**
 		 * Return to the client with the corresponding content
 		 */

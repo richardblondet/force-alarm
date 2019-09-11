@@ -17,6 +17,7 @@ import {
 
 import PlansService from "../../services/plans";
 import OrderService from "../../services/orders";
+import ContentService from "../../services/content";
 
 class ForceAlarmWizard extends React.Component {
     static contextType = Store;
@@ -26,13 +27,15 @@ class ForceAlarmWizard extends React.Component {
         this.Order = null;
         this.state = {
             plans: [],
-            addons: []
+            addons: [],
+            provincias: []
         };
     }
     componentDidMount() {
         const {state, dispatch} = this.context;
         this.Plans = new PlansService("force-alarm-services", state.AJAX_URL);
-        this.Order = new OrderService("force-alarm-services", state.AJAX_URL);
+        this.Order = new OrderService("force-alarm-orders", state.AJAX_URL);
+        const ProvinciasContent = new ContentService("force-alarm-content", state.AJAX_URL );
 
         this.Plans.getPlans({ 
             type: "plan" 
@@ -45,6 +48,12 @@ class ForceAlarmWizard extends React.Component {
                     addons: addonsresponse.data 
                 });
                 dispatch({ type: constants.LOADING_OFF });
+            });
+            ProvinciasContent.getContent({ 
+                content: "provincias" 
+            }).then(provinciasresponse => {
+                console.log("Provoncioas", provinciasresponse.data );
+                this.setState({ provincias: provinciasresponse.data.content });
             });
         });
         
@@ -149,7 +158,7 @@ class ForceAlarmWizard extends React.Component {
     }
     render() {
         const { state } = this.context;
-
+        const { provincias } = this.state;
         return (
             <React.Fragment>
                 <StepView step={0}>
@@ -174,10 +183,13 @@ class ForceAlarmWizard extends React.Component {
                         handleStep={this.handleForthStep} 
                         form={state.data.form} 
                         handleBack={this.handleBackStep} 
-                        showTermsModal={this.showTermsModal} />
+                        showTermsModal={this.showTermsModal}
+                        provincias={provincias} />
                 </StepView>
                 <StepView step={4}>
-                    <Step5 handleStep={this.handleFithStep} handleBack={this.handleBackStep} />
+                    <Step5 
+                        handleStep={this.handleFithStep} 
+                        handleBack={this.handleBackStep}  />
                 </StepView>
                 <StepView step={5}>
                     <Step6 />

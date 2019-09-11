@@ -27,7 +27,8 @@ import {
     Jumbotron,
     Row, Col,
     Button,
-    Form, FormGroup, Label, Input, FormText
+    Form, FormGroup, Label, Input, FormText,
+    Alert
 } from "reactstrap";
 
 const PROVINCIAS = [
@@ -49,6 +50,7 @@ const TODAY = new Date();
 //     time: setHours( setMinutes( TODAY, 0), 8)
 // };
 const initialDataTest = {
+    cedula: "",
     name: "",
     email: "",
     phone: "",
@@ -64,16 +66,7 @@ class PersonalDataForm extends React.Component {
         super(props);
         this.state = {
             TODAY,
-            form: {
-                name: "",
-                email: "",
-                phone: "",
-                address: "",
-                sector: "",
-                reference: "",
-                date: addDays( TODAY, 1),
-                time: setHours( setMinutes( TODAY, 0), 8)
-            },
+            form: initialDataTest,
             datePickerOpen: false,
             dateTimeOpen: false,
             errors: []
@@ -95,10 +88,11 @@ class PersonalDataForm extends React.Component {
     }
     handleOnChange = (e) => {
         e.preventDefault();
-        let { form } = this.state;
+        let { form, errors } = this.state;
         form[e.target.name] = e.target.value
+        errors = [];
         this.setState({
-            form
+            form, errors
         });
     }
     handleDateChange = ( date ) => {
@@ -138,7 +132,7 @@ class PersonalDataForm extends React.Component {
         return day !== 0 && day !== 6;
     }
     getProvincias = () => {
-        return PROVINCIAS;
+        return this.props.provincias || PROVINCIAS;
     }
     handleBackButton = (e) => {
         e.preventDefault();
@@ -152,6 +146,9 @@ class PersonalDataForm extends React.Component {
         for (let index = 0; index < keys.length; index++) {
             const fieldName = keys[index];
             if( "" === form[fieldName] ) {
+                errors.push( fieldName );
+            }
+            if( "cedula" === fieldName && /(\d{1,3})-(\d{1,7})-(\d{1})/.test( form[fieldName ]) === false ) {
                 errors.push( fieldName );
             }
         }
@@ -173,11 +170,18 @@ class PersonalDataForm extends React.Component {
         const renderProvinciasOptions = this.getProvincias().map((provincia, indx) => {
             return <option key={`provincia-key-${indx}`}>{provincia}</option>;
         });
-        const { form } = this.state;
+        const { form, errors } = this.state;
         return (
             <React.Fragment>
                 <Jumbotron tag="section" style={{backgroundColor:"white", borderRadius:"none"}}>
                     <Container fluid>
+                        {errors.length > 0 && <Row>
+                            <Col xs="12" md={{ size: 4, offset: 4 }}>
+                                <Alert color="danger">
+                                    {`Debes revisar los siguientes campos: ${errors.join(", ")}.`}
+                                </Alert>
+                            </Col>
+                        </Row>}
                         <Row>
                             <Col xs="12" md={{ size: 4, offset: 4 }}>
                                 <Form onSubmit={this.handleSubmitButton}>
@@ -192,6 +196,20 @@ class PersonalDataForm extends React.Component {
                                             value={form.name}
                                             onChange={this.handleOnChange}
                                             placeholder="Nombre y Apellido" />
+                                    </FormGroup>
+
+                                    <FormGroup>
+                                        <Label for="fa-app-cedula">Cédula</Label>
+                                        <Input required 
+                                            id="fa-app-cedula"
+                                            type="text" 
+                                            name="cedula" 
+                                            value={form.cedula}
+                                            onChange={this.handleOnChange}
+                                            placeholder="000-0000000-0" />
+                                            <FormText color="muted">
+                                                Ejemplo: 001-5555555-2
+                                            </FormText>
                                     </FormGroup>
 
                                     <FormGroup>
