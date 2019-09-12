@@ -152,6 +152,8 @@ class ForceAlarmWizard extends React.Component {
             this.goToStep(5);
             dispatch({ type: constants.LOADING_OFF });
         }).catch(error => {
+            this.goToStep(4);
+            alert("Algo inesperado ha ocurrido, por favor intentar en breve");
             console.log( "Error Handling", error );
         });
 

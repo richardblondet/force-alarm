@@ -38,7 +38,7 @@ class SelectAddons extends React.Component {
         const addons = this.getAddons();
         const renderAddons = addons.map( (addon, indx) => {
             const formatter = new Intl.NumberFormat('en-US', { style: 'currency', currency:'USD' });
-            const PriceFormatted = formatter.format(addon.price);
+            const PriceFormatted = `RD${formatter.format(addon.price)}`
             
             return (
                 <Card className="mt-5 border-0" key={`addon-card-${indx}`}>

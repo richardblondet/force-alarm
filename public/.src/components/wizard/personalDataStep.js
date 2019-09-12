@@ -188,7 +188,7 @@ class PersonalDataForm extends React.Component {
                                     <legend>Datos Personales</legend>
                                     
                                     <FormGroup>
-                                        <Label for="fa-app-name">Nombre</Label>
+                                        <Label for="fa-app-name">Nombre Completo</Label>
                                         <Input required 
                                             id="fa-app-name" 
                                             type="text" 
@@ -231,7 +231,7 @@ class PersonalDataForm extends React.Component {
                                             name="phone" 
                                             value={form.phone}
                                             onChange={this.handleOnChange}
-                                            placeholder="8095557777" />
+                                            placeholder="(809)555-7777" />
                                     </FormGroup>
 
                                     <legend className="mt-4">Lugar de la Instalación</legend>

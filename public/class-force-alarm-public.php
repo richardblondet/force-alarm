@@ -320,7 +320,9 @@ class Force_Alarm_Public {
 			'city'       => $data['form']['sector'],
 			'state'      => $data['form']['province'],
 			'postcode'   => '100001',
-			'country'    => 'DO'
+			'country'    => 'DO',
+			'inst_date'	 => strtotime( $data['form']['date'] ),
+			'inst_time'	 => strtotime( $data['form']['time'] )
 		);
 		// Now we create the order
 		$order = wc_create_order();
@@ -333,7 +335,11 @@ class Force_Alarm_Public {
 
 		$order->set_address( $address, 'billing' );
 		$order->calculate_totals();
-		$order->update_status("Pending", "", TRUE);  
+		// $order->update_status("", "", TRUE); 
+
+		foreach ($address as $key => $addr) {
+			update_user_meta( $new_user_id, 'billing_'.$key, $addr );
+		}
 
 		// $order_name = sprintf("%s — %s"
 		// 	,$new_user_data['display_name']
@@ -596,13 +602,13 @@ class Force_Alarm_Public {
 		$name = "force-alarm-logo-white.png";
 		$file = sprintf( plugin_dir_path( dirname( __FILE__ ) ) . 'public/imgs/%s', $name );
 
-		$email = new Force_Alarm_Email(array(
-			'subject' => $args['subject'], 
-			'template' => 'base'
-		));
-		$message = $email->add_module('content', array(
-			'title'=> '', 'message'=> $args['message']
-		))->get_html();
+		// $email = new Force_Alarm_Email(array(
+		// 	'subject' => $args['subject'], 
+		// 	'template' => 'base'
+		// ));
+		// $message = $email->add_module('content', array(
+		// 	'title'=> '', 'message'=> $args['message']
+		// ))->get_html();
 		
 		$attachments = $args['attachments'];
 		$attachments[] = $file;
@@ -610,7 +616,7 @@ class Force_Alarm_Public {
 		$wp_mail = array(
 			'to' 	      => $args['to'],
 			'subject'     => $args['subject'],
-			'message'     => $message,
+			'message'     => $args['message'],
 			'headers'     => $args['headers'],
 			'attachments' => $attachments,
 		);

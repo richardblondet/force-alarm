@@ -36,11 +36,11 @@ class SelectPlan extends React.Component {
 
     }
     render() {
-        const plans = this.getPlans();
+        const plans = this.getPlans().reverse();
         console.log("order? ", plans);
         const renderPlans = plans.map( (plan, indx) => {
         const formatter = new Intl.NumberFormat('en-US', { style: 'currency', currency:'USD' });
-        const PriceFormatted = formatter.format(plan.price);
+        const PriceFormatted = `RD${formatter.format(plan.price)}`;
             return (
                 <Col xs="12" sm="4" key={indx} className="mt-5">
                     <div className="mb-3">

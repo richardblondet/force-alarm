@@ -14,6 +14,8 @@ class ServicesModal extends React.Component {
     }
     render() {
         const {state} = this.context;
+        const formatter = new Intl.NumberFormat('en-US', { style: 'currency', currency:'USD' });
+        const PriceFormatted = `RD${formatter.format(state.modalService.price)}`;
 
         return (
             <Modal isOpen={state.showModalService} toggle={this.toggle} className={this.props.className}>
@@ -26,7 +28,7 @@ class ServicesModal extends React.Component {
                             width="125" />
                     </div>
                     <div dangerouslySetInnerHTML={{__html: state.modalService.post_title}} />
-                    <h3>{state.modalService.price}</h3>
+                    <h3>{PriceFormatted}</h3>
                 </ModalBody>
                 <ModalBody className="text-center">
                     <div dangerouslySetInnerHTML={{__html: state.modalService.post_excerpt}} />
