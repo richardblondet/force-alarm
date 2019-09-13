@@ -190,7 +190,7 @@ class PersonalDataForm extends React.Component {
                                     <FormGroup>
                                         <Label for="fa-app-name">Nombre Completo</Label>
                                         <Input required 
-                                            id="fa-app-name" 
+                                            id="fa-app-name"
                                             type="text" 
                                             name="name" 
                                             value={form.name}
