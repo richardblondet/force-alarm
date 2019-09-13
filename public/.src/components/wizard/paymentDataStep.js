@@ -115,6 +115,7 @@ class PaymentDataForm extends React.Component {
                                             name="name"
                                             placeholder="Nombre en Tarjeta"
                                             required
+                                            pattern={/[a-zA-Z]*/}
                                             onChange={this.handleOnChange}
                                             onFocus={this.handleInputFocus}
                                         />
