@@ -27,9 +27,11 @@ import {
     Jumbotron,
     Row, Col,
     Button,
-    Form, FormGroup, Label, Input, FormText,
+    Form, FormGroup, Label, Input, FormText, FormFeedback,
     Alert
 } from "reactstrap";
+
+import MaskedInput from "react-text-mask";
 
 const PROVINCIAS = [
     'Santo Domingo',
@@ -195,21 +197,38 @@ class PersonalDataForm extends React.Component {
                                             name="name" 
                                             value={form.name}
                                             onChange={this.handleOnChange}
-                                            placeholder="Nombre y Apellido" />
+                                            placeholder="Nombres y Apellidos"
+                                            invalid={"name" in errors?true:false}
+                                            title="Introduce tu nombre completo"
+                                             />
+                                            <FormFeedback>Introduce tu nombre completo</FormFeedback>
                                     </FormGroup>
 
                                     <FormGroup>
                                         <Label for="fa-app-cedula">Cédula</Label>
-                                        <Input required 
+                                        <MaskedInput
                                             id="fa-app-cedula"
                                             type="text" 
-                                            name="cedula" 
-                                            value={form.cedula}
+                                            name="cedula"
+                                            mask={[
+                                                /\d/, /\d/, /\d/,
+                                                '-',
+                                                /\d/,/\d/,/\d/,/\d/,/\d/,/\d/,/\d/,
+                                                '-',
+                                                /\d/
+                                            ]}
+                                            className="form-control"
+                                            placeholder="Introduce tu cédula de 10 dígitos"
+                                            guide={false}
                                             onChange={this.handleOnChange}
-                                            placeholder="000-0000000-0" />
-                                            <FormText color="muted">
-                                                Ejemplo: 001-5555555-2
-                                            </FormText>
+                                            value={form.cedula}
+                                            invalid={errors.includes("cedula") ? true:false} 
+                                            required
+                                            title="Introduce tu cédula de 10 dígitos"
+                                            render={(ref, props) => (
+                                                <Input innerRef={ref} {...props} />
+                                            )} />
+                                            <FormFeedback>Introduce tu cédula de 10 dígitos</FormFeedback>
                                     </FormGroup>
 
                                     <FormGroup>
@@ -220,18 +239,33 @@ class PersonalDataForm extends React.Component {
                                             name="email" 
                                             value={form.email}
                                             onChange={this.handleOnChange}
-                                            placeholder="ejemplo@email.com" />
+                                            invalid={errors.includes("email") ? true:false} 
+                                            title="Inserta un correo electrónico válido"
+                                            placeholder="nombre@correo.com" />
+                                            <FormFeedback>Inserta un correo electrónico válido</FormFeedback>
                                     </FormGroup>
 
                                     <FormGroup>
                                         <Label for="fa-app-phone">Teléfono de Contacto</Label>
-                                        <Input required  
+                                        <MaskedInput
                                             id="fa-app-phone"
                                             type="text" 
                                             name="phone" 
                                             value={form.phone}
                                             onChange={this.handleOnChange}
-                                            placeholder="(809)555-7777" />
+                                            placeholder="(809) 555-7777"
+                                            className="form-control"
+                                            mask={[
+                                                '(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/
+                                            ]}
+                                            guide={false}
+                                            invalid={errors.includes("phone") ? true:false} 
+                                            required
+                                            title="Introduce un número de contacto"
+                                            render={(ref, props) => (
+                                                <Input innerRef={ref} {...props} />
+                                            )} />
+                                            <FormFeedback>Introduce un número de contacto</FormFeedback>
                                     </FormGroup>
 
                                     <legend className="mt-4">Lugar de la Instalación</legend>
@@ -240,13 +274,16 @@ class PersonalDataForm extends React.Component {
                                         <Label for="fa-app-province">Provincia</Label>
                                         <Input required  
                                             id="fa-app-province"
-                                            type="select" 
-                                            name="province" 
+                                            type="select"
+                                            name="province"
                                             value={form.province}
                                             onChange={this.handleOnChange}
+                                            title="Selecciona la provincia de tu ubicación"
+                                            invalid={errors.includes("province") ? true:false} 
                                             >
                                             {renderProvinciasOptions}
                                         </Input>
+                                        <FormFeedback>Selecciona la provincia de tu ubicación</FormFeedback>
                                     </FormGroup>
                                     
                                     <FormGroup>
@@ -256,19 +293,25 @@ class PersonalDataForm extends React.Component {
                                             type="text" 
                                             name="address" 
                                             value={form.address}
+                                            title="Introduce la dirección de instalación"
                                             onChange={this.handleOnChange}
+                                            invalid={errors.includes("address") ? true:false} 
                                             placeholder="local, casa o residencial" />
+                                            <FormFeedback>Introduce la dirección de instalación</FormFeedback>
                                     </FormGroup>
 
                                     <FormGroup>
                                         <Label for="fa-app-sector">Sector</Label>
                                         <Input required  
                                             id="fa-app-sector" 
-                                            type="text" 
-                                            name="sector" 
+                                            type="text"
+                                            name="sector"
                                             value={form.sector}
                                             onChange={this.handleOnChange}
+                                            invalid={errors.includes("sector") ? true:false}
+                                            title="Introduce tu sector"
                                             placeholder="Sector" />
+                                            <FormFeedback>Introduce tu sector</FormFeedback>
                                     </FormGroup>
 
                                     <FormGroup>
@@ -279,7 +322,10 @@ class PersonalDataForm extends React.Component {
                                             name="reference" 
                                             value={form.reference}
                                             onChange={this.handleOnChange}
+                                            invalid={errors.includes("reference") ? true:false}
+                                            title="Introduce una referencia"
                                             placeholder="Cerca de... frente a..." />
+                                            <FormFeedback>Introduce una referencia</FormFeedback>
                                     </FormGroup>
 
                                     <legend className="mt-4">Fecha y día de Instalación</legend>
@@ -335,7 +381,7 @@ class PersonalDataForm extends React.Component {
                                             excludeTimes={[ 
                                                 setHours(setMinutes(TODAY, 0), 0), 
                                                 setHours(setMinutes(TODAY, 0), 1), 
-                                                setHours(setMinutes(TODAY, 0), 2), 
+                                                setHours(setMinutes(TODAY, 0), 2),
                                                 setHours(setMinutes(TODAY, 0), 3),
                                                 setHours(setMinutes(TODAY, 0), 4),
                                                 setHours(setMinutes(TODAY, 0), 5),

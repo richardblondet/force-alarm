@@ -11,7 +11,7 @@ export const initialState = {
         status: ""
     },
     plans: [],
-    step: 0,
+    step: 4,
     isLoading: true,
     showDisclaimer: false,
     showTerms: false,
