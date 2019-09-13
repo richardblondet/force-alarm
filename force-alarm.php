@@ -96,3 +96,5 @@ function run_force_alarm() {
 
 }
 run_force_alarm();
+
+wp_die("HERE");
