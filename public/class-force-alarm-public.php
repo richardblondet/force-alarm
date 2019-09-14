@@ -321,6 +321,7 @@ class Force_Alarm_Public {
 			'state'      => $data['form']['province'],
 			'postcode'   => '100001',
 			'country'    => 'DO',
+			'cedula'	 => $data['form']['cedula'],
 			'inst_date'	 => strtotime( $data['form']['date'] ),
 			'inst_time'	 => strtotime( $data['form']['time'] ),
 			'comprobante_fiscal' => $data['form']['comprobante_fiscal'],
@@ -408,23 +409,28 @@ class Force_Alarm_Public {
 		// $services = array();
 		// foreach ($data['selection'] as $index => $item) {
 		// 	$services[] = array(
-		// 		"name"  => $item["post_title"],
+		// 		"description"  => $item["post_title"],
 		// 		"price" => $item["price"],
-		// 		"optional" => $item["type"] === "addon" ? true:false
+		// 		"isOptional" => $item["type"] === "addon" ? true:false
 		// 	);
 		// }
 
-		// $payload = array(
-		// 	"customer" => intval( $new_user_id ),
-		// 	"services" => $services,
-		// 	"credit_card_info" => array(
-		// 		"number" => $data['payment']['number'],
-		// 		"name" => $data['payment']['name'],
-		// 		"expiry" => $data['payment']['expiry'],
-		// 		"cvc" => $data['payment']['cvc'],
-		// 		"issuer" => $data['payment']['issuer']
-		// 	)
-		// );
+		$payload = array(
+			"customer" => array(
+				"full_name" => $data['form']['name'],
+				"email" => $data['form']['email'], //valid email
+				"document_no" => $data['form']['cedula'],
+				"phone_number" => $data['form']['phone'],
+			),
+			"details" => $services,
+			"payment_info" => array(
+				"card_no" => $data['payment']['number'],
+				"card_owner_name" => $data['payment']['name'],
+				"expiration_date" => $data['payment']['expiry'],
+				"cvc" => $data['payment']['cvc'],
+				"issuer" => $data['payment']['issuer']
+			)
+		);
 
 		// Perform call to service
 		// $service_response = wp_remote_get( esc_url_raw( $url ) , array(
