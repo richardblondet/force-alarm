@@ -34,11 +34,11 @@ const NavItemStyle = styled(NavItem)`
     }
     &:after {
         left: 50%;
-        background-color: ${ props => props.done ? green : pink };
+        background-color: ${ props => props.done };
     }
     &:before {
         left: 0;
-        background-color: ${ props => props.active ? green : props.done ? green : pink };
+        background-color: ${ props => props.active ? green : props.done };
     }
     &:first-child:before {
         display: none;
@@ -125,7 +125,7 @@ class Steps extends React.Component {
             const isDone = step.step < state.step;
             const count = step.step > 2 ? step.step : step.step + 1;
             return (
-                <NavItemStyle key={`step-key-${step.step}`} active={isActive} done={isDone}>
+                <NavItemStyle key={`step-key-${step.step}`} active={isActive} done={isDone ? green : pink}>
                     <Dot active={isActive} done={isDone}>
                         <CheckMark className="isDone" src={checked} />
                         <RedDot className="isActive" />
