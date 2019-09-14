@@ -28,8 +28,9 @@ class PaymentDataForm extends React.Component {
             focused: "",
             formData: null,
             comprobante: false,
-            no_comprobante: "",
-            nombre_comprobante: "",
+            rnc: "",
+            nombre_rnc: "",
+            comprobante_fiscal: "",
             isValid: false
         };
     }
@@ -40,6 +41,8 @@ class PaymentDataForm extends React.Component {
             target.value = formatExpirationDate(target.value);
         } else if (target.name === "cvc") {
             target.value = formatCVC(target.value);
+        } else if (target.name === "name" ) {
+            target.value = String.prototype.replace.call(target.value, /[0-9]*/, "" );
         }
         this.setState({ 
             [target.name]: target.type === "checkbox" ? target.checked : target.value 
@@ -68,11 +71,12 @@ class PaymentDataForm extends React.Component {
         }, {});
 
         if( data.issuer ) {
-            this.props.handleStep( data );
+            // this.props.handleStep( data );
+            console.table( data );
         }
     }
     render() {
-        const { name, number, expiry, cvc, focused, issuer, comprobante, no_comprobante, nombre_comprobante } = this.state;
+        const { name, number, expiry, cvc, focused, issuer, comprobante, rnc, nombre_rnc, comprobante_fiscal } = this.state;
         return (
             <React.Fragment>
                 <Jumbotron tag="section" style={{backgroundColor:"white", borderRadius:"none"}}>
@@ -115,7 +119,7 @@ class PaymentDataForm extends React.Component {
                                             name="name"
                                             placeholder="Nombre en Tarjeta"
                                             required
-                                            pattern={/[a-zA-Z]*/}
+                                            pattern="[a-zA-Z ]*"
                                             onChange={this.handleOnChange}
                                             onFocus={this.handleInputFocus}
                                         />
@@ -160,31 +164,52 @@ class PaymentDataForm extends React.Component {
                                             Comprobante Fiscal
                                         </Label>
                                     </FormGroup>
-                                    { comprobante && <FormGroup className="mt-3">
-                                        <Row>
-                                            <Col xs="12" sm="6">
-                                                <Input
-                                                    type="number"
-                                                    name="no_comprobante"
-                                                    value={no_comprobante}
-                                                    placeholder="RNC"
-                                                    pattern={/\d/}
-                                                    required
+                                    { comprobante && <div>
+                                        <FormGroup className="mt-3">
+                                            <Row>
+                                                <Col xs="12" sm="12">
+                                                    <Input required  
+                                                    id="fa-app-comprobante_fiscal"
+                                                    type="select"
+                                                    name="comprobante_fiscal"
+                                                    value={comprobante_fiscal}
                                                     onChange={this.handleOnChange}
-                                                />
-                                            </Col>
-                                            <Col xs="12" sm="6">
-                                                <Input
-                                                    type="text"
-                                                    name="nombre_comprobante"
-                                                    value={nombre_comprobante}
-                                                    placeholder="Entidad"
-                                                    required
-                                                    onChange={this.handleOnChange}
-                                                />
-                                            </Col>
-                                        </Row> 
-                                    </FormGroup> }
+                                                    title="Selecciona la provincia de tu ubicación"
+                                                    >
+                                                        <option>Persona Física</option>
+                                                        <option>Empresa </option>
+                                                        <option>Zona Franca </option>
+                                                        <option>Régimen Gubernamental</option>
+                                                    </Input>
+                                                </Col>
+                                            </Row>
+                                        </FormGroup>
+                                        <FormGroup className="mt-3">
+                                            <Row>
+                                                <Col xs="12" sm="6">
+                                                    <Input
+                                                        type="number"
+                                                        name="rnc"
+                                                        value={rnc}
+                                                        placeholder="RNC"
+                                                        pattern={/\d/}
+                                                        required
+                                                        onChange={this.handleOnChange}
+                                                    />
+                                                </Col>
+                                                <Col xs="12" sm="6">
+                                                    <Input
+                                                        type="text"
+                                                        name="nombre_rnc"
+                                                        value={nombre_rnc}
+                                                        placeholder={`Nombre ${comprobante_fiscal}`}
+                                                        required
+                                                        onChange={this.handleOnChange}
+                                                    />
+                                                </Col>
+                                            </Row>
+                                        </FormGroup> 
+                                    </div>}
                                     <FormGroup className="mt-4">
                                         <Row>
                                             <Col xs="4">

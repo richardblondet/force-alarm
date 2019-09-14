@@ -322,7 +322,10 @@ class Force_Alarm_Public {
 			'postcode'   => '100001',
 			'country'    => 'DO',
 			'inst_date'	 => strtotime( $data['form']['date'] ),
-			'inst_time'	 => strtotime( $data['form']['time'] )
+			'inst_time'	 => strtotime( $data['form']['time'] ),
+			'comprobante_fiscal' => $data['form']['comprobante_fiscal'],
+			'rnc'		 => $data['form']['rnc'],
+			'nombre_rnc' => $data['form']['nombre_rnc']
 		);
 		// Now we create the order
 		$order = wc_create_order();

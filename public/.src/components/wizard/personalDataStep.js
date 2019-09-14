@@ -198,7 +198,7 @@ class PersonalDataForm extends React.Component {
                                             value={form.name}
                                             onChange={this.handleOnChange}
                                             placeholder="Nombres y Apellidos"
-                                            invalid={"name" in errors?true:false}
+                                            invalid={errors.includes("name") ? true:false}
                                             title="Introduce tu nombre completo"
                                              />
                                             <FormFeedback>Introduce tu nombre completo</FormFeedback>
