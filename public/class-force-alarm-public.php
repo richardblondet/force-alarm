@@ -403,56 +403,58 @@ class Force_Alarm_Public {
 		// --------------------------
 		// PAYMENT WEBSERVICE ///////
 		// --------------------------
-		// $url = ""; // Pending URL
+		$url = get_field('force_alarm_payment_endpoint_url', 'option');
 
-		// // Map to create services
-		// $services = array();
-		// foreach ($data['selection'] as $index => $item) {
-		// 	$services[] = array(
-		// 		"description"  => $item["post_title"],
-		// 		"price" => $item["price"],
-		// 		"isOptional" => $item["type"] === "addon" ? true:false
-		// 	);
-		// }
+		if ( "http://localhost:8181/payment" !== $url ):
+			// Map to create services
+			$services = array();
+			foreach ($data['selection'] as $index => $item) {
+				$services[] = array(
+					"description"  => $item["post_title"],
+					"price" => $item["price"],
+					"isOptional" => $item["type"] === "addon" ? true:false
+				);
+			}
 
-		$payload = array(
-			"customer" => array(
-				"full_name" => $data['form']['name'],
-				"email" => $data['form']['email'], //valid email
-				"document_no" => $data['form']['cedula'],
-				"phone_number" => $data['form']['phone'],
-			),
-			"details" => $services,
-			"payment_info" => array(
-				"card_no" => $data['payment']['number'],
-				"card_owner_name" => $data['payment']['name'],
-				"expiration_date" => $data['payment']['expiry'],
-				"cvc" => $data['payment']['cvc'],
-				"issuer" => $data['payment']['issuer']
-			)
-		);
+			$payload = array(
+				"customer" => array(
+					"full_name" => $data['form']['name'],
+					"email" => $data['form']['email'], //valid email
+					"document_no" => $data['form']['cedula'],
+					"phone_number" => $data['form']['phone'],
+				),
+				"details" => $services,
+				"payment_info" => array(
+					"card_no" => $data['payment']['number'],
+					"card_owner_name" => $data['payment']['name'],
+					"expiration_date" => $data['payment']['expiry'],
+					"cvc" => $data['payment']['cvc'],
+					"issuer" => $data['payment']['issuer']
+				)
+			);
 
-		// Perform call to service
-		// $service_response = wp_remote_get( esc_url_raw( $url ) , array(
-		// 	'method' 		=> 'POST',
-		// 	'timeout' 		=> 45,
-		// 	'httpversion'	=> '1.0',
-		// 	'user-agent'  	=> 'ForceAlarm/1.0; ' . home_url(),
-		// 	'sslverify'		=> false,
-		// 	'cookies' 		=> array(),
-		// 	'headers'		=> array('Content-Type' => 'application/json'),
-		// 	'body' 			=> json_encode( $payload )
-		// ));
+			// Perform call to service
+			$service_response = wp_remote_get( esc_url_raw( $url ) , array(
+				'method' 		=> 'POST',
+				'timeout' 		=> 45,
+				'httpversion'	=> '1.0',
+				'user-agent'  	=> 'ForceAlarm/1.0; ' . home_url(),
+				'sslverify'		=> false,
+				'cookies' 		=> array(),
+				'headers'		=> array('Content-Type' => 'application/json'),
+				'body' 			=> json_encode( $payload )
+			));
 
-		// Verify error on service communication and return nicely to the user
-		// if( is_wp_error( $service_response )) {
-		// 	$response['code']		 = 'FA-00'. __LINE__;
-		// 	$response['message']	 = 'Ha ocurrido un error: ' . $res->get_error_message();
-		// 	$response['url']		 = $url;
-		// 	$response['request_body']=$request_body;
+			// Verify error on service communication and return nicely to the user
+			if( is_wp_error( $service_response )) {
+				$response['code']		 = 'FA-00'. __LINE__;
+				$response['message']	 = 'Ha ocurrido un error: ' . $res->get_error_message();
+				$response['url']		 = $url;
+				$response['request_body']=$request_body;
 
-		// 	return wp_send_json_error( $response );	
-		// }
+				return wp_send_json_error( $response );	
+			}
+		endif;
 		// --------------------------
 		// PAYMENT WEBSERVICE ///////
 		// --------------------------

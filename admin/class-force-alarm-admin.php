@@ -159,6 +159,17 @@ class Force_Alarm_Admin {
 			'parent_slug'	=> 'options-general.php',
 			'redirect'		=> true
 		));
+		
+		acf_add_options_page(array(
+			'page_title' 	=> 'Force Alarm Payment Settings',
+			'menu_title'	=> 'Force Alarm Payment Settings',
+			'menu_slug' 	=> 'force-alarm-payment-settings',
+			'position'		=> 15,
+			'capability'	=> 'manage_options',
+			'parent_slug'	=> 'options-general.php',
+			'redirect'		=> true
+		));
+		
 	}
 
 	/**
