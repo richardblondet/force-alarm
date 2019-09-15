@@ -237,6 +237,8 @@ class Force_Alarm {
 		$this->loader->add_action( 'phpmailer_init', $plugin_public, 'fa_add_logo_to_email' );
 		/* Update emails */
 		$this->loader->add_action( 'wp_mail', $plugin_public, 'fa_wp_email_filter' );
+		/** Update new user login email message */
+		$this->loader->add_filter( 'wp_new_user_notification_email', $plugin_public, 'fa_wp_new_user_notification_email', 10, 3 );
 
 	}
 

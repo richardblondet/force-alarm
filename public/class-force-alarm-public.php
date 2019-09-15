@@ -525,30 +525,21 @@ class Force_Alarm_Public {
 	public function fa_ajax_TEST() {
 		$response = ['html' => '']; 
 
-		$email = new Force_Alarm_Email;
-
-		$table_data = array(
-			array(
-				'Name', 'Richard Blondet'
-			),
-			array(
-				'Addr', 'Mirador Norte'
-			)
-		);
-
-		$text = $email->add_module('table', array(
-			'table_header' => 'ASID DOLOR AMMET',
-			'table_data' => $table_data
+		$email = new Force_Alarm_Email(array(
+			'subject' => $blogname, 
+			'template' => 'base'
 		));
+		$message = $email->add_module('content', array(
+			'title'=> 'Bienvenido', 
+			'message' => "Nombre de usuario: user_login\n\nContraseña: new_pass"
+		))->get_html();
 
 		$to = "richardblondet@gmail.com";
 		$subject = "TESTING";
 
-		wp_mail( $to, $subject, $text );
+		wp_mail( $to, $subject, $message );
 
-		$response['html'] = $text;
-		$response['file'] = $file = sprintf( plugin_dir_path( dirname( __FILE__ ) ) . 'public/imgs/%s', $name = "force-alarm-logo-white.png" );
-		$response['exists'] = file_exists( $file );
+		$response['html'] = $message;
 		return wp_send_json_success( $response );
 	}
 
@@ -637,6 +628,29 @@ class Force_Alarm_Public {
 		);
 
 		return $wp_mail;
+	}
+
+	/**
+	 * Change the default message for new users
+	 * 
+	 * @since 1.x
+	 */
+	public function fa_wp_new_user_notification_email( $wp_new_user_notification_email, $user, $blogname ) {
+		$new_pass = wp_generate_password( 11, true, false );
+		wp_set_password( $new_pass, $user->ID );
+
+		$email = new Force_Alarm_Email(array(
+			'subject' => $blogname, 
+			'template' => 'base'
+		));
+		$message = $email->add_module('content', array(
+			'title'=> 'Bienvenido', 
+			'message' => "<p>Nombre de usuario: $user->user_login</p><p>Contraseña: $new_pass</p>"
+		))->get_html();
+
+		$wp_new_user_notification_email['message'] = $message;
+
+		return $wp_new_user_notification_email;
 	}
 
 }
