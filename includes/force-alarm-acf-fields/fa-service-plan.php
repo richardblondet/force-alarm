@@ -252,5 +252,7 @@ if( function_exists('acf_add_local_field_group') ):
         'active' => 1,
         'description' => '',
     ));
-    
+
+else: 
+    wp_die( 'Does not exists' );
 endif;

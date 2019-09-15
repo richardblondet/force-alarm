@@ -126,6 +126,7 @@ class Force_Alarm {
 		/**
 		 * The class responsible for handling and building emails load it here
 		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/force-alarm-acf-fields/fa-service-plan.php';
 
 		$this->loader = new Force_Alarm_Loader();
 
@@ -293,8 +294,8 @@ class Force_Alarm {
 	 * 
 	 * @since 1.6.0
 	 */
-	public function fa_register_acf_fields() {
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/force-alarm-acf-fields/fa-service-plan.php';
-	}
+	// public function fa_register_acf_fields() {
+	// 	require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/force-alarm-acf-fields/fa-service-plan.php';
+	// }
 
 }
