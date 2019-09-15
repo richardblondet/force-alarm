@@ -209,6 +209,13 @@ class Force_Alarm_Public {
 			'show_admin_bar_front' => false
 		);
 		$new_user_id = wp_insert_user( $new_user_data );
+		// AWESOME SUPPORT CAPS ------------
+		$new_user = new WP_User( $new_user_id );
+		$new_user->add_cap( 'create_ticket' );
+		$new_user->add_cap( 'view_ticket' );
+		$new_user->add_cap( 'reply_ticket' );
+		$new_user->add_cap( 'attach_files' );
+		// --------------------------------- 
 		wp_new_user_notification( $new_user_id, null, 'both');
 
 		/**
