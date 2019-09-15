@@ -78,7 +78,7 @@ class Force_Alarm {
 		$this->set_locale();
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
-		$this->fa_register_acf_fields();
+		// $this->fa_register_acf_fields();
 
 	}
 
@@ -168,6 +168,7 @@ class Force_Alarm {
 		 */
 		$this->loader->add_filter( 'acf/settings/url', $plugin_admin, 'fa_acf_settings_url' );
 		// $this->loader->add_filter( 'acf/settings/show_admin', $plugin_admin, 'fa_acf_settings_show_admin' );
+		$this->loader->add_filter( 'acf/init', $plugin_admin, 'fa_register_acf_fields' );
 
 		/**
 		 * Register Custom Post Types for this project
