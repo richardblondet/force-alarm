@@ -452,4 +452,23 @@ class Force_Alarm_Admin {
 		return $template;
 	}
 
+	/**
+	 * Adding custom columns to the order list
+	 */
+	public function fa_wc_new_order_column( $columns ) {
+		$columns['fecha_install'] = 'Fecha Instalación';
+    	return $columns;
+	}
+
+	public function fa_wc_edit_column_content( $column ) {
+		global $post;
+		$order = new WC_Order( $post->ID );
+		if ( 'fecha_install' === $column ) {
+			$fecha_instalacion = get_post_meta( $post->ID, 'billing_inst_date', true );
+			$hora_instalacion = get_post_meta( $post->ID, 'billing_inst_time', true );
+			$column_value = sprintf("%s • %s", $fecha_instalacion, $hora_instalacion );
+			echo $column_value;
+		}
+	}
+
 }

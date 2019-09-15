@@ -193,7 +193,12 @@ class Force_Alarm {
 		// Add a filter to the template include to determine if the page has our
 		// template assigned and return it's path
 		$this->loader->add_filter( 'template_include', $plugin_admin, 'view_project_template');
-		
+
+		/** Adding columns to the table */
+		$this->loader->add_filter( 'manage_edit-shop_order_columns', $plugin_admin, 'fa_wc_new_order_column' );
+
+		/** adding columns to the order table */
+		$this->loader->add_action( 'manage_shop_order_posts_custom_column', $plugin_admin, 'fa_wc_edit_column_content' );
 	}
 
 	/**

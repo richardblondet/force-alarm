@@ -376,19 +376,19 @@ class Force_Alarm_Public {
 			array(
 				'meta_key' => '_customer_user', 
 				'meta_value' => $new_user_id
-			)
+			),
 			// array(
 			// 	'meta_key' => 'fa_order_total',
 			// 	'meta_value' => $data['total']
 			// ),
-			// array(
-			// 	'meta_key' => 'fa_order_installation_date',
-			// 	'meta_value' => date("D d/m/Y", strtotime( $data['form']['date'] ))
-			// ),
-			// array(
-			// 	'meta_key' => 'fa_order_installation_time',
-			// 	'meta_value' => date("h:i a", strtotime( $data['form']['time'] ))
-			// ),
+			array(
+				'meta_key' => 'billing_inst_date',
+				'meta_value' => date("D d/m/Y", strtotime( $data['form']['date'] ))
+			),
+			array(
+				'meta_key' => 'billing_inst_time',
+				'meta_value' => date("h:i a", strtotime( $data['form']['time'] ))
+			),
 			// array(
 			// 	'meta_key' => 'fa_order_status',
 			// 	'meta_value' => 'pendiente' // 
@@ -409,7 +409,7 @@ class Force_Alarm_Public {
 		// --------------------------
 		$url = get_field('force_alarm_payment_endpoint_url', 'option');
 
-		if ( "http://localhost:8181/payment" !== $url ):
+		if ( "http://localhost:8181/payment" !== $url && NULL != $url ):
 			// Map to create services
 			// $services = array();
 			// foreach ($data['selection'] as $index => $item) {
@@ -537,9 +537,12 @@ class Force_Alarm_Public {
 		$to = "richardblondet@gmail.com";
 		$subject = "TESTING";
 
-		wp_mail( $to, $subject, $message );
+		// wp_mail( $to, $subject, $message );
+
+		$url = get_field('force_alarm_payment_endpoint_url', 'option');
 
 		$response['html'] = $message;
+		$response['url'] = $url;
 		return wp_send_json_success( $response );
 	}
 

@@ -52,7 +52,7 @@ class Header extends React.Component {
             <React.Fragment>
                 <HeaderContainer className="px-5 mb-4">
                     <div className="row justify-content-between align-items-center pt-4">
-                        <div className="col-4">
+                        <div className="col-9">
                             <div>
                                 <img src={logo} width="175" />
                             </div>
@@ -60,18 +60,18 @@ class Header extends React.Component {
                                 <small>Tu seguridad en tus manos.</small>
                             </div>
                         </div>
-                        <div className="col-4 text-right">
+                        <div className="col-3 text-right">
                             <span><img src={shopping_cart} width="22" /></span>
                             <span className="ml-2">{state.data.selection.length}</span>
                         </div>
                     </div>
                     <div className="row justify-content-between align-items-center pt-4 pb-3">
-                        <div className="col-4">
+                        <div className="col-6">
                             <div>
                                 <a className="text-white" href="/">Volver a Página Principal</a>
                             </div>
                         </div>
-                        <div className="col-4 text-right">
+                        <div className="col-6 text-right">
                             <div className="mb-0 h4 font-weight-bold">RD {total}</div>
                                 <small style={{color: "#E87E70"}}>total a pagar</small>
                             <div>

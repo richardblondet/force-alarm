@@ -29,7 +29,7 @@ const NavItemStyle = styled(NavItem)`
         width: 50%;
 
         ${({ active }) => active && `
-            background-color: #93261b;
+            background-color: ${red};
         `}
     }
     &:after {
@@ -45,6 +45,12 @@ const NavItemStyle = styled(NavItem)`
     }
     &:last-child:after {
         display: none;
+    }
+
+    @media (max-width: 480px) {
+        &:after, &:before { display: none; }
+
+        ${({ active }) => active === false ? `display:none;`: `display:block;`}
     }
     
 `;
@@ -91,6 +97,15 @@ const RedDot = styled.div`
 `;
 const StepNumber = styled.div`
     font-size: 2em;
+
+    @media (max-width: 480px) {
+        &:before {
+            content: "Paso ";
+        }
+        &:after {
+            content: "/4";
+        }
+    }
 `;
 class Steps extends React.Component {
     static contextType = Store;
@@ -126,7 +141,7 @@ class Steps extends React.Component {
             const count = step.step > 2 ? step.step : step.step + 1;
             return (
                 <NavItemStyle key={`step-key-${step.step}`} active={isActive} done={isDone ? green : pink}>
-                    <Dot active={isActive} done={isDone}>
+                    <Dot active={isActive} done={isDone} className="d-none d-sm-block">
                         <CheckMark className="isDone" src={checked} />
                         <RedDot className="isActive" />
                     </Dot>
