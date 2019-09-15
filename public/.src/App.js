@@ -1,4 +1,5 @@
 import React from "react";
+import styled from "styled-components";
 import PropTypes from "prop-types";
 import { StoreProvider } from "./redux/store";
 import Loading from "./components/loading";
@@ -9,6 +10,14 @@ import Terms from "./components/terms";
 import ServicesModal from "./components/servicesModal";
 import Disclaimer from "./components/disclaimer";
 
+const GlobalStyles = styled.div`
+    .btn {
+        @media (max-width: 480px) {
+            padding: 16px;
+        }
+    }
+`;
+
 class App extends React.Component {
     constructor(props) {
         super(props);
@@ -17,13 +26,15 @@ class App extends React.Component {
         const { globals } = this.props;
         return (
             <StoreProvider config={globals}>
-                <Loading />
-                <Disclaimer />
-                <Terms />
-                <ServicesModal />
-                <Header />
-                <Steps />
-                <ForceAlarmWizard />
+                <GlobalStyles>
+                    <Loading />
+                    <Disclaimer />
+                    <Terms />
+                    <ServicesModal />
+                    <Header />
+                    <Steps />
+                    <ForceAlarmWizard />
+                </GlobalStyles>
             </StoreProvider>
         );
     }
