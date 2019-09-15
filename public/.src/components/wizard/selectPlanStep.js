@@ -37,7 +37,6 @@ class SelectPlan extends React.Component {
     }
     render() {
         const plans = this.getPlans().reverse();
-        console.log("order? ", plans);
         const renderPlans = plans.map( (plan, indx) => {
         const formatter = new Intl.NumberFormat('en-US', { style: 'currency', currency:'USD' });
         const PriceFormatted = `RD${formatter.format(plan.price)}`;

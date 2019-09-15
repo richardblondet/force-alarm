@@ -59,7 +59,7 @@ const Reducer = (state = initialState, action) => {
                 ...state,
                 step: action.data
             };
-        case constants.SELECT_PLAN: 
+        case constants.SELECT_PLAN:
             return {
                 ...state,
                 data: {

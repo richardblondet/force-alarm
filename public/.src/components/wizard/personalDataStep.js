@@ -41,27 +41,29 @@ const PROVINCIAS = [
 
 const TODAY = new Date();
 
-// const initialDataTest = {
-//     name: "Richard Blondet",
-//     email: "test0@richardblondet.com",
-//     phone: "8094758085",
-//     address: "Calle San Juan Bautista",
-//     sector: "Mirador Norte",
-//     reference: "Frente a la casa",
-//     date: addDays( TODAY, 1),
-//     time: setHours( setMinutes( TODAY, 0), 8)
-// };
 const initialDataTest = {
-    cedula: "",
-    name: "",
-    email: "",
-    phone: "",
-    address: "",
-    sector: "",
-    reference: "",
+    name: "Richard Blondet",
+    email: "test0@richardblondet.com",
+    phone: "8094758085",
+    cedula: "001-2003899-2",
+    address: "Calle San Juan Bautista",
+    sector: "Mirador Norte",
+    reference: "Frente a la casa",
     date: addDays( TODAY, 1),
     time: setHours( setMinutes( TODAY, 0), 8)
-}
+};
+
+// const initialDataTest = {
+//     cedula: "",
+//     name: "",
+//     email: "",
+//     phone: "",
+//     address: "",
+//     sector: "",
+//     reference: "",
+//     date: addDays( TODAY, 1),
+//     time: setHours( setMinutes( TODAY, 0), 8)
+// }
 
 class PersonalDataForm extends React.Component {
     constructor(props) {
@@ -218,17 +220,17 @@ class PersonalDataForm extends React.Component {
                                                 /\d/
                                             ]}
                                             className="form-control"
-                                            placeholder="Introduce tu cédula de 10 dígitos"
+                                            placeholder="Introduce tu cédula de 11 dígitos"
                                             guide={false}
                                             onChange={this.handleOnChange}
                                             value={form.cedula}
                                             invalid={errors.includes("cedula") ? true:false} 
                                             required
-                                            title="Introduce tu cédula de 10 dígitos"
+                                            title="Introduce tu cédula de 11 dígitos"
                                             render={(ref, props) => (
                                                 <Input innerRef={ref} {...props} />
                                             )} />
-                                            <FormFeedback>Introduce tu cédula de 10 dígitos</FormFeedback>
+                                            <FormFeedback>Introduce tu cédula de 11 dígitos</FormFeedback>
                                     </FormGroup>
 
                                     <FormGroup>

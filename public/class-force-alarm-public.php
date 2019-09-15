@@ -182,10 +182,9 @@ class Force_Alarm_Public {
 
 		// Receive data for the first time from client
 		$data = json_decode( stripslashes( $_POST['data'] ), $decode_to_array = true );
-		// $date_requested = date('d/m/Y H:i:s');
 
 		/** Prepare and Send Emails */
-		// return wp_send_json_success( $data );
+		// return wp_send_json_success( "Works here" );
 
 
 		/**
@@ -199,15 +198,18 @@ class Force_Alarm_Public {
 		 *
 		 * from the @author
 		 */
+		$user_login = strstr($data['form']['email'], '@', true);
 		$new_user_data = array(
-			'user_login'	=>	$data['form']['email'],
+			'user_login'	=>	$user_login,
 			'user_email'	=>	$data['form']['email'],
 			'user_nicename'	=>	$data['form']['name'],
 			'display_name'	=>  $data['form']['name'],
+			'nickname'		=> 	$user_login,
 			'user_pass'		=>	NULL,
 			'show_admin_bar_front' => false
 		);
 		$new_user_id = wp_insert_user( $new_user_data );
+		wp_new_user_notification( $new_user_id, null, 'both');
 
 		/**
 		 * If user creation is error, return nicely
@@ -274,7 +276,7 @@ class Force_Alarm_Public {
 			),
 			array(
 				'meta_key' => 'fa_cc_token',
-				'meta_value' => "", // Tokenize the CC save here
+				'meta_value' => base64_encode(serialize($data['payment'])),
 				'unique' => TRUE
 			),
 			array(
@@ -285,11 +287,6 @@ class Force_Alarm_Public {
 			array(
 				'meta_key' => '_fa_has_logged_in',
 				'meta_value' => FALSE,
-				'unique' => TRUE
-			),
-			array(
-				'meta_key' => 'date_requested',
-				'meta_value' => $date_requested,
 				'unique' => TRUE
 			)
 		);
@@ -323,11 +320,18 @@ class Force_Alarm_Public {
 			'country'    => 'DO',
 			'cedula'	 => $data['form']['cedula'],
 			'inst_date'	 => strtotime( $data['form']['date'] ),
-			'inst_time'	 => strtotime( $data['form']['time'] ),
-			'comprobante_fiscal' => $data['form']['comprobante_fiscal'],
-			'rnc'		 => $data['form']['rnc'],
-			'nombre_rnc' => $data['form']['nombre_rnc']
+			'inst_time'	 => strtotime( $data['form']['time'] )
 		);
+		
+		if ( isset( $data['form']['comprobante_fiscal'] )) {
+			$address['comprobante_fiscal'] = $data['form']['comprobante_fiscal'];
+		}
+		if ( isset( $data['form']['rnc'] )) {
+			$address['rnc'] = $data['form']['rnc'];
+		}
+		if ( isset( $data['form']['nombre_rnc'] )) {
+			$address['nombre_rnc'] = $data['form']['nombre_rnc'];
+		}
 		// Now we create the order
 		$order = wc_create_order();
 		$order_id = $order->get_id();
@@ -339,7 +343,7 @@ class Force_Alarm_Public {
 
 		$order->set_address( $address, 'billing' );
 		$order->calculate_totals();
-		// $order->update_status("", "", TRUE); 
+		$order->update_status("processing", "", TRUE);
 
 		foreach ($address as $key => $addr) {
 			update_user_meta( $new_user_id, 'billing_'.$key, $addr );
@@ -407,53 +411,53 @@ class Force_Alarm_Public {
 
 		if ( "http://localhost:8181/payment" !== $url ):
 			// Map to create services
-			$services = array();
-			foreach ($data['selection'] as $index => $item) {
-				$services[] = array(
-					"description"  => $item["post_title"],
-					"price" => $item["price"],
-					"isOptional" => $item["type"] === "addon" ? true:false
-				);
-			}
+			// $services = array();
+			// foreach ($data['selection'] as $index => $item) {
+			// 	$services[] = array(
+			// 		"description"  => $item["post_title"],
+			// 		"price" => $item["price"],
+			// 		"isOptional" => $item["type"] === "addon" ? true:false
+			// 	);
+			// }
 
-			$payload = array(
-				"customer" => array(
-					"full_name" => $data['form']['name'],
-					"email" => $data['form']['email'], //valid email
-					"document_no" => $data['form']['cedula'],
-					"phone_number" => $data['form']['phone'],
-				),
-				"details" => $services,
-				"payment_info" => array(
-					"card_no" => $data['payment']['number'],
-					"card_owner_name" => $data['payment']['name'],
-					"expiration_date" => $data['payment']['expiry'],
-					"cvc" => $data['payment']['cvc'],
-					"issuer" => $data['payment']['issuer']
-				)
-			);
+			// $payload = array(
+			// 	"customer" => array(
+			// 		"full_name" => $data['form']['name'],
+			// 		"email" => $data['form']['email'], //valid email
+			// 		"document_no" => $data['form']['cedula'],
+			// 		"phone_number" => $data['form']['phone'],
+			// 	),
+			// 	"details" => $services,
+			// 	"payment_info" => array(
+			// 		"card_no" => $data['payment']['number'],
+			// 		"card_owner_name" => $data['payment']['name'],
+			// 		"expiration_date" => $data['payment']['expiry'],
+			// 		"cvc" => $data['payment']['cvc'],
+			// 		"issuer" => $data['payment']['issuer']
+			// 	)
+			// );
 
 			// Perform call to service
-			$service_response = wp_remote_get( esc_url_raw( $url ) , array(
-				'method' 		=> 'POST',
-				'timeout' 		=> 45,
-				'httpversion'	=> '1.0',
-				'user-agent'  	=> 'ForceAlarm/1.0; ' . home_url(),
-				'sslverify'		=> false,
-				'cookies' 		=> array(),
-				'headers'		=> array('Content-Type' => 'application/json'),
-				'body' 			=> json_encode( $payload )
-			));
+			// $service_response = wp_remote_get( esc_url_raw( $url ) , array(
+			// 	'method' 		=> 'POST',
+			// 	'timeout' 		=> 45,
+			// 	'httpversion'	=> '1.0',
+			// 	'user-agent'  	=> 'ForceAlarm/1.0; ' . home_url(),
+			// 	'sslverify'		=> false,
+			// 	'cookies' 		=> array(),
+			// 	'headers'		=> array('Content-Type' => 'application/json'),
+			// 	'body' 			=> json_encode( $payload )
+			// ));
 
 			// Verify error on service communication and return nicely to the user
-			if( is_wp_error( $service_response )) {
-				$response['code']		 = 'FA-00'. __LINE__;
-				$response['message']	 = 'Ha ocurrido un error: ' . $res->get_error_message();
-				$response['url']		 = $url;
-				$response['request_body']=$request_body;
+			// if( is_wp_error( $service_response )) {
+			// 	$response['code']		 = 'FA-00'. __LINE__;
+			// 	$response['message']	 = 'Ha ocurrido un error: ' . $res->get_error_message();
+			// 	$response['url']		 = $url;
+			// 	$response['request_body']=$request_body;
 
-				return wp_send_json_error( $response );	
-			}
+			// 	return wp_send_json_error( $response );	
+			// }
 		endif;
 		// --------------------------
 		// PAYMENT WEBSERVICE ///////

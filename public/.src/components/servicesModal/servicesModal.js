@@ -30,10 +30,10 @@ class ServicesModal extends React.Component {
                     <div dangerouslySetInnerHTML={{__html: state.modalService.post_title}} />
                     <h3>{PriceFormatted}</h3>
                 </ModalBody>
-                <ModalBody className="text-center" style={{"white-space": "pre-line"}}>
+                <ModalBody className="text-center" style={{"whiteSpace": "pre-line"}}>
                     <div dangerouslySetInnerHTML={{__html: state.modalService.post_excerpt}} />
                 </ModalBody>
-                <ModalBody className="text-center" style={{"white-space": "pre-line"}}>
+                <ModalBody className="text-center" style={{"whiteSpace": "pre-line"}}>
                     <div dangerouslySetInnerHTML={{__html: state.modalService.post_content}} />
                 </ModalBody>
                 <ModalFooter className="text-center border-0">

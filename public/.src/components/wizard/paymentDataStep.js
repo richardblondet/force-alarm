@@ -11,7 +11,7 @@ import {
     Jumbotron,
     Row, Col,
     Button,
-    Form, FormGroup, Label, Input, FormText
+    Form, FormGroup, Label, Input, FormFeedback
 } from "reactstrap";
 /**
  * Test cc with @see {@link https://www.easy400.net/js2/regexp/ccnums.html}
@@ -30,22 +30,27 @@ class PaymentDataForm extends React.Component {
             comprobante: false,
             rnc: "",
             nombre_rnc: "",
-            comprobante_fiscal: "",
-            isValid: false
+            comprobante_fiscal: "Persona Física",
+            isValid: false,
+            errors: []
         };
     }
     handleOnChange = ({ target }) => {
+        let errors = [];
         if (target.name === "number") {
             target.value = formatCreditCardNumber(target.value);
         } else if (target.name === "expiry") {
             target.value = formatExpirationDate(target.value);
         } else if (target.name === "cvc") {
             target.value = formatCVC(target.value);
-        } else if (target.name === "name" ) {
-            target.value = String.prototype.replace.call(target.value, /[0-9]*/, "" );
         }
+        if( target.pattern && new RegExp(target.pattern).test(target.value) === false) {
+            errors.push( target.name );
+        }
+
         this.setState({ 
-            [target.name]: target.type === "checkbox" ? target.checked : target.value 
+            [target.name]: target.type === "checkbox" ? target.checked : target.value,
+            errors
         });
     }
     handleCallback = ({ issuer }, isValid ) => {
@@ -64,19 +69,23 @@ class PaymentDataForm extends React.Component {
     }
     handleSubmitButton = (e) => {
         e.preventDefault();
-
+        let errors = [];
         const data = [...e.target.elements].filter(d => d.name).reduce((acc, d) => {
+            if (d.value === "" || !d.value || ( d.pattern && new RegExp(d.pattern).test(d.value) === false )) {
+                errors.push( d.name );
+            }
             acc[d.name] = d.value;
             return acc;
         }, {});
 
-        if( data.issuer ) {
-            // this.props.handleStep( data );
-            console.table( data );
+        if( data.issuer && errors.length < 1) {
+            this.props.handleStep( data );
+        } else {
+            this.setState({ errors });
         }
     }
     render() {
-        const { name, number, expiry, cvc, focused, issuer, comprobante, rnc, nombre_rnc, comprobante_fiscal } = this.state;
+        const { name, number, expiry, cvc, focused, issuer, comprobante, rnc, nombre_rnc, comprobante_fiscal, errors } = this.state;
         return (
             <React.Fragment>
                 <Jumbotron tag="section" style={{backgroundColor:"white", borderRadius:"none"}}>
@@ -111,7 +120,10 @@ class PaymentDataForm extends React.Component {
                                             required
                                             onChange={this.handleOnChange}
                                             onFocus={this.handleInputFocus}
+                                            invalid={errors.includes("number")}
+                                            title="Inserta un número de tarjeta válido"
                                         />
+                                        <FormFeedback>Inserta un número de tarjeta válido</FormFeedback>
                                     </FormGroup>
                                     <FormGroup>
                                         <Input
@@ -119,14 +131,17 @@ class PaymentDataForm extends React.Component {
                                             name="name"
                                             placeholder="Nombre en Tarjeta"
                                             required
-                                            pattern="[a-zA-Z ]*"
+                                            pattern="(^[A-Za-z ]+$)"
                                             onChange={this.handleOnChange}
                                             onFocus={this.handleInputFocus}
+                                            invalid={errors.includes("name")}
+                                            title="Inserta nombre de tarjeta válido"
                                         />
+                                        <FormFeedback>Inserta nombre de tarjeta válido</FormFeedback>
                                     </FormGroup>
-                                    <FormGroup>
-                                        <Row>
-                                            <Col xs="12" sm="6">
+                                    <Row>
+                                        <Col xs="12" sm="6">
+                                            <FormGroup>
                                                 <Input
                                                     type="tel"
                                                     name="expiry"
@@ -135,9 +150,14 @@ class PaymentDataForm extends React.Component {
                                                     required
                                                     onChange={this.handleOnChange}
                                                     onFocus={this.handleInputFocus}
+                                                    invalid={errors.includes("expiry")}
+                                                    title="Inserta una fecha de expiración válida"
                                                 />
-                                            </Col>
-                                            <Col xs="12" sm="6">
+                                                <FormFeedback>Inserta una fecha de expiración válida</FormFeedback>
+                                            </FormGroup>
+                                        </Col>
+                                        <Col xs="12" sm="6">
+                                            <FormGroup>
                                                 <Input
                                                     type="tel"
                                                     name="cvc"
@@ -146,11 +166,14 @@ class PaymentDataForm extends React.Component {
                                                     required
                                                     onChange={this.handleOnChange}
                                                     onFocus={this.handleInputFocus}
+                                                    invalid={errors.includes("cvc")}
+                                                    title="Inserta código CVC válido"
                                                 />
-                                            </Col>
-                                        </Row>
-                                        <input type="hidden" name="issuer" value={issuer} onChange={this.handleOnChange} />
-                                    </FormGroup>
+                                                <FormFeedback>Inserta código CVC válido</FormFeedback>
+                                            </FormGroup>
+                                        </Col>
+                                    </Row>
+                                    <input type="hidden" name="issuer" value={issuer} onChange={this.handleOnChange} />
                                     <FormGroup>
                                         <hr />
                                     </FormGroup>
@@ -165,9 +188,9 @@ class PaymentDataForm extends React.Component {
                                         </Label>
                                     </FormGroup>
                                     { comprobante && <div>
-                                        <FormGroup className="mt-3">
-                                            <Row>
-                                                <Col xs="12" sm="12">
+                                        <Row>
+                                            <Col xs="12" sm="12">
+                                                <FormGroup className="mt-3">
                                                     <Input required  
                                                     id="fa-app-comprobante_fiscal"
                                                     type="select"
@@ -181,23 +204,28 @@ class PaymentDataForm extends React.Component {
                                                         <option>Zona Franca </option>
                                                         <option>Régimen Gubernamental</option>
                                                     </Input>
-                                                </Col>
-                                            </Row>
-                                        </FormGroup>
-                                        <FormGroup className="mt-3">
-                                            <Row>
-                                                <Col xs="12" sm="6">
+                                                </FormGroup>
+                                            </Col>
+                                        </Row>
+                                        <Row>
+                                            <Col xs="12" sm="6">
+                                                <FormGroup className="mt-3">
                                                     <Input
                                                         type="number"
                                                         name="rnc"
                                                         value={rnc}
                                                         placeholder="RNC"
-                                                        pattern={/\d/}
+                                                        pattern="\d{11}"
                                                         required
+                                                        invalid={errors.includes("rnc") ? true:false}
                                                         onChange={this.handleOnChange}
+                                                        title="Inserta un RNC válido de 11 dígitos"
                                                     />
-                                                </Col>
-                                                <Col xs="12" sm="6">
+                                                    <FormFeedback>Inserta un RNC válido de 11 dígitos</FormFeedback>
+                                                </FormGroup>
+                                            </Col>
+                                            <Col xs="12" sm="6">
+                                                <FormGroup className="mt-3">
                                                     <Input
                                                         type="text"
                                                         name="nombre_rnc"
@@ -206,9 +234,9 @@ class PaymentDataForm extends React.Component {
                                                         required
                                                         onChange={this.handleOnChange}
                                                     />
-                                                </Col>
-                                            </Row>
-                                        </FormGroup> 
+                                                </FormGroup>
+                                            </Col>
+                                        </Row>
                                     </div>}
                                     <FormGroup className="mt-4">
                                         <Row>
