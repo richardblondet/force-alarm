@@ -201,6 +201,12 @@ class Force_Alarm {
 
 		/** adding columns to the order table */
 		$this->loader->add_action( 'manage_shop_order_posts_custom_column', $plugin_admin, 'fa_wc_edit_column_content' );
+
+		/** Adding order information in the order details page */
+		$this->loader->add_action( 'woocommerce_admin_order_data_after_order_details', $plugin_admin, 'fa_editable_order_meta_general' );
+
+		/** Adding details to order data */
+		$this->loader->add_action( 'woocommerce_admin_order_data_after_billing_address', $plugin_admin, 'fa_woocommerce_order_details_after_order_table' );
 	}
 
 	/**

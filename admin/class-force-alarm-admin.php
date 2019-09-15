@@ -460,6 +460,9 @@ class Force_Alarm_Admin {
     	return $columns;
 	}
 
+	/**
+	 * Adding columns to the order table list 
+	 */
 	public function fa_wc_edit_column_content( $column ) {
 		global $post;
 		$order = new WC_Order( $post->ID );
@@ -469,6 +472,45 @@ class Force_Alarm_Admin {
 			$column_value = sprintf("%s • %s", $fecha_instalacion, $hora_instalacion );
 			echo $column_value;
 		}
+	}
+
+	/**
+	 * Adding order details in the order page
+	 */
+	public function fa_editable_order_meta_general( $order ) {
+		
+		?>
+		<br class="clear" />
+		<h3>Detalles de la Instalación <!--<a href="#" class="edit_address">Edit</a> --></h3>
+		<?php 
+			/*
+			 * get all the meta data values we need
+			 */ 
+			$billing_inst_date = get_post_meta( $order->id, 'billing_inst_date', true );
+			$billing_inst_time = get_post_meta( $order->id, 'billing_inst_time', true );
+			$billing_inst_address = get_post_meta( $order->id, 'billing_inst_address', true );
+			$billing_inst_reference = get_post_meta( $order->id, 'billing_inst_reference', true );
+			$billing_inst_sector = get_post_meta( $order->id, 'billing_inst_sector', true );
+			$billing_inst_province = get_post_meta( $order->id, 'billing_inst_province', true );
+		?>
+		<div class="address">
+			<p><strong>Fecha de Instalación:</strong> <?php echo $billing_inst_date; ?></p>
+			<p><strong>Hora de Instalación:</strong> <?php echo $billing_inst_time; ?></p>
+			<p><strong>Lugar:</strong> <?php echo sprintf("%s , %s", $billing_inst_address, $billing_inst_sector ); ?></p>
+			<p><strong>Referencia:</strong> <?php echo $billing_inst_reference; ?></p>
+			<p><strong>Provincia:</strong> <?php echo $billing_inst_province; ?></p>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Adding custom cedula in order
+	 */
+	public function fa_woocommerce_order_details_after_order_table( $order ) {
+		$user_id = get_post_meta( $order->id, '_customer_user', true );
+		$user_cedula = get_user_meta( $user_id, 'billing_cedula', true );
+		echo '<p><strong>'.__('Cedula').':</strong> <br />' . $user_cedula . '</p>';
+
 	}
 
 }

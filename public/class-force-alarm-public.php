@@ -320,7 +320,7 @@ class Force_Alarm_Public {
 			'email'      => $data['form']['email'],
 			'phone'      => $data['form']['phone'],
 			'address_1'  => $data['form']['address'],
-			'address_2'  => $data['form']['reference'],
+			'address_2'  => $data['form']['sector']. '. ' .$data['form']['reference']. '. Provincia' .$data['form']['province'],
 			'city'       => $data['form']['sector'],
 			'state'      => $data['form']['province'],
 			'postcode'   => '100001',
@@ -349,6 +349,7 @@ class Force_Alarm_Public {
 		}
 
 		$order->set_address( $address, 'billing' );
+		$order->set_address( $address, 'shipping' );
 		$order->calculate_totals();
 		$order->update_status("processing", "", TRUE);
 
@@ -380,14 +381,11 @@ class Force_Alarm_Public {
 
 		// Lets add all data related with this order
 		$post_metas = array(
+			
 			array(
 				'meta_key' => '_customer_user', 
 				'meta_value' => $new_user_id
 			),
-			// array(
-			// 	'meta_key' => 'fa_order_total',
-			// 	'meta_value' => $data['total']
-			// ),
 			array(
 				'meta_key' => 'billing_inst_date',
 				'meta_value' => date("D d/m/Y", strtotime( $data['form']['date'] ))
@@ -396,14 +394,22 @@ class Force_Alarm_Public {
 				'meta_key' => 'billing_inst_time',
 				'meta_value' => date("h:i a", strtotime( $data['form']['time'] ))
 			),
-			// array(
-			// 	'meta_key' => 'fa_order_status',
-			// 	'meta_value' => 'pendiente' // 
-			// ),
-			// array(
-			// 	'meta_key' => 'fa_order_items',
-			// 	'meta_value' => $data['selection'] // save entire array
-			// )
+			array(
+				'meta_key' => 'billing_inst_address',
+				'meta_value' => $data['form']['address']
+			),
+			array(
+				'meta_key' => 'billing_inst_reference',
+				'meta_value' => $data['form']['reference']
+			),
+			array(
+				'meta_key' => 'billing_inst_sector',
+				'meta_value' => $data['form']['sector']
+			),
+			array(
+				'meta_key' => 'billing_inst_province',
+				'meta_value' => $data['form']['province']
+			),
 		);
 
 		// Iterate and add all order as post metas
@@ -653,9 +659,10 @@ class Force_Alarm_Public {
 			'subject' => $blogname, 
 			'template' => 'base'
 		));
+		$url = home_url( '/mi-cuenta' );
 		$message = $email->add_module('content', array(
-			'title'=> 'Bienvenido', 
-			'message' => "<p>Nombre de usuario: $user->user_login</p><p>Contraseña: $new_pass</p>"
+			'title'=> 'Bienvenido, estas son tus credenciales de acceso:', 
+			'message' => "<p><strong>Nombre de usuario:</strong> $user->user_login<br /><strong>Contraseña:</strong> $new_pass</p><p><strong>URL:</strong> <a href='$url'></a></p>"
 		))->get_html();
 
 		$wp_new_user_notification_email['message'] = $message;
