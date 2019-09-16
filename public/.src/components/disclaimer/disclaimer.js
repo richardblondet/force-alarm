@@ -2,8 +2,24 @@ import React from "react";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import Store from "../../redux/store";
 import constants from "../../constants";
-
+import styled from "styled-components";
 import ContentService from "../../services/content";
+
+const MyModal = styled(Modal)`
+    .modal-body {
+        min-height: 75vh;
+    }
+
+`;
+
+const MyIframe = styled.iframe`
+    @media (max-width: 480px) {
+        min-height: 100vh;
+    }
+    @media (min-width: 480.1px) {
+        min-height: 500px;
+    }
+`;
 
 class Disclaimer extends React.Component {
     static contextType = Store;
@@ -36,15 +52,16 @@ class Disclaimer extends React.Component {
         const {disclaimer} = this.state;
 
         return (
-            <Modal isOpen={state.showDisclaimer} toggle={this.toggle} className={this.props.className}>
+            <MyModal isOpen={state.showDisclaimer} toggle={this.toggle} className={this.props.className} size="lg">
                 <ModalHeader toggle={this.toggle}>Contáctanos</ModalHeader>
                 <ModalBody>
-                    <div dangerouslySetInnerHTML={{ __html: disclaimer }} />
+                    {/* <div dangerouslySetInnerHTML={{ __html: disclaimer }} /> */}
+                    <MyIframe src="http://159.89.53.77/formulario-de-solicitud/" width="100%" frameBorder="0" />
                 </ModalBody>
                 <ModalFooter>
                     <Button color="light" onClick={this.toggle}>Cerrar</Button>
                 </ModalFooter>
-            </Modal>
+            </MyModal>
         );
     }
 }

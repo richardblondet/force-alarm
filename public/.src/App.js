@@ -11,9 +11,13 @@ import ServicesModal from "./components/servicesModal";
 import Disclaimer from "./components/disclaimer";
 
 const GlobalStyles = styled.div`
-    .btn {
-        @media (max-width: 480px) {
+    @media (max-width: 480px) {
+        .btn {
             padding: 16px;
+            margin-bottom: 1rem!important;
+        }
+        .ver-mas {
+            font-size: 20px;
         }
     }
 `;

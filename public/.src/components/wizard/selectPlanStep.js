@@ -60,7 +60,7 @@ class SelectPlan extends React.Component {
                     <Button color="danger" onClick={e=>this.handlePlanSelect(e, plan)}>Seleccionar</Button>
                     <div>
                         <a href="" 
-                            className="mt-3"
+                            className="mt-3 ver-mas"
                             onClick={e=> {
                                 e.preventDefault();
                                 this.showServiceModal(plan);
