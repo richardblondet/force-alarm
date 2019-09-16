@@ -509,6 +509,7 @@ class Force_Alarm_Admin {
 	public function fa_woocommerce_order_details_after_order_table( $order ) {
 		$user_id = get_post_meta( $order->id, '_customer_user', true );
 		$user_cedula = get_user_meta( $user_id, 'billing_cedula', true );
+		
 		echo '<p><strong>'.__('Cedula').':</strong> <br />' . $user_cedula . '</p>';
 
 	}

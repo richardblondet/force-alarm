@@ -332,12 +332,10 @@ class Force_Alarm_Public {
 		
 		if ( isset( $data['form']['comprobante_fiscal'] )) {
 			$address['comprobante_fiscal'] = $data['form']['comprobante_fiscal'];
-		}
-		if ( isset( $data['form']['rnc'] )) {
 			$address['rnc'] = $data['form']['rnc'];
-		}
-		if ( isset( $data['form']['nombre_rnc'] )) {
 			$address['nombre_rnc'] = $data['form']['nombre_rnc'];
+		} else {
+			$address['comprobante_fiscal'] = $address['rnc'] = $address['nombre_rnc'] = "";
 		}
 		// Now we create the order
 		$order = wc_create_order();
@@ -662,12 +660,21 @@ class Force_Alarm_Public {
 		$url = home_url( '/mi-cuenta' );
 		$message = $email->add_module('content', array(
 			'title'=> 'Bienvenido, estas son tus credenciales de acceso:', 
-			'message' => "<p><strong>Nombre de usuario:</strong> $user->user_login<br /><strong>Contraseña:</strong> $new_pass</p><p><strong>URL:</strong> <a href='$url'></a></p>"
+			'message' => "<p><strong>Nombre de usuario:</strong> $user->user_login<br /><strong>Contraseña:</strong> $new_pass</p><p><strong>URL:</strong> <a href='$url'>$url</a></p>"
 		))->get_html();
 
 		$wp_new_user_notification_email['message'] = $message;
 
 		return $wp_new_user_notification_email;
+	}
+
+	/**
+	 * adding a button in the account
+	 */
+	public function fa_wpas_frontend_add_nav_buttons() {
+		$my_account_url = get_permalink( get_option('woocommerce_myaccount_page_id') );
+		$my_account_label = __( 'Mi cuenta', 'force-alarm' );
+		echo sprintf( '<a href="%s" class="wpas-btn wpas-btn-default wpas-link-ticketnew">%s</a>', $my_account_url, $my_account_label);
 	}
 
 }

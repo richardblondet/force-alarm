@@ -252,6 +252,9 @@ class Force_Alarm {
 		$this->loader->add_action( 'wp_mail', $plugin_public, 'fa_wp_email_filter' );
 		/** Update new user login email message */
 		$this->loader->add_filter( 'wp_new_user_notification_email', $plugin_public, 'fa_wp_new_user_notification_email', 10, 3 );
+		
+		/** Filter for adding button in the awsome support ticket */
+		$this->loader->add_filter( 'wpas_frontend_add_nav_buttons', $plugin_public, 'fa_wpas_frontend_add_nav_buttons' );
 
 	}
 
