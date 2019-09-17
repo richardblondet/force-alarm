@@ -13,27 +13,43 @@ import {
     Button,
     Form, FormGroup, Label, Input, FormFeedback
 } from "reactstrap";
+
+const initialDataTest = {
+    number: "",
+    name: "",
+    expiry: "", // mes/año (2 dígitos)
+    cvc: "",
+    issuer: "", // visa o mastercard
+    focused: "",
+    formData: null,
+    comprobante: false,
+    rnc: "",
+    nombre_rnc: "",
+    comprobante_fiscal: "Persona Física",
+    isValid: false,
+    errors: []
+};
+
 /**
  * Test cc with @see {@link https://www.easy400.net/js2/regexp/ccnums.html}
  */
 class PaymentDataForm extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            number: "",
-            name: "",
-            expiry: "", // mes/año (2 dígitos)
-            cvc: "",
-            issuer: "", // visa o mastercard
-            focused: "",
-            formData: null,
-            comprobante: false,
-            rnc: "",
-            nombre_rnc: "",
-            comprobante_fiscal: "Persona Física",
-            isValid: false,
-            errors: []
-        };
+        this.state = initialDataTest;
+    }
+    componentDidMount() {
+        let { form } = this.props;
+
+        if( form ) {
+            this.setState({
+                form
+            });
+        } else {
+            this.setState({
+                form: initialDataTest
+            });
+        }
     }
     handleOnChange = ({ target }) => {
         let errors = [];
@@ -77,8 +93,10 @@ class PaymentDataForm extends React.Component {
             acc[d.name] = d.value;
             return acc;
         }, {});
-
-        if( data.issuer && errors.length < 1) {
+        if ( !data.issuer ) {
+            errors.push("number");
+        }
+        if( errors.length < 1) {
             this.props.handleStep( data );
         } else {
             this.setState({ errors });
@@ -215,7 +233,7 @@ class PaymentDataForm extends React.Component {
                                                         name="rnc"
                                                         value={rnc}
                                                         placeholder="RNC"
-                                                        pattern="\d{11}"
+                                                        pattern="\d{9,11}"
                                                         required
                                                         invalid={errors.includes("rnc") ? true:false}
                                                         onChange={this.handleOnChange}

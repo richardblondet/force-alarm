@@ -45,9 +45,8 @@ class Header extends React.Component {
     
     render() {
         const { state } = this.context;
-        const formatter = new Intl.NumberFormat('es-US', { style: "currency", currency: "USD" });
-        const total = formatter.format( state.data.total || 0);
-
+        const formatter = new Intl.NumberFormat('en-US', { style: 'currency', currency:'USD' });
+        const PriceFormatted = `RD${formatter.format(state.data.total || 0)}`;
         return (
             <React.Fragment>
                 <HeaderContainer className="px-5 mb-4">
@@ -72,7 +71,7 @@ class Header extends React.Component {
                             </div>
                         </div>
                         <div className="col-6 text-right">
-                            <div className="mb-0 h4 font-weight-bold">RD {total}</div>
+                            <div className="mb-0 h4 font-weight-bold">{PriceFormatted}</div>
                                 <small style={{color: "#E87E70"}}>total a pagar</small>
                             <div>
                             </div>

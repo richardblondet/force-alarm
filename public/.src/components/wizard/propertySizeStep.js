@@ -29,7 +29,7 @@ class PropertySize extends React.Component {
         return (
             <Jumbotron tag="section" style={{backgroundColor:"white", borderRadius:"none"}}>
                 <Container>
-                    <h2 className="text-center jumbotron-heading display-5 mb-4">¿Su propiedad es mayor de 200mts<sup>2</sup>?</h2>
+                    <h2 className="text-center jumbotron-heading display-5 mb-4">¿Su propiedad es mayor de 250mt<sup>2</sup>?</h2>
                 </Container>
                 <Container>
                     <Row>

@@ -509,8 +509,15 @@ class Force_Alarm_Admin {
 	public function fa_woocommerce_order_details_after_order_table( $order ) {
 		$user_id = get_post_meta( $order->id, '_customer_user', true );
 		$user_cedula = get_user_meta( $user_id, 'billing_cedula', true );
-		
+
 		echo '<p><strong>'.__('Cedula').':</strong> <br />' . $user_cedula . '</p>';
+
+		$billing_comprobante_fiscal = get_post_meta( $order->id, 'billing_comprobante_fiscal', true );
+		$billing_rnc = get_post_meta( $order->id, 'billing_rnc', true );
+		$billing_nombre_rnc = get_post_meta( $order->id, 'billing_nombre_rnc', true );
+		// if( !empty( $billing_comprobante_fiscal ) ) {
+			echo sprintf('<p><strong>%s %s:</strong> <br /> %s %s</p>', __( 'Comprobante ', 'force-alarm' ), $billing_comprobante_fiscal, $billing_rnc, $billing_nombre_rnc );
+		// }
 
 	}
 

@@ -105,7 +105,7 @@ class ForceAlarmWizard extends React.Component {
         const {dispatch} = this.context;
         console.log("payment_data", data )
         dispatch({ type: constants.LOADING_ON });
-        // dispatch({ type: constants.SET_PAYMENT_DATA, data });
+        dispatch({ type: constants.SET_PAYMENT_DATA, data });
         this.process( data );
     }
     showTermsModal = () => {
@@ -151,11 +151,17 @@ class ForceAlarmWizard extends React.Component {
             console.log( "Server Response", response );
             this.goToStep(5);
             dispatch({ type: constants.LOADING_OFF });
-        }).catch(error => {
-            this.goToStep(4);
-            alert("Algo inesperado ha ocurrido, por favor intentar en breve");
+        }).catch((error) => {
+            const { data } = error.response;
+            let message = "";
+            if( data.data && data.data.message ) {
+                message = data.data.message;
+            } else {
+                message = "Intenta utilizar otra tarjeta o verifica que no este vencida o tengas conexión a internet.";
+            }
+            alert("Oh oh! Ha ocurrido algo con tu pago.\n\n" + message);
             dispatch({ type: constants.LOADING_OFF });
-            console.log( "Error Handling", error );
+            console.log( "Error Handling", error.response, data );
         });
 
     }
@@ -191,6 +197,7 @@ class ForceAlarmWizard extends React.Component {
                 </StepView>
                 <StepView step={4}>
                     <Step5 
+                        form={state.data.payment}
                         handleStep={this.handleFithStep} 
                         handleBack={this.handleBackStep}  />
                 </StepView>

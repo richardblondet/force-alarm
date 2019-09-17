@@ -29,9 +29,9 @@ class OrderCompleted extends React.Component {
                             <img src={checked_green} width="50" />
                         </div>
                         <h2 className="text-center jumbotron-heading display-5 mb-1 text-success">¡Pago realizado con éxito!</h2>
-                        <p className="text-center text-success">Recibirás un correo electrónico con tu recibo de pago.</p>
+                        <p className="text-center text-success">Recibirás un correo electrónico con los detalles de tu compra.</p>
                         <div className="text-center"> 
-                            <Button color="success" onClick={this.handleHomeButton}>Volver a Página Principal</Button>
+                            <Button color="success" onClick={this.handleHomeButton}>Ir a Mi Página</Button>
                         </div>
                     </Container>
                 </Jumbotron>

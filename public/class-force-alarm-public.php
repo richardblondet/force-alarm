@@ -184,7 +184,7 @@ class Force_Alarm_Public {
 		$data = json_decode( stripslashes( $_POST['data'] ), $decode_to_array = true );
 
 		/** Prepare and Send Emails */
-		// return wp_send_json_success( "Works here" );
+		// return wp_send_json_error( $data, 500 );
 
 
 		/**
@@ -227,7 +227,7 @@ class Force_Alarm_Public {
 			$response['user_data']	= $new_user_data;
 			$response['raw']		= $data;
 	
-			return wp_send_json_error( $response );
+			return wp_send_json_error( $response, 500 );
 		}
 
 		/**
@@ -329,14 +329,7 @@ class Force_Alarm_Public {
 			'inst_date'	 => strtotime( $data['form']['date'] ),
 			'inst_time'	 => strtotime( $data['form']['time'] )
 		);
-		
-		if ( isset( $data['form']['comprobante_fiscal'] )) {
-			$address['comprobante_fiscal'] = $data['form']['comprobante_fiscal'];
-			$address['rnc'] = $data['form']['rnc'];
-			$address['nombre_rnc'] = $data['form']['nombre_rnc'];
-		} else {
-			$address['comprobante_fiscal'] = $address['rnc'] = $address['nombre_rnc'] = "";
-		}
+
 		// Now we create the order
 		$order = wc_create_order();
 		$order_id = $order->get_id();
@@ -374,7 +367,7 @@ class Force_Alarm_Public {
 		// 	$response['user_data']	= $new_user_data;
 		// 	$response['raw']		= $data;
 	
-		// 	return wp_send_json_error( $response );
+		// 	return wp_send_json_error( $response, 500 );
 		// }
 
 		// Lets add all data related with this order
@@ -407,6 +400,18 @@ class Force_Alarm_Public {
 			array(
 				'meta_key' => 'billing_inst_province',
 				'meta_value' => $data['form']['province']
+			),
+			array(
+				'meta_key' => 'billing_comprobante_fiscal',
+				'meta_value' => isset( $data['payment']['comprobante_fiscal'] ) ? $data['payment']['comprobante_fiscal'] : ""
+			),
+			array(
+				'meta_key' => 'billing_rnc',
+				'meta_value' => isset( $data['payment']['rnc'] ) ? $data['payment']['rnc'] : ""
+			),
+			array(
+				'meta_key' => 'billing_nombre_rnc',
+				'meta_value' => isset( $data['payment']['nombre_rnc'] ) ? $data['payment']['nombre_rnc'] : ""
 			),
 		);
 
@@ -467,7 +472,7 @@ class Force_Alarm_Public {
 			// 	$response['url']		 = $url;
 			// 	$response['request_body']=$request_body;
 
-			// 	return wp_send_json_error( $response );	
+			// 	return wp_send_json_error( $response, 500 );	
 			// }
 		endif;
 		// --------------------------
@@ -512,7 +517,7 @@ class Force_Alarm_Public {
 			$response['message']	= "The content requested doesn't exist";
 			$response['raw']		= $content_request;
 			
-			return wp_send_json_error( $response );
+			return wp_send_json_error( $response, 500 );
 		}
 
 		$response['content'] = get_field( $content_available[ $content_request ], 'option' );
