@@ -17,7 +17,7 @@ const MyIframe = styled.iframe`
         min-height: 100vh;
     }
     @media (min-width: 480.1px) {
-        min-height: 500px;
+        min-height: 650px;
     }
 `;
 
@@ -53,14 +53,11 @@ class Disclaimer extends React.Component {
 
         return (
             <MyModal isOpen={state.showDisclaimer} toggle={this.toggle} className={this.props.className} size="lg">
-                <ModalHeader toggle={this.toggle}>Contáctanos</ModalHeader>
+                <ModalHeader toggle={this.toggle} />
                 <ModalBody>
                     {/* <div dangerouslySetInnerHTML={{ __html: disclaimer }} /> */}
                     <MyIframe src="http://159.89.53.77/formulario-de-solicitud/" width="100%" frameBorder="0" />
                 </ModalBody>
-                <ModalFooter>
-                    <Button color="light" onClick={this.toggle}>Cerrar</Button>
-                </ModalFooter>
             </MyModal>
         );
     }
