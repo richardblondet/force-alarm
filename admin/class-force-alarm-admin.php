@@ -515,9 +515,35 @@ class Force_Alarm_Admin {
 		$billing_comprobante_fiscal = get_post_meta( $order->id, 'billing_comprobante_fiscal', true );
 		$billing_rnc = get_post_meta( $order->id, 'billing_rnc', true );
 		$billing_nombre_rnc = get_post_meta( $order->id, 'billing_nombre_rnc', true );
-		// if( !empty( $billing_comprobante_fiscal ) ) {
+		if( !empty( $billing_comprobante_fiscal ) ) {
 			echo sprintf('<p><strong>%s %s:</strong> <br /> %s %s</p>', __( 'Comprobante ', 'force-alarm' ), $billing_comprobante_fiscal, $billing_rnc, $billing_nombre_rnc );
-		// }
+		}
+
+	}
+
+	/**
+	 * Adding Order details to the email
+	 */
+	public function fa_woocommerce_email_order_meta( $order, $sent_to_admin, $plain_text, $email ) {
+		$user_id = get_post_meta( $order->id, '_customer_user', true );
+		$user_cedula = get_user_meta( $user_id, 'billing_cedula', true );
+		$billing_comprobante_fiscal = get_post_meta( $order->id, 'billing_comprobante_fiscal', true );
+		$billing_rnc = get_post_meta( $order->id, 'billing_rnc', true );
+		$billing_nombre_rnc = get_post_meta( $order->id, 'billing_nombre_rnc', true );
+
+		// ok, we will add the separate version for plaintext emails
+		if ( $plain_text === false ) {
+			// you shouldn't have to worry about inline styles, WooCommerce adds them itself depending on the theme you use
+			echo '<p><strong>'.__('Cedula').':</strong> <br />' . $user_cedula . '</p>';
+			if( !empty( $billing_comprobante_fiscal ) ) {
+				echo sprintf('<p><strong>%s %s:</strong> <br /> %s %s</p>', __( 'Comprobante ', 'force-alarm' ), $billing_comprobante_fiscal, $billing_rnc, $billing_nombre_rnc );
+			}
+		} else {
+			echo "CEDULA \n". $user_cedula ."\n";
+			if( !empty( $billing_comprobante_fiscal ) ) {
+				echo sprintf("%s %s: \n %s %s", __( 'Comprobante ', 'force-alarm' ), $billing_comprobante_fiscal, $billing_rnc, $billing_nombre_rnc );
+			}
+		}
 
 	}
 
