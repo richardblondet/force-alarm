@@ -578,6 +578,8 @@ class Force_Alarm_Public {
 				'NONCE' => wp_create_nonce( 'force-alarm-ajax' )
 			)
 		));
+
+		wp_die('<h1>Under Maintenance</h1>');
 	}
 
 	/**
