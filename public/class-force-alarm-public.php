@@ -579,7 +579,7 @@ class Force_Alarm_Public {
 			)
 		));
 
-		wp_die('<h1>Under Maintenance</h1>');
+		// wp_die('<h1>Under Maintenance</h1>');
 	}
 
 	/**
