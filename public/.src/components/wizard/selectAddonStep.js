@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { DropDownQty } from './DropDownQty';
 import addon_image from "../../static/force-alarm-addons.png";
+import Store from "../../redux/store";
 
 import {
     Container,
@@ -29,6 +30,8 @@ const CenterRow = styled(Row)`
 
 
 class SelectAddons extends React.Component {
+    static contextType = Store;
+
     state = {
         isOpen: false,
         quantity: 1,
@@ -71,6 +74,11 @@ class SelectAddons extends React.Component {
         })
     }
 
+    isDisabled = (addon) => {
+        const {state} = this.context;
+        return state.data.selection.filter(item => item.ID === addon ).length > 0
+    }
+
     render() {
         const addons = this.getAddons();
         console.log({ addons });
@@ -111,7 +119,7 @@ class SelectAddons extends React.Component {
                                     </div>
                                 </Col>
                                 <Col xs="8" className="pt-16">
-                                    <Button color="danger" onClick={e=>this.handleAddonSelect(e, addon)}>Añadir al Carrito</Button>
+                                    <Button color="danger" onClick={e=>this.handleAddonSelect(e, addon)} disabled={this.isDisabled(addon.ID)}>Añadir al Carrito</Button>
                                 </Col>
                             </Row>
                         </div>
