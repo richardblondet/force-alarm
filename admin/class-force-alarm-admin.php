@@ -142,7 +142,7 @@ class Force_Alarm_Admin {
 	 * @since 1.0.1
 	 */
 	public function fa_acf_settings_show_admin( $show_admin ) {
-		return false;
+		return true;
 	}
 
 	/**

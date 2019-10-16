@@ -148,7 +148,14 @@ class Force_Alarm_Public {
 		$args = array(
 			'post_type'              => array( 'product' ),
 			'post_status'            => array( 'publish' ),
-			'product_cat'			 => $type
+			'product_cat'			 			 => $type,
+			'meta_query'						 => array(
+				array(
+					'key'	=> '_stock_status',
+					'value' => 'outofstock',
+					'compare' => 'NOT LIKE'
+				)
+			)
 		);
 
 		// The Query
@@ -159,17 +166,71 @@ class Force_Alarm_Public {
 		 * Add ACF
 		 */
 		foreach( $services_result as $service ) {
-			// $service->price = (float) get_field('price', $service->ID );
 			// $service->metas = get_post_meta( $service->ID );
 			$service->price = get_post_meta( $service->ID, '_price', true );
+			$service->contract = get_field('fa_service_contract', $service->ID );
+			$service->product_type = $type;
 			$services[] = $service;
-			// if( $service->type === $type ) {
-			// }
 		}
 
 		return wp_send_json_success( $services );
 	}
 
+	/**
+	 * Private use to get times by date
+	 */
+	private function getForceAlarmOrdersBy( $key = "date", $value = "") {
+		// WP_Query arguments
+		$args = array(
+			// required
+			'status' => 'processing',
+			'return' => 'objects', // ids, objects
+			
+			// Filter by our value
+			'meta_key' => 'billing_inst_' . $key,
+			'meta_value' => $value
+		);
+
+		// The Query
+		$orders = wc_get_orders( $args );
+
+		/** Add ACF */
+		foreach( $orders as $orders_booked => $order ) {
+			$orders[$orders_booked]->ID = $order->ID;
+			$orders[$orders_booked]->installation_date = get_post_meta( $order->ID, 'billing_inst_date', true );
+			$orders[$orders_booked]->installation_time = get_post_meta( $order->ID, 'billing_inst_time', true );
+			$orders[$orders_booked]->installation_date_unix = get_post_meta( $order->ID, '_billing_inst_date', true );
+			$orders[$orders_booked]->installation_time_unix = get_post_meta( $order->ID, '_billing_inst_time', true );
+		}
+
+		return $orders;
+	}
+	/**
+	 * Get available hours
+	 * 
+	 * @since haryz
+	 */
+	public function fa_get_orders_by_installation_date() {
+		$date = date("D d/m/Y", strtotime( $_POST['date'] ));
+		$response = [];
+
+		$response['parameters'] = array(
+			'date' => $date,
+			'_POST' => $_POST['date'],
+			'strtotime' => strtotime( $_POST['date'] ),
+			'tests' => get_field('force_alarm_payment_endpoint_url', 'option'),
+			'token_tets' => get_field('force_alarm_payment_token', 'option')
+		);
+
+		if( $response['parameters']['strtotime'] === false ) {
+			$response['error'] = "Date not valid. Format should be MM/DD/YYYY";
+			return wp_send_json_error( $response );
+		}
+
+		$response['booked'] = $this->getForceAlarmOrdersBy('date', $date );
+
+		return wp_send_json_success( $response );
+	}
 	/**
 	 * Process Orders
 	 * 
@@ -424,56 +485,60 @@ class Force_Alarm_Public {
 		// PAYMENT WEBSERVICE ///////
 		// --------------------------
 		$url = get_field('force_alarm_payment_endpoint_url', 'option');
+		$token = get_field('force_alarm_payment_token', 'option');
 
-		if ( "http://localhost:8181/payment" !== $url && NULL != $url ):
+		if ( $url != "http://localhost:8181/payment" && $url != null ):
 			// Map to create services
-			// $services = array();
-			// foreach ($data['selection'] as $index => $item) {
-			// 	$services[] = array(
-			// 		"description"  => $item["post_title"],
-			// 		"price" => $item["price"],
-			// 		"isOptional" => $item["type"] === "addon" ? true:false
-			// 	);
-			// }
+			$services = array();
+			foreach ($data['selection'] as $index => $item) {
+				$services[] = array(
+					"description"  => $item["post_title"],
+					"price" => $item["price"],
+					"isOptional" => $item["type"] === "addon" ? true:false
+				);
+			}
 
-			// $payload = array(
-			// 	"customer" => array(
-			// 		"full_name" => $data['form']['name'],
-			// 		"email" => $data['form']['email'], //valid email
-			// 		"document_no" => $data['form']['cedula'],
-			// 		"phone_number" => $data['form']['phone'],
-			// 	),
-			// 	"details" => $services,
-			// 	"payment_info" => array(
-			// 		"card_no" => $data['payment']['number'],
-			// 		"card_owner_name" => $data['payment']['name'],
-			// 		"expiration_date" => $data['payment']['expiry'],
-			// 		"cvc" => $data['payment']['cvc'],
-			// 		"issuer" => $data['payment']['issuer']
-			// 	)
-			// );
+			$payload = array(
+				"customer" => array(
+					"full_name" => $data['form']['name'],
+					"email" => $data['form']['email'], //valid email
+					"document_no" => $data['form']['cedula'],
+					"phone_number" => $data['form']['phone'],
+				),
+				"details" => $services,
+				"payment_info" => array(
+					"card_no" => $data['payment']['number'],
+					"card_owner_name" => $data['payment']['name'],
+					"expiration_date" => $data['payment']['expiry'],
+					"cvc" => $data['payment']['cvc'],
+					"issuer" => $data['payment']['issuer']
+				)
+			);
 
 			// Perform call to service
-			// $service_response = wp_remote_get( esc_url_raw( $url ) , array(
-			// 	'method' 		=> 'POST',
-			// 	'timeout' 		=> 45,
-			// 	'httpversion'	=> '1.0',
-			// 	'user-agent'  	=> 'ForceAlarm/1.0; ' . home_url(),
-			// 	'sslverify'		=> false,
-			// 	'cookies' 		=> array(),
-			// 	'headers'		=> array('Content-Type' => 'application/json'),
-			// 	'body' 			=> json_encode( $payload )
-			// ));
+			$service_response = wp_remote_get( esc_url_raw( $url ) , array(
+				'method' 		=> 'POST',
+				'timeout' 		=> 45,
+				'httpversion'	=> '1.0',
+				'user-agent'  	=> 'ForceAlarm/1.0; ' . home_url(),
+				'sslverify'		=> false,
+				'cookies' 		=> array(),
+				'headers'		=> array(
+					'Content-Type' => 'application/json',
+					'Authorization' => 'token '.$token
+				),
+				'body' 			=> json_encode( $payload )
+			));
 
 			// Verify error on service communication and return nicely to the user
-			// if( is_wp_error( $service_response )) {
-			// 	$response['code']		 = 'FA-00'. __LINE__;
-			// 	$response['message']	 = 'Ha ocurrido un error: ' . $res->get_error_message();
-			// 	$response['url']		 = $url;
-			// 	$response['request_body']=$request_body;
+			if( is_wp_error( $service_response )) {
+				$response['code']		 = 'FA-00'. __LINE__;
+				$response['message']	 = 'Ha ocurrido un error: ' . $res->get_error_message();
+				$response['url']		 = $url;
+				$response['request_body']=$request_body;
 
-			// 	return wp_send_json_error( $response, 500 );	
-			// }
+				return wp_send_json_error( $response, 500 );	
+			}
 		endif;
 		// --------------------------
 		// PAYMENT WEBSERVICE ///////
