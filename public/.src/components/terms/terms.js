@@ -16,13 +16,7 @@ class Terms extends React.Component {
         this.toggle = this.toggle.bind(this);
     }
     
-    componentDidMount() {
-        const {state} = this.context;
-        const terms = state.data.selection.filter( product => product.product_type === "plan");
-        // const Terms = new ContentService("force-alarm-content", state.AJAX_URL );
-        // Terms.getContent({ content: "terms" }).then(res => this.setState({ terms: res.data.content }));
-        
-    }
+    componentDidMount() {}
     
     toggle() {
         const {state,dispatch} = this.context;
