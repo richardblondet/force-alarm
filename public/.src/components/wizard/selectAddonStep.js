@@ -90,7 +90,7 @@ class SelectAddons extends React.Component {
                 <Row className="m-3" key={indx}>
                     <Col xs="12" md={{ size: 8, offset: 2 }}>
                         <Row>
-                            <Col md={3} xs={4}>
+                            <Col md={4} xs={4}>
                                 <CenterRow>
                                     {/* <div className="mb-3"> */}
                                     <img 
