@@ -495,6 +495,9 @@ class Force_Alarm_Public {
 			// Map to create services
 			$services = array();
 			foreach ($data['selection'] as $index => $item) {
+				if( isset( $item['qty'] )) {
+					$item['price'] = $item['price'] * $item['qty'];
+				}
 				$services[] = array(
 					"description"  => $item["post_title"],
 					"price" => $item["price"],
