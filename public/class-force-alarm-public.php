@@ -148,7 +148,7 @@ class Force_Alarm_Public {
 		$args = array(
 			'post_type'              => array( 'product' ),
 			'post_status'            => array( 'publish' ),
-			'product_cat'			 => $type
+			'product_cat'			 			 => $type
 		);
 
 		// The Query
@@ -162,6 +162,7 @@ class Force_Alarm_Public {
 			// $service->price = (float) get_field('price', $service->ID );
 			// $service->metas = get_post_meta( $service->ID );
 			$service->price = get_post_meta( $service->ID, '_price', true );
+			$service->meta  = get_post_meta( $service->ID );
 			$services[] = $service;
 			// if( $service->type === $type ) {
 			// }
@@ -170,6 +171,9 @@ class Force_Alarm_Public {
 		return wp_send_json_success( $services );
 	}
 
+	/**
+	 * Private use to get times by date
+	 */
 	private function getForceAlarmOrdersBy( $key = "date", $value = "") {
 		// WP_Query arguments
 		$args = array(
