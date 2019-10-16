@@ -65,7 +65,7 @@ class SelectAddons extends React.Component {
             <React.Fragment>
                 <Jumbotron tag="section" className="text-center" style={{backgroundColor:"white", borderRadius:"none"}}>
                     <Container>
-                        <h2 className="text-center jumbotron-heading display-5 mb-4">¿Agregamos nuestro <strong>seguro contra robo</strong>?</h2>
+                        <h2 className="text-center jumbotron-heading display-5 mb-4"><strong>Servicios Adicionales recomendados:</strong></h2>
                     </Container>
                     <Container fluid>
                         <Row>

@@ -170,6 +170,56 @@ class Force_Alarm_Public {
 		return wp_send_json_success( $services );
 	}
 
+	private function getForceAlarmOrdersBy( $dateOrTime = "date", $value = "") {
+		// WP_Query arguments
+		$args = array(
+			// required
+			'status' => 'processing',
+			'return' => 'objects', // ids, objects
+			
+			// Filter by our value
+			'meta_key' => 'billing_inst_' . $dateOrTime,
+			'meta_value' => $value
+		);
+
+		// The Query
+		$orders = wc_get_orders( $args );
+
+		/** Add ACF */
+		foreach( $orders as $orders_booked => $order ) {
+			$orders[$orders_booked]->ID = $order->ID;
+			$orders[$orders_booked]->installation_date = get_post_meta( $order->ID, 'billing_inst_date', true );
+			$orders[$orders_booked]->installation_time = get_post_meta( $order->ID, 'billing_inst_time', true );
+			$orders[$orders_booked]->installation_date_unix = get_post_meta( $order->ID, '_billing_inst_date', true );
+			$orders[$orders_booked]->installation_time_unix = get_post_meta( $order->ID, '_billing_inst_time', true );
+		}
+
+		return $orders;
+	}
+	/**
+	 * Get available hours
+	 * 
+	 * @since haryz
+	 */
+	public function fa_get_orders_by_installation_date() {
+		$date = date("D d/m/Y", strtotime( $_POST['date'] ));
+		$response = [];
+
+		$response['parameters'] = array(
+			'date' => $date,
+			'_POST' => $_POST['date'],
+			'strtotime' => strtotime( $_POST['date'] )
+		);
+
+		if( $response['parameters']['strtotime'] === false ) {
+			$response['error'] = "Date not valid. Format should be MM/DD/YYYY";
+			return wp_send_json_error( $response );
+		}
+
+		$response['booked'] = $this.getForceAlarmOrdersBy('date', $date );
+
+		return wp_send_json_success( $response );
+	}
 	/**
 	 * Process Orders
 	 * 

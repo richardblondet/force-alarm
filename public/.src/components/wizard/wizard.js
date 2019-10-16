@@ -28,25 +28,36 @@ class ForceAlarmWizard extends React.Component {
         this.state = {
             plans: [],
             addons: [],
+            items: [],
             provincias: []
         };
     }
     componentDidMount() {
         const {state, dispatch} = this.context;
+        const ProvinciasContent = new ContentService("force-alarm-content", state.AJAX_URL );
         this.Plans = new PlansService("force-alarm-services", state.AJAX_URL);
         this.Order = new OrderService("force-alarm-orders", state.AJAX_URL);
-        const ProvinciasContent = new ContentService("force-alarm-content", state.AJAX_URL );
-
+        
+        // test dates
+        this.Order.getTimesByDate("09/18/2019").then( dates => {
+            console.log("%c dates", "font-size:2em;", dates );
+        })
+        //
         this.Plans.getPlans({ 
-            type: "plan" 
+            type: "plan"
         }).then( plansresponse => {
             this.Plans.getPlans({ 
-                type: "addon" 
+                type: "addon"
             }).then( addonsresponse => {
-                this.setState({ 
-                    plans: plansresponse.data,
-                    addons: addonsresponse.data 
-                });
+                this.Plans.getPlans({
+                    type: "item"
+                }).then( itemResponse => {
+                    this.setState({ 
+                        plans: plansresponse.data,
+                        addons: addonsresponse.data,
+                        items: itemResponse.data
+                    });
+                })
                 dispatch({ type: constants.LOADING_OFF });
             });
             ProvinciasContent.getContent({ 

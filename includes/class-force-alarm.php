@@ -260,6 +260,13 @@ class Force_Alarm {
 		/** Filter for adding button in the awsome support ticket */
 		$this->loader->add_filter( 'wpas_frontend_add_nav_buttons', $plugin_public, 'fa_wpas_frontend_add_nav_buttons' );
 
+		/**
+		 * Get orders by billing_inst_date meta key
+		 */
+		// $this->loader->add_filter( 'woocommerce_order_data_store_cpt_get_orders_query', $plugin_public, 'fa_order_get_installation_date_wc_product_query');
+		$this->loader->add_action( 'wp_ajax_force-alarm-get-orders-by-installation-date', $plugin_public,  'fa_get_orders_by_installation_date' );
+		$this->loader->add_action( 'wp_ajax_nopriv_force-alarm-get-orders-by-installation-date', $plugin_public,  'fa_get_orders_by_installation_date' );
+
 	}
 
 	/**
