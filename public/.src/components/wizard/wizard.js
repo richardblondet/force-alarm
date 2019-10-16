@@ -37,7 +37,7 @@ class ForceAlarmWizard extends React.Component {
         const ProvinciasContent = new ContentService("force-alarm-content", state.AJAX_URL );
         this.Plans = new PlansService("force-alarm-services", state.AJAX_URL);
         this.Order = new OrderService("force-alarm-orders", state.AJAX_URL);
-        
+        console.log("%c state", "font-size:2em;", state );
         // test dates
         this.Order.getTimesByDate("09/18/2019").then( dates => {
             console.log("%c dates", "font-size:2em;", dates );

@@ -119,9 +119,8 @@ class SelectAddons extends React.Component {
                         </Col>
                     </Row>
                 </Col>
-                );
-            }
-        );
+            );
+        });
         return (
             <React.Fragment>
                 <Jumbotron tag="section" className="text-center" style={{backgroundColor:"white", borderRadius:"none"}}>
