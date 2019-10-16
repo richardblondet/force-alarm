@@ -28,7 +28,6 @@ class ForceAlarmWizard extends React.Component {
         this.state = {
             plans: [],
             addons: [],
-            items: [],
             provincias: []
         };
     }
@@ -52,10 +51,10 @@ class ForceAlarmWizard extends React.Component {
                 this.Plans.getPlans({
                     type: "item"
                 }).then( itemResponse => {
+                    console.log([...addonsresponse.data, ...itemResponse.data]);
                     this.setState({ 
                         plans: plansresponse.data,
-                        addons: addonsresponse.data,
-                        items: itemResponse.data
+                        addons: [...addonsresponse.data, ...itemResponse.data]
                     });
                 })
                 dispatch({ type: constants.LOADING_OFF });
@@ -102,13 +101,13 @@ class ForceAlarmWizard extends React.Component {
         this.goToStep(2);
     }
     handleThirdStep = ( addon, quantity) => {
-        console.log('QTY', quantity);
-        console.log('ADDON', addon['ID']);
+        // console.log('QTY', quantity);
+        // console.log('ADDON', addon['ID']);
 
         const {state, dispatch} = this.context;
 
         state.data.selection.push( addon );
-        console.log('SELECTIONBEFORE', state.data.selection);
+        // console.log('SELECTIONBEFORE', state.data.selection);
         state.data.selection = state.data.selection.map((selection) => {
             if(selection['ID'] === addon['ID'] && !selection.qty) {
                 // selection.price = (Number(selection.price) * quantity);

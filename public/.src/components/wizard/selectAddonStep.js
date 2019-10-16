@@ -13,17 +13,18 @@ import {
     DropdownMenu,
     DropdownItem,
     DropdownToggle,
+    Input,
     CardDeck, Card, CardBody, CardText
 } from "reactstrap";
 
-const PlanName = styled(CardText)`
-color: #c32c1e;
-font-size: 22px;
-margin-bottom: 0px;
+const PlanName = styled.div`
+    color: #c32c1e;
+    font-size: 22px;
+    margin-bottom: 0px;
 `;
 
 const CenterRow = styled(Row)`
-justify-content: center;
+    justify-content: center;
 `
 
 
@@ -78,47 +79,44 @@ class SelectAddons extends React.Component {
             const PriceFormatted = `RD${formatter.format(addon.price)}`
             
             return (
-                <Col md={{ size: 8, offset: 4 }} xs={{ size: 12 }}>
-                    <Row>
-                        <Col md={3} xs={6}>
-                            <CenterRow>
-                                {/* <div className="mb-3"> */}
-                                <img 
-                                className="img-thumbnail p-4" 
-                                src={addon_image} style={{backgroundColor:"#691206"}} />
-                                {/* </div> */}
-                            </CenterRow>
-                            <CenterRow xs={12}>
-                                <a href="#" className="details_link">ver detalles</a>
-                            </CenterRow> 
-                        </Col>
-                        <Col md={5} xs={6} className="text-left">
+                <Row className="m-3" key={indx}>
+                    <Col md={3} xs={4}>
+                        <CenterRow>
+                            {/* <div className="mb-3"> */}
+                            <img 
+                            className="img-thumbnail p-4" 
+                            src={addon_image} style={{backgroundColor:"#691206"}} />
+                            {/* </div> */}
+                        </CenterRow>
+                        <CenterRow xs={12}>
+                            <a href="#" className="details_link">ver detalles</a>
+                        </CenterRow> 
+                    </Col>
+                    <Col md={8} xs={8} className="text-left">
+                        <div>
+                            <PlanName>
+                                <span className="text-uppercase font-weight-bold">{addon.post_title}</span>
+                            </PlanName>
+                            <p className="my-3 h3 card-price-style">
+                                {PriceFormatted} {addon.product_type === "addon" && <span className="car-price-description-small">/Adicionales en la renta</span>}
+                            </p>
+                        </div>
+                        <div>
                             <Row>
-                                <Col>
-                                    <Row>
-                                        <PlanName>
-                                            <span className="text-uppercase font-weight-bold">{addon.post_title}</span>
-                                        </PlanName>
-                                        <p className="my-3 h3 card-price-style">
-                                            {PriceFormatted} <span className="car-price-description-small">/Adicionales en la renta</span>
-                                        </p>
-                                    </Row>
-                                    <Row>
-                                        <Col xs="3">
-                                            <div className="qty-option-container">
-                                                <p className="mb-0">Cantidad</p>
-                                                <DropDownQty productQuantity={(quantity) => this.setState({ quantity })} />
-                                            </div>
-                                        </Col>
-                                        <Col xs="8" className="pt-16">
-                                            <Button color="danger" onClick={e=>this.handleAddonSelect(e, addon)}>Añadir al Carrito</Button>
-                                        </Col>
-                                    </Row>
+                                <Col xs="3">
+                                    <div className="qty-option-container">
+                                        <p className="mb-0">Cantidad</p>
+                                        {addon.product_type === "addon" && <Input disabled />}
+                                        {addon.product_type === "item" && <DropDownQty productQuantity={(quantity) => this.setState({ quantity })} />}
+                                    </div>
+                                </Col>
+                                <Col xs="8" className="pt-16">
+                                    <Button color="danger" onClick={e=>this.handleAddonSelect(e, addon)}>Añadir al Carrito</Button>
                                 </Col>
                             </Row>
-                        </Col>
-                    </Row>
-                </Col>
+                        </div>
+                    </Col>
+                </Row>
             );
         });
         return (
@@ -130,9 +128,7 @@ class SelectAddons extends React.Component {
                     <Container fluid>
                         <Row>
                             <Col xs="12" md={{ size: 8, offset: 2 }}>
-                                <CardDeck>
-                                    {renderAddons}
-                                </CardDeck>
+                                {renderAddons}
                                 <Row className="mt-4 text-center">
                                     <Col xs="12" md={{ size: 6, offset: 3 }}>
                                         <Row>
