@@ -40,7 +40,7 @@ class ForceAlarmWizard extends React.Component {
         // test dates
         this.Order.getTimesByDate("09/18/2019").then( dates => {
             console.log("%c dates", "font-size:2em;", dates );
-        })
+        });
         //
         this.Plans.getPlans({ 
             type: "plan"

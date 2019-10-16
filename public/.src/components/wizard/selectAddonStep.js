@@ -88,41 +88,45 @@ class SelectAddons extends React.Component {
             
             return (
                 <Row className="m-3" key={indx}>
-                    <Col md={3} xs={4}>
-                        <CenterRow>
-                            {/* <div className="mb-3"> */}
-                            <img 
-                            className="img-thumbnail p-4" 
-                            src={addon_image} style={{backgroundColor:"#691206"}} />
-                            {/* </div> */}
-                        </CenterRow>
-                        <CenterRow xs={12}>
-                            <a href="#" className="details_link">ver detalles</a>
-                        </CenterRow> 
-                    </Col>
-                    <Col md={8} xs={8} className="text-left">
-                        <div>
-                            <PlanName>
-                                <span className="text-uppercase font-weight-bold">{addon.post_title}</span>
-                            </PlanName>
-                            <p className="my-3 h3 card-price-style">
-                                {PriceFormatted} {addon.product_type === "addon" && <span className="car-price-description-small">/Adicionales en la renta</span>}
-                            </p>
-                        </div>
-                        <div>
-                            <Row>
-                                <Col xs="3">
-                                    <div className="qty-option-container">
-                                        <p className="mb-0">Cantidad</p>
-                                        {addon.product_type === "addon" && <Input disabled value={1} />}
-                                        {addon.product_type === "item" && <DropDownQty productQuantity={(quantity) => this.setState({ quantity })} />}
-                                    </div>
-                                </Col>
-                                <Col xs="8" className="pt-16">
-                                    <Button color="danger" onClick={e=>this.handleAddonSelect(e, addon)} disabled={this.isDisabled(addon.ID)}>Añadir al Carrito</Button>
-                                </Col>
-                            </Row>
-                        </div>
+                    <Col xs="12" md={{ size: 8, offset: 2 }}>
+                        <Row>
+                            <Col md={3} xs={4}>
+                                <CenterRow>
+                                    {/* <div className="mb-3"> */}
+                                    <img 
+                                    className="img-thumbnail p-4" 
+                                    src={addon_image} style={{backgroundColor:"#691206"}} />
+                                    {/* </div> */}
+                                </CenterRow>
+                                <CenterRow xs={12}>
+                                    <a href="#" className="details_link">ver detalles</a>
+                                </CenterRow> 
+                            </Col>
+                            <Col md={8} xs={8} className="text-left">
+                                <div>
+                                    <PlanName>
+                                        <span className="text-uppercase font-weight-bold">{addon.post_title}</span>
+                                    </PlanName>
+                                    <p className="my-3 h3 card-price-style">
+                                        {PriceFormatted} {addon.product_type === "addon" && <span className="car-price-description-small">/Adicionales en la renta</span>}
+                                    </p>
+                                </div>
+                                <div>
+                                    <Row>
+                                        <Col xs="3">
+                                            <div className="qty-option-container">
+                                                <p className="mb-0">Cantidad</p>
+                                                {addon.product_type === "addon" && <Input disabled value={1} />}
+                                                {addon.product_type === "item" && <DropDownQty productQuantity={(quantity) => this.setState({ quantity })} />}
+                                            </div>
+                                        </Col>
+                                        <Col xs="8" className="pt-16">
+                                            <Button color="danger" onClick={e=>this.handleAddonSelect(e, addon)} disabled={this.isDisabled(addon.ID)}>Añadir al Carrito</Button>
+                                        </Col>
+                                    </Row>
+                                </div>
+                            </Col>
+                        </Row>
                     </Col>
                 </Row>
             );
@@ -135,7 +139,7 @@ class SelectAddons extends React.Component {
                     </Container>
                     <Container fluid>
                         <Row>
-                            <Col xs="12" md={{ size: 8, offset: 3 }}>
+                            <Col xs="12" md={{ size: 8, offset: 2 }}>
                                 {renderAddons}
                                 <Row className="mt-4 text-center">
                                     <Col xs="12" md={{ size: 6, offset: 3 }}>
