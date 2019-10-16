@@ -18,10 +18,12 @@ class Terms extends React.Component {
     
     componentDidMount() {
         const {state} = this.context;
-        const Terms = new ContentService("force-alarm-content", state.AJAX_URL );
-        Terms.getContent({ content: "terms" }).then(res => this.setState({ terms: res.data.content }));
+        const terms = state.data.selection.filter( product => product.product_type === "plan");
+        // const Terms = new ContentService("force-alarm-content", state.AJAX_URL );
+        // Terms.getContent({ content: "terms" }).then(res => this.setState({ terms: res.data.content }));
+        
     }
-
+    
     toggle() {
         const {state,dispatch} = this.context;
         const toggle = state.showTerms ? constants.HIDE_TERMS : constants.SHOW_TERMS;
@@ -31,7 +33,7 @@ class Terms extends React.Component {
 
     render() {
         const {state} = this.context;
-        const {terms} = this.state;
+        const terms = state.data.selection.length > 0 && state.data.selection.filter( product => product.product_type === "plan" )[0].contract;
         return (
             <Modal isOpen={state.showTerms} toggle={this.toggle} className={this.props.className}>
                 <ModalHeader toggle={this.toggle}>Términos y Condiciones</ModalHeader>
