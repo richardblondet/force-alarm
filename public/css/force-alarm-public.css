@@ -8,7 +8,7 @@ body {
     font-family: 'Montserrat', sans-serif !important;
 }
 .btn {
-    border-radius: 0;
+    border-radius: 3px;
 }
 .btn-secondary {
     background-color: #C2C1C3;
@@ -17,6 +17,7 @@ body {
 .btn-danger {
     background-color: #AD301F;
     border-color: #AD301F;
+    box-shadow: 0px 3px 6px #00000029;
 }
 @media (min-width: 576px) {
     .jumbotron {
@@ -25,4 +26,44 @@ body {
 }
 .form-control {
     border-radius: 0 !important;
+}
+
+.details_link {
+    color: #071AFF;
+    text-decoration: underline;
+    font-size: 18px;
+}
+
+.card-price-style {
+    text-align: left;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.car-price-description-small {
+    color: #A09FA2;
+    font-size: 12px;
+    font-weight: 100;
+}
+
+.qty-option-container {
+
+}
+
+.qty-option-container p {
+    font-size: 11px;
+}
+
+/* .qty-option-container div {
+    background-color: #C2C1C3;
+    width: 65px;
+    height: 38px;
+} */
+
+.pt-16 {
+    padding-top: 16px;
+}
+
+.mb-0 {
+    margin-bottom: 0px;
 }
