@@ -170,7 +170,7 @@ class Force_Alarm_Public {
 		return wp_send_json_success( $services );
 	}
 
-	private function getForceAlarmOrdersBy( $dateOrTime = "date", $value = "") {
+	private function getForceAlarmOrdersBy( $key = "date", $value = "") {
 		// WP_Query arguments
 		$args = array(
 			// required
@@ -178,7 +178,7 @@ class Force_Alarm_Public {
 			'return' => 'objects', // ids, objects
 			
 			// Filter by our value
-			'meta_key' => 'billing_inst_' . $dateOrTime,
+			'meta_key' => 'billing_inst_' . $key,
 			'meta_value' => $value
 		);
 
@@ -216,7 +216,7 @@ class Force_Alarm_Public {
 			return wp_send_json_error( $response );
 		}
 
-		$response['booked'] = $this.getForceAlarmOrdersBy('date', $date );
+		$response['booked'] = $this->getForceAlarmOrdersBy('date', $date );
 
 		return wp_send_json_success( $response );
 	}
