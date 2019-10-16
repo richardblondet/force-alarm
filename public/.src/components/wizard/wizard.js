@@ -37,7 +37,7 @@ class ForceAlarmWizard extends React.Component {
         const ProvinciasContent = new ContentService("force-alarm-content", state.AJAX_URL );
         this.Plans = new PlansService("force-alarm-services", state.AJAX_URL);
         this.Order = new OrderService("force-alarm-orders", state.AJAX_URL);
-        
+        console.log("%c state", "font-size:2em;", state );
         // test dates
         this.Order.getTimesByDate("09/18/2019").then( dates => {
             console.log("%c dates", "font-size:2em;", dates );
@@ -101,11 +101,26 @@ class ForceAlarmWizard extends React.Component {
         dispatch({ type: constants.SELECT_PLAN, data: state.data.selection });
         this.goToStep(2);
     }
-    handleThirdStep = ( addon ) => {
+    handleThirdStep = ( addon, quantity) => {
+        console.log('QTY', quantity);
+        console.log('ADDON', addon['ID']);
+
         const {state, dispatch} = this.context;
+
         state.data.selection.push( addon );
+        console.log('SELECTIONBEFORE', state.data.selection);
+        state.data.selection = state.data.selection.map((selection) => {
+            if(selection['ID'] === addon['ID'] && !selection.qty) {
+                // selection.price = (Number(selection.price) * quantity);
+                selection = {...selection, qty: quantity};
+                
+            }
+            return selection;
+        })
+
+        console.log('SelectionAFTER', state.data.selection);
         dispatch({ type: constants.SELECT_PLAN, data: state.data.selection });
-        this.goToStep(3);
+        // this.goToStep(3);
     }
     handleForthStep = ( data ) => {
         const {dispatch} = this.context;
