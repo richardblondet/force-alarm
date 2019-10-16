@@ -148,7 +148,14 @@ class Force_Alarm_Public {
 		$args = array(
 			'post_type'              => array( 'product' ),
 			'post_status'            => array( 'publish' ),
-			'product_cat'			 			 => $type
+			'product_cat'			 			 => $type,
+			'meta_query'						 => array(
+				array(
+					'key'	=> '_stock_status',
+					'value' => 'outofstock',
+					'compare' => 'NOT LIKE'
+				)
+			)
 		);
 
 		// The Query
@@ -162,7 +169,9 @@ class Force_Alarm_Public {
 			// $service->price = (float) get_field('price', $service->ID );
 			// $service->metas = get_post_meta( $service->ID );
 			$service->price = get_post_meta( $service->ID, '_price', true );
+			$service->contract = get_field('fa_service_contract', $service->ID );
 			$service->meta  = get_post_meta( $service->ID );
+			$service->product_type = $type;
 			$services[] = $service;
 			// if( $service->type === $type ) {
 			// }
