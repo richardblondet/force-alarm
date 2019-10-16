@@ -166,15 +166,11 @@ class Force_Alarm_Public {
 		 * Add ACF
 		 */
 		foreach( $services_result as $service ) {
-			// $service->price = (float) get_field('price', $service->ID );
 			// $service->metas = get_post_meta( $service->ID );
 			$service->price = get_post_meta( $service->ID, '_price', true );
 			$service->contract = get_field('fa_service_contract', $service->ID );
-			$service->meta  = get_post_meta( $service->ID );
 			$service->product_type = $type;
 			$services[] = $service;
-			// if( $service->type === $type ) {
-			// }
 		}
 
 		return wp_send_json_success( $services );
