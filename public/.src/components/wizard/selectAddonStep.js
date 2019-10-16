@@ -106,7 +106,7 @@ class SelectAddons extends React.Component {
                                 <Col xs="3">
                                     <div className="qty-option-container">
                                         <p className="mb-0">Cantidad</p>
-                                        {addon.product_type === "addon" && <Input disabled />}
+                                        {addon.product_type === "addon" && <Input disabled value={1} />}
                                         {addon.product_type === "item" && <DropDownQty productQuantity={(quantity) => this.setState({ quantity })} />}
                                     </div>
                                 </Col>
@@ -127,7 +127,7 @@ class SelectAddons extends React.Component {
                     </Container>
                     <Container fluid>
                         <Row>
-                            <Col xs="12" md={{ size: 8, offset: 2 }}>
+                            <Col xs="12" md={{ size: 8, offset: 3 }}>
                                 {renderAddons}
                                 <Row className="mt-4 text-center">
                                     <Col xs="12" md={{ size: 6, offset: 3 }}>

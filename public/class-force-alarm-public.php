@@ -397,7 +397,11 @@ class Force_Alarm_Public {
 		
 		// The add_product() function below is located in /plugins/woocommerce/includes/abstracts/abstract_wc_order.php
 		foreach ($data['selection'] as $key => $item) {
-			$order->add_product( get_product( $item['ID']), 1); // This is an existing product
+			$qty = 1;
+			if( $item['product_type'] === "item" ) {
+				$qty = $item['qty'];
+			}
+			$order->add_product( get_product( $item['ID']), $qty ); // This is an existing product
 		}
 
 		$order->set_address( $address, 'billing' );
