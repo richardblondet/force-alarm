@@ -8,7 +8,7 @@ console.log(window.FA_GLOBALS);
 
 if(! window.FA_GLOBALS ) {
     window.FA_GLOBALS = {
-        AJAX_URL: "http://localhost/wp-admin/admin-ajax.php",
+        AJAX_URL: "http://localhost:8888/forcealarm/wp-admin/admin-ajax.php",
         NONCE: "48f7944606"
     };
 }

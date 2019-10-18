@@ -33,6 +33,8 @@ import {
 
 import MaskedInput from "react-text-mask";
 
+import { getExcludeTimes } from '../../functions';
+
 const PROVINCIAS = [
     'Santo Domingo',
     'Santiago',
@@ -62,7 +64,7 @@ const initialDataTest = {
     sector: "",
     reference: "",
     date: addDays( TODAY, 1),
-    time: setHours( setMinutes( TODAY, 0), 9)
+    time: setHours( setMinutes( TODAY, 0), 9),
 }
 
 class PersonalDataForm extends React.Component {
@@ -73,11 +75,37 @@ class PersonalDataForm extends React.Component {
             form: initialDataTest,
             datePickerOpen: false,
             dateTimeOpen: false,
-            errors: []
+            errors: [],
+            bockedDateList: [],
+            excludeTime: []
         };
     }
     componentDidMount() {
-        let { form } = this.props;
+        let { form, bockedDateList } = this.props;
+        let excludeTimesList = getExcludeTimes();
+
+        bockedDateList.forEach(bocked => {
+                console.log('bocked', bocked);
+                const { id, count } = bocked;
+                if(id === '9:00 am' &&  count >= 3) {
+                    excludeTimesList.push(setHours(setMinutes(TODAY, 0), 9))
+                } else if (id === '11:00 am' &&  count >= 3) {
+                    excludeTimesList.push(setHours(setMinutes(TODAY, 0), 11))                    
+                } else if (id === '1:00 pm' &&  count >= 3) {
+                    excludeTimesList.push(setHours(setMinutes(TODAY, 0), 13))
+                } else if (id === '3:00 pm' &&  count >= 3) {
+                    excludeTimesList.push(setHours(setMinutes(TODAY, 0), 15))
+                } else if (id === '5:00 pm' &&  count >= 3) {
+                    excludeTimesList.push(setHours(setMinutes(TODAY, 0), 17))
+                } else if (id === '5:30 pm' &&  count >= 3) {
+                    excludeTimesList.push(setHours(setMinutes(TODAY, 30), 17))
+                }
+
+        });
+
+        this.setState({
+            excludeTime: excludeTimesList
+        });
 
         if( form ) {
             this.setState({
@@ -99,6 +127,8 @@ class PersonalDataForm extends React.Component {
         });
     }
     handleDateChange = ( date ) => {
+        console.log({ date });
+        this.props.CheckBookedTime(date);
         let { form } = this.state;
         form.date = date;
         this.setState({
@@ -380,50 +410,7 @@ class PersonalDataForm extends React.Component {
                                             timeFormat="h:mm aa"
                                             withPortal
                                             inline
-                                            excludeTimes={[ 
-                                                setHours(setMinutes(TODAY, 0), 0),
-                                                setHours(setMinutes(TODAY, 30), 0),
-                                                setHours(setMinutes(TODAY, 0), 1),
-                                                setHours(setMinutes(TODAY, 30), 1),
-                                                setHours(setMinutes(TODAY, 0), 2),
-                                                setHours(setMinutes(TODAY, 30), 2),
-                                                setHours(setMinutes(TODAY, 0), 3),
-                                                setHours(setMinutes(TODAY, 30), 3),
-                                                setHours(setMinutes(TODAY, 0), 4),
-                                                setHours(setMinutes(TODAY, 30), 4),
-                                                setHours(setMinutes(TODAY, 0), 5),
-                                                setHours(setMinutes(TODAY, 30), 5),
-                                                setHours(setMinutes(TODAY, 0), 6),
-                                                setHours(setMinutes(TODAY, 30), 6),
-                                                setHours(setMinutes(TODAY, 0), 7),
-                                                setHours(setMinutes(TODAY, 30), 7),
-                                                setHours(setMinutes(TODAY, 0), 8),
-                                                setHours(setMinutes(TODAY, 30), 8),
-                                                setHours(setMinutes(TODAY, 30), 9),
-                                                setHours(setMinutes(TODAY, 0), 10),
-                                                setHours(setMinutes(TODAY, 30), 10),
-                                                setHours(setMinutes(TODAY, 30), 11),
-                                                setHours(setMinutes(TODAY, 0), 12),
-                                                setHours(setMinutes(TODAY, 30), 12),
-                                                setHours(setMinutes(TODAY, 30), 13),
-                                                setHours(setMinutes(TODAY, 0), 14),
-                                                setHours(setMinutes(TODAY, 30), 14),
-                                                setHours(setMinutes(TODAY, 30), 15),
-                                                setHours(setMinutes(TODAY, 0), 16),
-                                                setHours(setMinutes(TODAY, 30), 16),
-                                                setHours(setMinutes(TODAY, 0), 18),
-                                                setHours(setMinutes(TODAY, 30), 18),
-                                                setHours(setMinutes(TODAY, 0), 19),
-                                                setHours(setMinutes(TODAY, 30), 19),
-                                                setHours(setMinutes(TODAY, 0), 20),
-                                                setHours(setMinutes(TODAY, 30), 20),
-                                                setHours(setMinutes(TODAY, 0), 21),
-                                                setHours(setMinutes(TODAY, 30), 21),
-                                                setHours(setMinutes(TODAY, 0), 22),
-                                                setHours(setMinutes(TODAY, 30), 22),
-                                                setHours(setMinutes(TODAY, 0), 23),
-                                                setHours(setMinutes(TODAY, 30), 23),
-                                            ]}
+                                            excludeTimes={this.state.excludeTime}
                                             timeCaption="Hora" />
                                         }
                                     </FormGroup>
