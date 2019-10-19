@@ -82,3 +82,6 @@ typings/
 # cypress 
 screenshotsFolder/
 videosFolder/
+
+public/index.html
+public/.src/index.js

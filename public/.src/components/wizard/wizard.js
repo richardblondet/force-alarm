@@ -14,10 +14,14 @@ import {
     format
 } from "date-fns";
 
+import moment from 'moment';
+
 
 import PlansService from "../../services/plans";
 import OrderService from "../../services/orders";
 import ContentService from "../../services/content";
+
+import { findsRecurssionInArray } from '../../functions';
 
 class ForceAlarmWizard extends React.Component {
     static contextType = Store;
@@ -28,7 +32,8 @@ class ForceAlarmWizard extends React.Component {
         this.state = {
             plans: [],
             addons: [],
-            provincias: []
+            provincias: [],
+            bockedDateList: []
         };
     }
     componentDidMount() {
@@ -37,10 +42,9 @@ class ForceAlarmWizard extends React.Component {
         this.Plans = new PlansService("force-alarm-services", state.AJAX_URL);
         this.Order = new OrderService("force-alarm-orders", state.AJAX_URL);
         console.log("%c state", "font-size:2em;", state );
-        // test dates
-        this.Order.getTimesByDate("09/18/2019").then( dates => {
-            console.log("%c dates", "font-size:2em;", dates );
-        });
+
+        const today = moment(new Date()).format("MM/DD/YYYY");
+        this.CheckBookedTime(today);
         //
         this.Plans.getPlans({ 
             type: "plan"
@@ -68,6 +72,32 @@ class ForceAlarmWizard extends React.Component {
         });
         
     }
+
+
+
+    CheckBookedTime = (date) => {
+        const mDate = moment(date).format("MM/DD/YYYY");
+
+        console.log("Mytime", mDate)
+        //"09/18/2019"
+        this.Order.getTimesByDate(mDate).then( ({ data }) => {
+            console.log('data', data);
+            const { booked } = data
+            let finds = [
+                '9:00 am',
+                '11:00 am', 
+                '1:00 pm', 
+                '3:00 pm',
+                '5:00 pm', 
+                '5:30 pm'
+               ];
+            const results =  findsRecurssionInArray(finds, booked, 'installation_time');
+            this.setState({ bockedDateList:  results });
+            console.log('myresult', results)
+           console.log("%c dates", "font-size:2em;", booked );
+       });
+    }
+
     goToStep = ( step ) => {
         const {dispatch} = this.context;
         dispatch({ type: constants.STEP, data: step });
@@ -218,7 +248,10 @@ class ForceAlarmWizard extends React.Component {
                         form={state.data.form} 
                         handleBack={this.handleBackStep} 
                         showTermsModal={this.showTermsModal}
-                        provincias={provincias} />
+                        provincias={provincias}
+                        bockedDateList={this.state.bockedDateList}
+                        CheckBookedTime={this.CheckBookedTime}
+                         />
                 </StepView>
                 <StepView step={4}>
                     <Step5 

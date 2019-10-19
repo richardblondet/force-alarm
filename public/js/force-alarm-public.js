@@ -3011,7 +3011,7 @@ var loadedStates = ['complete', 'loaded', 'interactive'];
 
 if (FA_GLOBALS == undefined) {
   var FA_GLOBALS = {
-    AJAX_URL: "http://localhost/wp-admin/admin-ajax.php",
+    AJAX_URL: "http://localhost:8888/forcealarm/wp-admin/admin-ajax.php",
     NONCE: "48f7944606"
   };
 }
