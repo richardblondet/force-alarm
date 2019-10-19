@@ -83,4 +83,5 @@ typings/
 screenshotsFolder/
 videosFolder/
 
-index.html
+public/index.html
+public/.src/index.js
