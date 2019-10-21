@@ -26,6 +26,7 @@ class SelectPlan extends React.Component {
     }
     handlePlanSelect = (e, plan) => {
         e.preventDefault();
+        plan.qty = 1;
         this.props.handleStep( plan );
     }
     getPlans = () => {
@@ -37,7 +38,7 @@ class SelectPlan extends React.Component {
     }
     render() {
         const plans = this.getPlans().reverse();
-        console.log('Task', plans);
+        // console.log('Task', plans);
         const renderPlans = plans.map( (plan, indx) => {
         const formatter = new Intl.NumberFormat('en-US', { style: 'currency', currency:'USD' });
         const PriceFormatted = `RD${formatter.format(plan.price)}`;
@@ -55,7 +56,7 @@ class SelectPlan extends React.Component {
                     </PlanName>
                     <div>
                         <p className="my-3 h3 text-center">
-                            {PriceFormatted} <span className="text-black-50 h6">/mes</span>
+                            {PriceFormatted} <span className="text-black-50 h6">/Al mes</span>
                         </p>
                     </div>
                     <Button color="danger" onClick={e=>this.handlePlanSelect(e, plan)}>Seleccionar</Button>

@@ -81,7 +81,7 @@ class SelectAddons extends React.Component {
 
     render() {
         const addons = this.getAddons();
-        console.log({ addons });
+        // console.log({ addons });
         const renderAddons = addons.map( (addon, indx) => {
             const formatter = new Intl.NumberFormat('en-US', { style: 'currency', currency:'USD' });
             const PriceFormatted = `RD${formatter.format(addon.price)}`

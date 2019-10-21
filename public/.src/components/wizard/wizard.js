@@ -41,11 +41,11 @@ class ForceAlarmWizard extends React.Component {
         const ProvinciasContent = new ContentService("force-alarm-content", state.AJAX_URL );
         this.Plans = new PlansService("force-alarm-services", state.AJAX_URL);
         this.Order = new OrderService("force-alarm-orders", state.AJAX_URL);
-        console.log("%c state", "font-size:2em;", state );
+        // console.log("%c state", "font-size:2em;", state );
 
         const today = moment(new Date()).format("MM/DD/YYYY");
         this.CheckBookedTime(today);
-        //
+        
         this.Plans.getPlans({ 
             type: "plan"
         }).then( plansresponse => {
@@ -55,7 +55,7 @@ class ForceAlarmWizard extends React.Component {
                 this.Plans.getPlans({
                     type: "item"
                 }).then( itemResponse => {
-                    console.log([...addonsresponse.data, ...itemResponse.data]);
+                    // console.log([...addonsresponse.data, ...itemResponse.data]);
                     this.setState({ 
                         plans: plansresponse.data,
                         addons: [...addonsresponse.data, ...itemResponse.data]
@@ -66,22 +66,18 @@ class ForceAlarmWizard extends React.Component {
             ProvinciasContent.getContent({ 
                 content: "provincias" 
             }).then(provinciasresponse => {
-                console.log("Provoncioas", provinciasresponse.data );
                 this.setState({ provincias: provinciasresponse.data.content });
             });
         });
         
     }
-
-
-
     CheckBookedTime = (date) => {
         const mDate = moment(date).format("MM/DD/YYYY");
 
-        console.log("Mytime", mDate)
+        // console.log("Mytime", mDate)
         //"09/18/2019"
         this.Order.getTimesByDate(mDate).then( ({ data }) => {
-            console.log('data', data);
+            // console.log('data', data);
             const { booked } = data
             let finds = [
                 '9:00 am',
@@ -93,8 +89,6 @@ class ForceAlarmWizard extends React.Component {
                ];
             const results =  findsRecurssionInArray(finds, booked, 'installation_time');
             this.setState({ bockedDateList:  results });
-            console.log('myresult', results)
-           console.log("%c dates", "font-size:2em;", booked );
        });
     }
 
@@ -147,7 +141,7 @@ class ForceAlarmWizard extends React.Component {
             return selection;
         })
 
-        console.log('SelectionAFTER', state.data.selection);
+        // console.log('SelectionAFTER', state.data.selection);
         dispatch({ type: constants.SELECT_PLAN, data: state.data.selection });
         // this.goToStep(3);
     }
@@ -158,7 +152,7 @@ class ForceAlarmWizard extends React.Component {
     }
     handleFithStep = ( data ) => {
         const {dispatch} = this.context;
-        console.log("payment_data", data )
+        // console.log("payment_data", data )
         dispatch({ type: constants.LOADING_ON });
         dispatch({ type: constants.SET_PAYMENT_DATA, data });
         this.process( data );
@@ -195,7 +189,6 @@ class ForceAlarmWizard extends React.Component {
             delete item.post_excerpt;
             delete item.guid;
         });
-        console.log( "data", data );
         
         // Get payment info
         data.payment = payment;

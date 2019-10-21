@@ -17,7 +17,7 @@ export default class Orders extends AjaxService {
             action: "force-alarm-get-orders-by-installation-date",
             date: date
         };
-        console.log( "%c this.getQueryString( payload )", "font-size:2em;", this.getQueryString( payload ));
+        // console.log( "%c this.getQueryString( payload )", "font-size:2em;", this.getQueryString( payload ));
         return this.axios({
             method: "POST",
             headers: {
