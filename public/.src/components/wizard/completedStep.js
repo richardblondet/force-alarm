@@ -3,9 +3,7 @@ import React from "react";
 import {
     Container,
     Jumbotron,
-    Row, Col,
-    Button,
-    Form, FormGroup, Label, Input, FormText
+    Button
 } from "reactstrap";
 
 import checked_green from "../../static/checked-green.png";

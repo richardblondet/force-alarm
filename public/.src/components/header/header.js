@@ -1,25 +1,17 @@
 import React from "react";
-import {
-    Collapse,
-    Navbar,
-    NavbarToggler,
-    NavbarBrand,
-    Nav,
-    NavItem,
-    NavLink 
-} from 'reactstrap';
 import logo from "../../static/force-alarm-logo-white.png";
 import shopping_cart from "../../static/force-alarm-shopping-cart.png";
 import styled from "styled-components";
 import Store from "../../redux/store";
 
-const NavLinkStyled = styled(NavLink)`
-    color: #fff;
-`;
-
-const HeaderContainer = styled.div`
+const HeaderContainer = styled.section`
     background-color: #AD301F;
     color: #fff;
+    position: fixed;
+    width: 100%;
+    z-index: 1;
+    left: 0;
+    top: 0;
 `;
 
 class Header extends React.Component {
@@ -45,7 +37,7 @@ class Header extends React.Component {
     
     render() {
         const { state } = this.context;
-        const formatter = new Intl.NumberFormat('en-US', { style: 'currency', currency:'USD' });
+        const formatter = new Intl.NumberFormat("en-US", { style: "currency", currency:"USD" });
         const PriceFormatted = `RD${formatter.format(state.data.total || 0)}`;
         return (
             <React.Fragment>
@@ -60,21 +52,19 @@ class Header extends React.Component {
                             </div>
                         </div>
                         <div className="col-3 text-right">
-                            <span><img src={shopping_cart} width="22" /></span>
+                            <span>
+                                <img src={shopping_cart} width="22" />
+                            </span>
                             <span className="ml-2">{state.data.selection.length}</span>
                         </div>
                     </div>
                     <div className="row justify-content-between align-items-center pt-4 pb-3">
                         <div className="col-6">
-                            <div>
-                                <a className="text-white" href="/">Volver a Página Principal</a>
-                            </div>
+                            <div><a className="text-white" href="/">Volver a Página Principal</a></div>
                         </div>
                         <div className="col-6 text-right">
                             <div className="mb-0 h4 font-weight-bold">{PriceFormatted}</div>
-                                <small style={{color: "#E87E70"}}>total a pagar</small>
-                            <div>
-                            </div>
+                            <small style={{color: "#E87E70"}}>total a pagar</small>
                         </div>
                     </div>
                 </HeaderContainer>

@@ -1,5 +1,6 @@
 import React from "react";
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Row, Col } from "reactstrap";
+import PropTypes from "prop-types";
+import { Button, Modal, ModalBody, ModalFooter } from "reactstrap";
 import constants from "../../constants";
 import Store from "../../redux/store";
 
@@ -14,7 +15,7 @@ class ServicesModal extends React.Component {
     }
     render() {
         const {state} = this.context;
-        const formatter = new Intl.NumberFormat('en-US', { style: 'currency', currency:'USD' });
+        const formatter = new Intl.NumberFormat("en-US", { style: "currency", currency:"USD" });
         const PriceFormatted = `RD${formatter.format(state.modalService.price)}`;
 
         return (
@@ -42,6 +43,11 @@ class ServicesModal extends React.Component {
             </Modal>
         );
     }
+};
+
+
+ServicesModal.propTypes = {
+    className: PropTypes.string
 };
 
 export default ServicesModal;

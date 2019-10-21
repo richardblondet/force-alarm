@@ -1,9 +1,10 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import Store from "../../redux/store";
 import constants from "../../constants";
 
-import ContentService from "../../services/content";
+// import ContentService from "../../services/content";
 
 class Terms extends React.Component {
     static contextType = Store;
@@ -12,7 +13,7 @@ class Terms extends React.Component {
         super(props);
         this.state = {
             terms: ""
-        }
+        };
         this.toggle = this.toggle.bind(this);
     }
     
@@ -41,5 +42,9 @@ class Terms extends React.Component {
         );
     }
 }
+
+Terms.propTypes = {
+    className: PropTypes.string
+};
 
 export default Terms;

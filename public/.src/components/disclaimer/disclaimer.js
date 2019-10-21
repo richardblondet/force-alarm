@@ -1,5 +1,6 @@
 import React from "react";
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
+import PropTypes from "prop-types";
+import { Modal, ModalHeader, ModalBody } from "reactstrap";
 import Store from "../../redux/store";
 import constants from "../../constants";
 import styled from "styled-components";
@@ -29,7 +30,7 @@ class Disclaimer extends React.Component {
 
         this.state = {
             disclaimer: ""
-        }
+        };
     
         this.toggle = this.toggle.bind(this);
     }
@@ -49,7 +50,6 @@ class Disclaimer extends React.Component {
 
     render() {
         const {state} = this.context;
-        const {disclaimer} = this.state;
 
         return (
             <MyModal isOpen={state.showDisclaimer} toggle={this.toggle} className={this.props.className} size="lg">
@@ -62,5 +62,9 @@ class Disclaimer extends React.Component {
         );
     }
 }
+
+Disclaimer.propTypes = {
+    className: PropTypes.string,
+};
 
 export default Disclaimer;

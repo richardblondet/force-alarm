@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import styled from "styled-components";
 import plan_image from "../../static/force-alarm-plans.png";
 
@@ -19,7 +20,7 @@ class SelectPlan extends React.Component {
         super( props );
         this.state = {
             plans: []
-        }
+        };
     }
     handleBackButton = (e) => {
         e.preventDefault();
@@ -34,13 +35,12 @@ class SelectPlan extends React.Component {
     }
     showServiceModal = (plan) => {
         this.props.showServiceModal(plan);
-
     }
     render() {
         const plans = this.getPlans().reverse();
         // console.log('Task', plans);
         const renderPlans = plans.map( (plan, indx) => {
-        const formatter = new Intl.NumberFormat('en-US', { style: 'currency', currency:'USD' });
+        const formatter = new Intl.NumberFormat("en-US", { style: "currency", currency:"USD" });
         const PriceFormatted = `RD${formatter.format(plan.price)}`;
             return (
                 <Col xs="12" sm="4" key={indx} className="mt-5">
@@ -91,5 +91,8 @@ class SelectPlan extends React.Component {
         );
     }
 }
-
+SelectPlan.propTypes = {
+    plans: PropTypes.array,
+    showServiceModal: PropTypes.bool
+};
 export default SelectPlan;

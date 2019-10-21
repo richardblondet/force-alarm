@@ -1,13 +1,14 @@
 import React from "react";
 import styled from "styled-components";
-import { Nav, NavItem, NavLink, Container, Row, Col } from 'reactstrap';
+import { Nav, NavItem, NavLink, Container, Row, Col } from "reactstrap";
 import Store from "../../redux/store";
 import checked from "../../static/checked.png";
 
 const Section = styled.section`
     position: relative;
-    margin-top: 1em;
+    margin-top: 167px;
     padding: ${props => props.padding ? props.padding : "0px" };
+    z-index: 0;
 `;
 
 const green = "#2E9842";
@@ -50,7 +51,7 @@ const NavItemStyle = styled(NavItem)`
     @media (max-width: 480px) {
         &:after, &:before { display: none; }
 
-        ${({ active }) => active === false ? `display:none;`: `display:block;`}
+        ${({ active }) => active === false ? "display:none;": "display:block;"}
     }
     
 `;

@@ -1,15 +1,9 @@
-import React from 'react';
+import React from "react";
 import {
-  Container,
-  Jumbotron,
-  Row, 
-  Col,
-  Button,
   Dropdown,
   DropdownMenu,
   DropdownItem,
-  DropdownToggle,
-  CardDeck, Card, CardBody, CardText
+  DropdownToggle
 } from "reactstrap";
 
 

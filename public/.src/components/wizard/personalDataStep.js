@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import PropTypes from "prop-types";
 /**
  * @see {@link https://reactdatepicker.com/}
  */
@@ -27,45 +27,45 @@ import {
     Jumbotron,
     Row, Col,
     Button,
-    Form, FormGroup, Label, Input, FormText, FormFeedback,
+    Form, FormGroup, Label, Input, FormFeedback,
     Alert
 } from "reactstrap";
 
 import MaskedInput from "react-text-mask";
 
-import { getExcludeTimes } from '../../functions';
+import { getExcludeTimes } from "../../functions";
 
 const PROVINCIAS = [
-    'Santo Domingo',
-    'Santiago',
-    'Punta Cana'
+    "Santo Domingo",
+    "Santiago",
+    "Punta Cana"
 ];
 
 const TODAY = new Date();
 
-const initialDataTest = {
-    name: "Richard Blondet",
-    email: "richardblondet+f2@gmail.com",
-    phone: "8094758085",
-    cedula: "001-2003899-2",
-    address: "Calle San Juan Bautista",
-    sector: "Mirador Norte",
-    reference: "Frente a la casa",
-    date: addDays( TODAY, 1),
-    time: setHours( setMinutes( TODAY, 0), 8)
-};
-
 // const initialDataTest = {
-//     cedula: "",
-//     name: "",
-//     email: "",
-//     phone: "",
-//     address: "",
-//     sector: "",
-//     reference: "",
+//     name: "Richard Blondet",
+//     email: "richardblondet+f2@gmail.com",
+//     phone: "8094758085",
+//     cedula: "001-2003899-2",
+//     address: "Calle San Juan Bautista",
+//     sector: "Mirador Norte",
+//     reference: "Frente a la casa",
 //     date: addDays( TODAY, 1),
-//     time: setHours( setMinutes( TODAY, 0), 9),
-// }
+//     time: setHours( setMinutes( TODAY, 0), 8)
+// };
+
+const initialDataTest = {
+    cedula: "",
+    name: "",
+    email: "",
+    phone: "",
+    address: "",
+    sector: "",
+    reference: "",
+    date: addDays( TODAY, 1),
+    time: setHours( setMinutes( TODAY, 0), 9)
+};
 
 class PersonalDataForm extends React.Component {
     constructor(props) {
@@ -85,22 +85,21 @@ class PersonalDataForm extends React.Component {
         let excludeTimesList = getExcludeTimes();
 
         bockedDateList.forEach(bocked => {
-                console.log('bocked', bocked);
-                const { id, count } = bocked;
-                if(id === '9:00 am' &&  count >= 3) {
-                    excludeTimesList.push(setHours(setMinutes(TODAY, 0), 9))
-                } else if (id === '11:00 am' &&  count >= 3) {
-                    excludeTimesList.push(setHours(setMinutes(TODAY, 0), 11))                    
-                } else if (id === '1:00 pm' &&  count >= 3) {
-                    excludeTimesList.push(setHours(setMinutes(TODAY, 0), 13))
-                } else if (id === '3:00 pm' &&  count >= 3) {
-                    excludeTimesList.push(setHours(setMinutes(TODAY, 0), 15))
-                } else if (id === '5:00 pm' &&  count >= 3) {
-                    excludeTimesList.push(setHours(setMinutes(TODAY, 0), 17))
-                } else if (id === '5:30 pm' &&  count >= 3) {
-                    excludeTimesList.push(setHours(setMinutes(TODAY, 30), 17))
-                }
-
+            // console.log('bocked', bocked);
+            const { id, count } = bocked;
+            if(id === "9:00 am" &&  count >= 3) {
+                excludeTimesList.push(setHours(setMinutes(TODAY, 0), 9))
+            } else if (id === "11:00 am" &&  count >= 3) {
+                excludeTimesList.push(setHours(setMinutes(TODAY, 0), 11))                    
+            } else if (id === "1:00 pm" &&  count >= 3) {
+                excludeTimesList.push(setHours(setMinutes(TODAY, 0), 13))
+            } else if (id === "3:00 pm" &&  count >= 3) {
+                excludeTimesList.push(setHours(setMinutes(TODAY, 0), 15))
+            } else if (id === "5:00 pm" &&  count >= 3) {
+                excludeTimesList.push(setHours(setMinutes(TODAY, 0), 17))
+            } else if (id === "5:30 pm" &&  count >= 3) {
+                excludeTimesList.push(setHours(setMinutes(TODAY, 30), 17))
+            }
         });
 
         this.setState({
@@ -127,7 +126,7 @@ class PersonalDataForm extends React.Component {
         });
     }
     handleDateChange = ( date ) => {
-        console.log({ date });
+        // console.log({ date });
         this.props.CheckBookedTime(date);
         let { form } = this.state;
         form.date = date;
@@ -142,7 +141,7 @@ class PersonalDataForm extends React.Component {
         date.setMonth( form.date.getMonth() );
         date.setDate( form.date.getDate() );
         form.time = date;
-        console.log("date", date );
+        // console.log("date", date );
         this.setState({
             form,
             dateTimeOpen: false
@@ -441,5 +440,8 @@ class PersonalDataForm extends React.Component {
         );
     }
 }
-
+PersonalDataForm.propTypes = {
+    bockedDateList: PropTypes.array,
+    form: PropTypes.object
+};
 export default PersonalDataForm;

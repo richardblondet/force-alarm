@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import styled from "styled-components";
 import spinner from "../../static/spinner.gif";
 import Store from "../../redux/store";
@@ -26,6 +26,6 @@ class Loading extends React.Component {
             </Container>
         );
     }
-};
+}
 
 export default Loading;

@@ -10,7 +10,7 @@
     "dev": "NODE_ENV=production webpack --watch --progress --info-verbosity verbose",
     "server": "webpack-dev-server --hot",
     "test": "cypress run",
-    "lint": "eslint src/"
+    "lint": "eslint .src/"
   },
   "author": "Richard Blondet <richardblondet@gmail.com>",
   "license": "GPL-3.0-or-later",

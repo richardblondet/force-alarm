@@ -1,6 +1,7 @@
 import React from "react";
-import Cards from 'react-credit-cards';
-import 'react-credit-cards/es/styles-compiled.css';
+import PropTypes from "prop-types";
+import Cards from "react-credit-cards";
+import "react-credit-cards/es/styles-compiled.css";
 import {
     formatCreditCardNumber,
     formatCVC,
@@ -201,7 +202,7 @@ class PaymentDataForm extends React.Component {
                                                 type="checkbox"
                                                 name="comprobante"  
                                                 onChange={this.handleOnChange}
-                                            />{' '}
+                                            />{" "}
                                             Comprobante Fiscal
                                         </Label>
                                     </FormGroup>
@@ -275,5 +276,10 @@ class PaymentDataForm extends React.Component {
         );
     }
 }
+
+PaymentDataForm.propTypes = {
+    handleBack: PropTypes.func,
+    handleStep: PropTypes.func
+};
 
 export default PaymentDataForm;
