@@ -161,7 +161,7 @@ class PersonalDataForm extends React.Component {
     }
     handleFilterDate = (date) => {
         const day = getDay(date);
-        return day !== 0 && day !== 6;
+        return day !== 0;
     }
     getProvincias = () => {
         return this.props.provincias || PROVINCIAS;
