@@ -19,24 +19,24 @@ import {
 } from "reactstrap";
 
 const PlanName = styled.div`
-    color: #c32c1e;
-    font-size: 22px;
-    margin-bottom: 0px;
+color: #c32c1e;
+font-size: 22px;
+margin-bottom: 0px;
 `;
 
 const CenterRow = styled(Row)`
-    justify-content: center;
+justify-content: center;
 `
 
 
 class SelectAddons extends React.Component {
     static contextType = Store;
-
+    
     state = {
         isOpen: false,
         quantity: 1,
     }
-
+    
     handleBackButton = (e) => {
         e.preventDefault();
         this.props.handleBack();
@@ -49,6 +49,12 @@ class SelectAddons extends React.Component {
         e.preventDefault();
         this.props.handleStep(addon, quantity);
     }
+    
+    handleAddonRemove = (e, addon) => {
+        const { quantity } = this.state;
+        e.preventDefault();
+        this.props.handleOnRemoveItem(addon, quantity);
+    }
     handleForwardButton = (e) => {
         e.preventDefault();
         this.props.handleForward();
@@ -58,14 +64,14 @@ class SelectAddons extends React.Component {
     }
     toggleDropdown = () => {
         this.setState(prevState => ({
-          isOpen: !prevState.isOpen
+            isOpen: !prevState.isOpen
         }));
-      }
+    }
     
     handleItemClick = (quantity) => {
         this.setState({ quantity })
     }
-
+    
     setDropdownList = (drop) => {
         this.setState((prevState) => {
             return {
@@ -73,16 +79,16 @@ class SelectAddons extends React.Component {
             }
         })
     }
-
+    
     isDisabled = (addon) => {
         const {state} = this.context;
         return state.data.selection.filter(item => item.ID === addon ).length > 0
     }
-
+    
     showAddonsModal = (addon) => {
-       this.props.showAddonsmodal(addon);
+        this.props.showAddonsmodal(addon);
     }
-
+    
     render() {
         const addons = this.getAddons();
         // console.log({ addons });
@@ -92,81 +98,91 @@ class SelectAddons extends React.Component {
             
             return (
                 <Row className="m-3" key={indx}>
-                    <Col xs="12" md={{ size: 8, offset: 2 }}>
-                        <Row>
-                            <Col md={4} xs={4}>
-                                <CenterRow>
-                                    {/* <div className="mb-3"> */}
-                                    <img 
-                                    className="img-thumbnail p-4" 
-                                    src={addon_image} style={{backgroundColor:"#691206"}} />
-                                    {/* </div> */}
-                                </CenterRow>
-                                <CenterRow xs={12}>
-                                    <a href="#" className="details_link" onClick={e => {
-                                        e.preventDefault();
-                                        this.showAddonsModal(addon);
-                                    }}>ver detalles</a>
-                                </CenterRow> 
-                            </Col>
-                            <Col md={8} xs={8} className="text-left">
-                                <div>
-                                    <PlanName>
-                                        <span className="text-uppercase font-weight-bold">{addon.post_title}</span>
-                                    </PlanName>
-                                    <p className="my-3 h3 card-price-style">
-                                        {PriceFormatted} {addon.product_type === "addon" && <span className="car-price-description-small">/Adicionales en la renta</span>}
-                                    </p>
-                                </div>
-                                <div>
-                                    <Row>
-                                        <Col xs="3">
-                                            <div className="qty-option-container">
-                                                <p className="mb-0">Cantidad</p>
-                                                {addon.product_type === "addon" && <Input disabled value={1} />}
-                                                {addon.product_type === "item" && <DropDownQty productQuantity={(quantity) => this.setState({ quantity })} />}
-                                            </div>
-                                        </Col>
-                                        <Col xs="8" className="pt-16">
-                                            <Button color="danger" onClick={e=>this.handleAddonSelect(e, addon)} disabled={this.isDisabled(addon.ID)}>Añadir al Carrito</Button>
-                                        </Col>
-                                    </Row>
-                                </div>
-                            </Col>
-                        </Row>
-                    </Col>
+                <Col lg={{ size: 8, offset: 2 }} xs={{ size: 12 }}>
+                <Row>
+                <Col md={4} xs={4}>
+                <CenterRow>
+                {/* <div className="mb-3"> */}
+                <img 
+                className="img-thumbnail p-4" 
+                src={addon_image} style={{backgroundColor:"#691206"}} />
+                {/* </div> */}
+                </CenterRow>
+                <CenterRow xs={12}>
+                <a href="#" className="details_link" onClick={e => {
+                    e.preventDefault();
+                    this.showAddonsModal(addon);
+                }}>ver detalles</a>
+                </CenterRow> 
+                </Col>
+                <Col md={8} xs={8} className="text-left">
+                <div>
+                <PlanName>
+                <span className="text-uppercase font-weight-bold">{addon.post_title}</span>
+                </PlanName>
+                <p className="my-3 h3 card-price-style">
+                {PriceFormatted} {addon.product_type === "addon" && <span className="car-price-description-small">/Adicionales en la renta</span>}
+                </p>
+                </div>
+                <div>
+                <Row>
+                <Col xs="3">
+                <div className="qty-option-container">
+                <p className="mb-0">Cantidad</p>
+                {addon.product_type === "addon" && <Input disabled value={1} />}
+                {addon.product_type === "item" && <DropDownQty productQuantity={(quantity) => this.setState({ quantity })} />}
+                </div>
+                </Col>
+                <Col xs="8" className="pt-16">
+                    {
+                        !this.isDisabled(addon.ID) && (
+                            <Button color="danger" onClick={e=>this.handleAddonSelect(e, addon)}>Añadir al Carrito</Button>
+                        )
+                    }
+                     {
+                        this.isDisabled(addon.ID) && (
+                            <Button color="warning" className={"white"} onClick={e=>this.handleAddonRemove(e, addon)}>Remover</Button>
+                        )
+                    }
+                
+                </Col>
                 </Row>
-            );
-        });
-        return (
-            <React.Fragment>
+                </div>
+                </Col>
+                </Row>
+                </Col>
+                </Row>
+                );
+            });
+            return (
+                <React.Fragment>
                 <Jumbotron tag="section" className="text-center" style={{backgroundColor:"white", borderRadius:"none"}}>
-                    <Container>
-                        <h2 className="text-center jumbotron-heading display-5 mb-4"><strong>Servicios Adicionales recomendados:</strong></h2>
-                    </Container>
-                    <Container fluid>
-                        <Row>
-                            <Col xs="12" md={{ size: 8, offset: 2 }}>
-                                {renderAddons}
-                                <Row className="mt-4 text-center">
-                                    <Col xs="12" md={{ size: 6, offset: 3 }}>
-                                        <Row>
-                                            <Col>  
-                                                <Button block onClick={this.handleBackButton} color="secondary">Atrás</Button>
-                                            </Col>
-                                            <Col>
-                                                <Button block onClick={this.handleForwardButton} color="danger">No, Continuemos</Button>
-                                            </Col>
-                                        </Row>
-                                    </Col>
-                                </Row>
-                            </Col>
-                        </Row>
-                    </Container>    
+                <Container>
+                <h2 className="text-center jumbotron-heading display-5 mb-4"><strong>Servicios Adicionales recomendados:</strong></h2>
+                </Container>
+                <Container fluid>
+                <Row>
+                <Col xs="12" md={{ size: 8, offset: 2 }}>
+                {renderAddons}
+                <Row className="mt-4 text-center">
+                <Col xs="12" md={{ size: 6, offset: 3 }}>
+                <Row>
+                <Col>  
+                <Button block onClick={this.handleBackButton} color="secondary">Atrás</Button>
+                </Col>
+                <Col>
+                <Button block onClick={this.handleForwardButton} color="danger">No, Continuemos</Button>
+                </Col>
+                </Row>
+                </Col>
+                </Row>
+                </Col>
+                </Row>
+                </Container>    
                 </Jumbotron>
-            </React.Fragment>
-        );
-    }
-}
+                </React.Fragment>
+                );
+            }
+        }
         
-export default SelectAddons;
+        export default SelectAddons;

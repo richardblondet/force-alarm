@@ -176,6 +176,10 @@ class ForceAlarmWizard extends React.Component {
 
     }
 
+    handleOnRemoveItem = ( addon ) => {
+        console.log('wizar', addon);
+    }
+
     process = ( payment ) => {
         const {dispatch} = this.context;
         const {state} = this.context;
@@ -229,7 +233,10 @@ class ForceAlarmWizard extends React.Component {
         return (
             <React.Fragment>
                 <StepView step={0}>
-                    <Step1 handleStep={this.handleFirstStep} handleDisclaimer={this.handleDisclaimer} />
+                    <Step1 
+                    handleStep={this.handleFirstStep} 
+                    handleDisclaimer={this.handleDisclaimer}
+                     />
                 </StepView>
                 <StepView step={1}>
                     <Step2
@@ -245,6 +252,7 @@ class ForceAlarmWizard extends React.Component {
                         handleForward={this.handleForward} 
                         handleBack={this.handleBackStep} 
                         showAddonsmodal={this.showAddonsmodal}
+                        handleOnRemoveItem={this.handleOnRemoveItem}
                         />
                        
                 </StepView>
