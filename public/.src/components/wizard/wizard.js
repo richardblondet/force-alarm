@@ -166,6 +166,16 @@ class ForceAlarmWizard extends React.Component {
         dispatch({ type: constants.SET_MODAL_SERVICE, data: plan });
         dispatch({ type: constants.SHOW_MODAL_SERVICE  });
     }
+
+    showAddonsmodal = ( addon ) => {
+        console.log('WIZARD', addon);
+        const {dispatch} = this.context;
+       
+            dispatch({ type: constants.SET_MODAL_ADDON, data: addon });
+            dispatch({ type: constants.SHOW_MODAL_ADDON });
+
+    }
+
     process = ( payment ) => {
         const {dispatch} = this.context;
         const {state} = this.context;
@@ -233,7 +243,10 @@ class ForceAlarmWizard extends React.Component {
                         addons={this.state.addons}
                         handleStep={this.handleThirdStep} 
                         handleForward={this.handleForward} 
-                        handleBack={this.handleBackStep} />
+                        handleBack={this.handleBackStep} 
+                        showAddonsmodal={this.showAddonsmodal}
+                        />
+                       
                 </StepView>
                 <StepView step={3}>
                     <Step4 

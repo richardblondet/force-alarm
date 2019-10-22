@@ -79,6 +79,10 @@ class SelectAddons extends React.Component {
         return state.data.selection.filter(item => item.ID === addon ).length > 0
     }
 
+    showAddonsModal = (addon) => {
+       this.props.showAddonsmodal(addon);
+    }
+
     render() {
         const addons = this.getAddons();
         // console.log({ addons });
@@ -99,7 +103,10 @@ class SelectAddons extends React.Component {
                                     {/* </div> */}
                                 </CenterRow>
                                 <CenterRow xs={12}>
-                                    <a href="#" className="details_link">ver detalles</a>
+                                    <a href="#" className="details_link" onClick={e => {
+                                        e.preventDefault();
+                                        this.showAddonsModal(addon);
+                                    }}>ver detalles</a>
                                 </CenterRow> 
                             </Col>
                             <Col md={8} xs={8} className="text-left">

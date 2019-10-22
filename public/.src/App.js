@@ -8,6 +8,7 @@ import Steps from "./components/steps";
 import ForceAlarmWizard from "./components/wizard";
 import Terms from "./components/terms";
 import ServicesModal from "./components/servicesModal";
+import AddonsModal from "./components/addonsModal";
 import Disclaimer from "./components/disclaimer";
 
 const GlobalStyles = styled.div`
@@ -38,6 +39,7 @@ class App extends React.Component {
                     <Disclaimer />
                     <Terms />
                     <ServicesModal />
+                    <AddonsModal />
                     <Steps />
                     <ForceAlarmWizard />
                 </GlobalStyles>
