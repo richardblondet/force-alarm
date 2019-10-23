@@ -22,6 +22,10 @@ const PlanName = styled.div`
 color: #c32c1e;
 font-size: 22px;
 margin-bottom: 0px;
+
+@media (max-width: 480px) { 
+    font-size: 18px;
+ }
 `;
 
 const CenterRow = styled(Row)`

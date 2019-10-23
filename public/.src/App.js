@@ -16,13 +16,15 @@ const GlobalStyles = styled.div`
     z-index: 0;
     @media (max-width: 480px) {
         .btn {
-            padding: 16px;
+            padding: 4px;
             margin-bottom: 1rem!important;
+            font-size: 0.9em;
         }
         .ver-mas {
             font-size: 20px;
         }
     }
+
 `;
 
 class App extends React.Component {

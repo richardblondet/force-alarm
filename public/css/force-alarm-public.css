@@ -9,7 +9,10 @@ body {
 }
 .btn {
     border-radius: 3px;
+    font-size: 1em;
 }
+
+
 .btn-secondary {
     background-color: #C2C1C3;
     border-color: #C2C1C3;
