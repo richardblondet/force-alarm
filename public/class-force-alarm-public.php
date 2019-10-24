@@ -253,10 +253,10 @@ class Force_Alarm_Public {
 		try {
 			// $available 					= $this->validate_service_installation_availability( $data );
 			// $payment_response 	= $this->fa_order_process_payment( $data );
-			// $user_id		 				= $this->fa_order_process_user( $data );
-			$order_id						= $this->fa_order_process_cart( 24, $data );
+			$user_id		 				= $this->fa_order_process_user( $data );
+			$order_id						= $this->fa_order_process_cart( $user_id, $data );
 			
-			return wp_send_json_error( $order_id, 500 ); // Test
+			// return wp_send_json_error( $order_id, 500 ); // Test
 			$response['payment_response'] = $payment_response;
 			$response['user_id'] 					= $user_id;
 			$response['order_id'] 				= $order_id;
@@ -541,8 +541,7 @@ class Force_Alarm_Public {
 		$order->set_address( $address, 'billing' );
 		$order->set_address( $address, 'shipping' );
 		$order->calculate_totals();
-		$order->update_status("processing", "", false);
-		return wp_send_json_error( $order_id, 500 );
+		$order->update_status("processing", "", true);
 		
 		// Update post meta in order the wordpress way too
 		foreach ($address as $key => $addr) {
