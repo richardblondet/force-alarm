@@ -165,14 +165,14 @@ class PaymentDataForm extends React.Component {
                                                     type="tel"
                                                     name="expiry"
                                                     placeholder="Expira"
-                                                    pattern="\d\d/\d\d"
+                                                    pattern="\d\d/\d\d\d\d"
                                                     required
                                                     onChange={this.handleOnChange}
                                                     onFocus={this.handleInputFocus}
                                                     invalid={errors.includes("expiry")}
                                                     title="Inserta una fecha de expiración válida"
                                                 />
-                                                <FormFeedback>Inserta una fecha de expiración válida</FormFeedback>
+                                                <FormFeedback>Inserta una fecha de expiración válida, formato MM/YYYY</FormFeedback>
                                             </FormGroup>
                                         </Col>
                                         <Col xs="12" sm="6">

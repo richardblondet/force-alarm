@@ -116,7 +116,7 @@ class Force_Alarm_Public {
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/force-alarm-public.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/force-alarm-public.min.js', array( 'jquery' ), $this->version, false );
 
 	}
 	/**
@@ -348,7 +348,7 @@ class Force_Alarm_Public {
 
 		// Verify error on service communication and throw Exception
 		if( is_wp_error( $response )) { // $res->get_error_message()
-			throw new Exception('Ha ocurrido un fallo en la comunicación en la terminal de pago');
+			throw new Exception('Ha ocurrido un fallo en la comunicación en la terminal de pago. Código: '. $response['response']['code']);
 		}
 
 		// Decode body
@@ -365,7 +365,7 @@ class Force_Alarm_Public {
 		}
 		
 		// Verify errors in fields
-		if( $response['response']['code'] === 400 && isset( $response['body_decoded']->payment_info )) {
+		if( $response['response']['code']['code'] === 400 && isset( $response['body_decoded']->payment_info )) {
 			$errors = implode(", ", array_keys($response['body_decoded']->payment_info));
 			throw new Exception('Faltan campos en la información de pago: '. errors);
 		}
