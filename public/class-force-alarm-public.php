@@ -165,6 +165,7 @@ class Force_Alarm_Public {
 		 */
 		foreach( $services_result as $service ) {
 			// $service->metas = get_post_meta( $service->ID );
+			$service->featured_image = wp_get_attachment_url( get_post_thumbnail_id($service->ID) ); 
 			$service->price = get_post_meta( $service->ID, '_price', true );
 			$service->contract = get_field('fa_service_contract', $service->ID );
 			$service->product_type = $type;
