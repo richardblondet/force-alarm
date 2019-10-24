@@ -345,7 +345,7 @@ class Force_Alarm_Public {
 			'body' 					=> json_encode( $payload )
 		);
 		// Perform call to service
-		$response = wp_remote_get( esc_url_raw( $url ), $request);
+		$response = wp_remote_post( $url, $request);
 		
 		// Verify error on service communication and throw Exception
 		if( is_wp_error( $response )) { // $res->get_error_message()
