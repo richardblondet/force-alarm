@@ -216,13 +216,11 @@ class Force_Alarm_Public {
 			'date' => $date,
 			'_POST' => $_POST['date'],
 			'strtotime' => strtotime( $_POST['date'] ),
-			'tests' => get_field('force_alarm_payment_endpoint_url', 'option'),
-			'token_tets' => get_field('force_alarm_payment_token', 'option')
 		);
 
 		if( $response['parameters']['strtotime'] === false ) {
 			$response['error'] = "Date not valid. Format should be MM/DD/YYYY";
-			return wp_send_json_error( $response );
+			return wp_send_json_error( $response, 500 );
 		}
 
 		$response['booked'] = $this->getForceAlarmOrdersBy('date', $date );
@@ -243,7 +241,7 @@ class Force_Alarm_Public {
 		$data = json_decode( stripslashes( $_POST['data'] ), $decode_to_array = true );
 
 		/** Prepare and Send Emails */
-		// return wp_send_json_error( $data, 500 );
+		// return wp_send_json_error( $response, 500 );
 
 		/**
 		 * The Process in which things should go:
@@ -486,6 +484,20 @@ class Force_Alarm_Public {
 	 * @throws Exception
 	 */
 	private function fa_order_process_cart( $user_id, $data ) {
+		// Validate that order installation date is available
+		$requestedDate = date("D d/m/Y", strtotime(  $data['form']['date'] ));
+		$requestedTime = date("h:i a", strtotime( $data['form']['time'] ));
+		$ordersToday = $this->getForceAlarmOrdersBy("date", $requestedDate );
+		$instCount=0;
+		foreach ($ordersToday as $order) {
+			if( $order->installation_time === $requestedTime) {
+				$instCount++;
+			}
+		}
+		if( $instCount >= 3  ) {
+			throw new Exception(sprintf("Lo sentimos, no existe disponibilidad para la hora que ha seleccionado: '%s' en la fecha %s", $requestedTime, $requestedDate));
+		}
+
 		// Create order post to save order
 		$address = array(
 			'first_name' => $data['form']['name'],
@@ -535,11 +547,11 @@ class Force_Alarm_Public {
 			),
 			array(
 				'meta_key' => 'billing_inst_date',
-				'meta_value' => date("D d/m/Y", strtotime( $data['form']['date'] ))
+				'meta_value' => $requestedDate
 			),
 			array(
 				'meta_key' => 'billing_inst_time',
-				'meta_value' => date("h:i a", strtotime( $data['form']['time'] ))
+				'meta_value' => $requestedTime
 			),
 			array(
 				'meta_key' => 'billing_inst_address',
