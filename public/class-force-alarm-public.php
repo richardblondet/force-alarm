@@ -251,8 +251,8 @@ class Force_Alarm_Public {
 		 * 3. Create Order
 		 */
 		try {
-			// $available 					= $this->validate_service_installation_availability( $data );
-			$payment_response 	= $this->fa_order_process_payment( $data );
+			$available 					= $this->validate_service_installation_availability( $data );
+			// $payment_response 	= $this->fa_order_process_payment( $data );
 			// $user_id		 				= $this->fa_order_process_user( $data );
 			// $order_id						= $this->fa_order_process_cart( $user_id, $data );
 			
@@ -349,7 +349,6 @@ class Force_Alarm_Public {
 		
 		// Verify error on service communication and throw Exception
 		if( is_wp_error( $response )) { // $res->get_error_message()
-			// return wp_send_json_error( [esc_url_raw( $url ), $response, __LINE__, is_wp_error( $response )], 500 );
 			throw new Exception('Ha ocurrido un fallo en la comunicación en la terminal de pago.');
 		}
 		$response['request'] = $request;
