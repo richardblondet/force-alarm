@@ -253,14 +253,14 @@ class Force_Alarm_Public {
 		try {
 			$available 					= $this->validate_service_installation_availability( $data );
 			$payment_response 	= $this->fa_order_process_payment( $data );
-			$user_id		 				= $this->fa_order_process_user( $data );
-			$order_id						= $this->fa_order_process_cart( $user_id, $data );
+			// $user_id		 				= $this->fa_order_process_user( $data );
+			// $order_id						= $this->fa_order_process_cart( $user_id, $data );
 			
+			return wp_send_json_error( $payment_response, 500 ); // Test
 			$response['payment_response'] = $payment_response;
 			$response['user_id'] 					= $user_id;
 			$response['order_id'] 				= $order_id;
 
-			// return wp_send_json_error( $payment_response, 500 ); // Test
 			return wp_send_json_success( $response );
 		} catch (Exception $e) {
 			$response['code']				= sprintf("%s %s", 'FA-00', __LINE__);
@@ -331,8 +331,8 @@ class Force_Alarm_Public {
 		);
 		// return $payload;
 		
-		// Perform call to service
-		$response = wp_remote_get( esc_url_raw( $url ) , array(
+		// build request
+		$request = array(
 			'method' 				=> 'POST',
 			'timeout' 			=> 45,
 			'httpversion'		=> '1.0',
@@ -344,13 +344,17 @@ class Force_Alarm_Public {
 				'Authorization' => 'token '. $token
 			),
 			'body' 					=> json_encode( $payload )
-		));
+		);
+		// Perform call to service
+		$response = wp_remote_get( esc_url_raw( $url ), $request);
 
 		// Verify error on service communication and throw Exception
 		if( is_wp_error( $response )) { // $res->get_error_message()
 			throw new Exception('Ha ocurrido un fallo en la comunicación en la terminal de pago. Código: '. $response['response']['code']);
 		}
-
+		$response['request'] = $request;
+		$response['url'] = esc_url_raw( $url );
+		return wp_send_json_error( $response, 500 );
 		// Decode body
 		$response['body_decoded'] = json_decode( $response['body'] );
 		
@@ -366,8 +370,8 @@ class Force_Alarm_Public {
 		
 		// Verify errors in fields
 		if( $response['response']['code']['code'] === 400 && isset( $response['body_decoded']->payment_info )) {
-			$errors = implode(", ", array_keys($response['body_decoded']->payment_info));
-			throw new Exception('Faltan campos en la información de pago: '. $errors);
+			// $errors = implode(", ", array_keys($response['body_decoded']->payment_info));
+			throw new Exception('Faltan campos en la información de pago. ');
 		}
 
 		// Return to the process
