@@ -340,12 +340,12 @@ class Force_Alarm_Public {
 			// 'cookies' 			=> array(),
 			'headers'				=> array(
 				'Content-Type'=> 'application/json',
-				'Authorization' => 'token '. $token
+				'Authorization' => 'token 23f3c478a6257c2f120381fd612f047b4947b002'
 			),
 			'body' 					=> json_encode( $payload )
 		);
 		// Perform call to service
-		$response = wp_remote_post( $url, $request);
+		$response = wp_remote_post( 'http://api2.forcesos.com:8084/subscriptions/', $request);
 		
 		// Verify error on service communication and throw Exception
 		if( is_wp_error( $response )) { // $res->get_error_message()
@@ -356,12 +356,12 @@ class Force_Alarm_Public {
 		
 		// Decode body
 		$response['body_decoded'] = json_decode( $response['body'] );
+		return wp_send_json_error( [esc_url_raw( $url ), $response, __LINE__], 500 );
 		
 		// Verify error from service and throw Exception
 		if( isset( $response['body_decoded']->error_info )) {
 			throw new Exception( $response['body_decoded']->error_info->message );
 		}
-		// return wp_send_json_error( [esc_url_raw( $url ), $response, __LINE__], 500 );
 		
 		// Verify for errors in server
 		if( isset( $response['body_decoded']->server_error )) {
