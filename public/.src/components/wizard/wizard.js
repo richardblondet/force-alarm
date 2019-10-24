@@ -145,6 +145,8 @@ class ForceAlarmWizard extends React.Component {
         dispatch({ type: constants.SELECT_PLAN, data: state.data.selection });
         // this.goToStep(3);
     }
+
+
     handleForthStep = ( data ) => {
         const {dispatch} = this.context;
         dispatch({ type: constants.SET_USER_DATA, data });
@@ -177,7 +179,11 @@ class ForceAlarmWizard extends React.Component {
     }
 
     handleOnRemoveItem = ( addon ) => {
-        console.log('wizar', addon);
+
+        const {state, dispatch} = this.context;
+
+        state.data.selection = state.data.selection.filter((selection) => selection['ID'] !== addon['ID']);
+        dispatch({ type: constants.SELECT_PLAN, data: state.data.selection });
     }
 
     process = ( payment ) => {
