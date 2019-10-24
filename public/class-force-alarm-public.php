@@ -536,8 +536,7 @@ class Force_Alarm_Public {
 		foreach ($data['selection'] as $key => $item) {
 			$order->add_product( get_product( $item['ID']), $item['qty'] ); // This is an existing product
 		}
-		return wp_send_json_error( $order_id, 500 );
-
+		
 		// Insert order meta the woocommerce way
 		$order->set_address( $address, 'billing' );
 		$order->set_address( $address, 'shipping' );
@@ -548,6 +547,7 @@ class Force_Alarm_Public {
 		foreach ($address as $key => $addr) {
 			update_user_meta( $user_id, 'billing_'.$key, $addr );
 		}
+		return wp_send_json_error( $order_id, 500 );
 
 		// Lets add all data related with this order
 		$post_metas = array(
