@@ -367,7 +367,7 @@ class Force_Alarm_Public {
 		// Verify errors in fields
 		if( $response['response']['code']['code'] === 400 && isset( $response['body_decoded']->payment_info )) {
 			$errors = implode(", ", array_keys($response['body_decoded']->payment_info));
-			throw new Exception('Faltan campos en la información de pago: '. errors);
+			throw new Exception('Faltan campos en la información de pago: '. $errors);
 		}
 
 		// Return to the process
