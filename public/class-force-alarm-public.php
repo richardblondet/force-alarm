@@ -241,7 +241,7 @@ class Force_Alarm_Public {
 		$data = json_decode( stripslashes( $_POST['data'] ), $decode_to_array = true );
 
 		/** Prepare and Send Emails */
-		// return wp_send_json_error( $response, 500 );
+		return wp_send_json_error( $response, 500 );
 
 		/**
 		 * The Process in which things should go:
