@@ -251,6 +251,7 @@ class Force_Alarm_Public {
 		 * 3. Create Order
 		 */
 		try {
+			$available 					= $this->validate_service_installation_availability( $data );
 			$payment_response 	= $this->fa_order_process_payment( $data );
 			$user_id		 				= $this->fa_order_process_user( $data );
 			$order_id						= $this->fa_order_process_cart( $user_id, $data );
@@ -267,6 +268,27 @@ class Force_Alarm_Public {
 	
 			return wp_send_json_error( $response, 500 );
 		}
+	}
+	/**
+	 * Validate service installation availability
+	 * @param data Array
+	 * @throws Exception
+	 */
+	private function validate_service_installation_availability( $data ) {
+		// Validate that order installation date is available
+		$requestedDate = date("D d/m/Y", strtotime(  $data['form']['date'] ));
+		$requestedTime = date("h:i a", strtotime( $data['form']['time'] ));
+		$ordersToday = $this->getForceAlarmOrdersBy("date", $requestedDate );
+		$instCount=0;
+		foreach ($ordersToday as $order) {
+			if( $order->installation_time === $requestedTime) {
+				$instCount++;
+			}
+		}
+		if( $instCount >= 3  ) {
+			throw new Exception(sprintf("Lo sentimos, no existe disponibilidad para la hora que ha seleccionado: '%s' en la fecha %s", $requestedTime, $requestedDate));
+		}
+		return true;
 	}
 	/**
 	 * Process payment in order
@@ -484,19 +506,9 @@ class Force_Alarm_Public {
 	 * @throws Exception
 	 */
 	private function fa_order_process_cart( $user_id, $data ) {
-		// Validate that order installation date is available
+		// get requested time and date
 		$requestedDate = date("D d/m/Y", strtotime(  $data['form']['date'] ));
 		$requestedTime = date("h:i a", strtotime( $data['form']['time'] ));
-		$ordersToday = $this->getForceAlarmOrdersBy("date", $requestedDate );
-		$instCount=0;
-		foreach ($ordersToday as $order) {
-			if( $order->installation_time === $requestedTime) {
-				$instCount++;
-			}
-		}
-		if( $instCount >= 3  ) {
-			throw new Exception(sprintf("Lo sentimos, no existe disponibilidad para la hora que ha seleccionado: '%s' en la fecha %s", $requestedTime, $requestedDate));
-		}
 
 		// Create order post to save order
 		$address = array(
