@@ -540,8 +540,8 @@ class Force_Alarm_Public {
 		// Insert order meta the woocommerce way
 		$order->set_address( $address, 'billing' );
 		$order->set_address( $address, 'shipping' );
-		return wp_send_json_error( $order_id, 500 );
 		$order->calculate_totals();
+		return wp_send_json_error( $order_id, 500 );
 		$order->update_status("processing", "", TRUE);
 		
 		// Update post meta in order the wordpress way too
