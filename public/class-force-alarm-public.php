@@ -333,11 +333,11 @@ class Force_Alarm_Public {
 		// build request
 		$request = array(
 			'method' 				=> 'POST',
-			'timeout' 			=> 45,
-			'httpversion'		=> '1.0',
-			'user-agent'  	=> 'ForceAlarm/1.0; ' . home_url(),
-			'sslverify'			=> false,
-			'cookies' 			=> array(),
+			// 'timeout' 			=> 45,
+			// 'httpversion'		=> '1.0',
+			// 'user-agent'  	=> 'ForceAlarm/1.0; ' . home_url(),
+			// 'sslverify'			=> false,
+			// 'cookies' 			=> array(),
 			'headers'				=> array(
 				'Content-Type'=> 'application/json',
 				'Authorization' => 'token '. $token
