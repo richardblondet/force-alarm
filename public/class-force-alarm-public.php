@@ -328,7 +328,6 @@ class Force_Alarm_Public {
 				"issuer" => $data['payment']['issuer']
 			)
 		);
-		return wp_send_json_error( [__LINE__], 500 );
 		// return $payload;
 		
 		// build request
@@ -345,6 +344,7 @@ class Force_Alarm_Public {
 			),
 			'body' 					=> json_encode( $payload )
 		);
+		return wp_send_json_error( [__LINE__], 500 );
 		// Perform call to service
 		$response = wp_remote_get( esc_url_raw( $url ), $request);
 
