@@ -1,4 +1,4 @@
-import React from "react";
+import React, { createRef } from "react";
 import PropTypes from "prop-types";
 /**
  * @see {@link https://reactdatepicker.com/}
@@ -79,6 +79,7 @@ class PersonalDataForm extends React.Component {
             bockedDateList: [],
             excludeTime: []
         };
+        this.datePickerRef = createRef();
     }
     componentDidMount() {
         let { form, bockedDateList } = this.props;
@@ -149,12 +150,14 @@ class PersonalDataForm extends React.Component {
     }
     handleFocusOpenDatePicker = (e) => {
         e.preventDefault();
+        e.target.blur();
         this.setState({
             datePickerOpen: true
         });
     }
     handleFocusOpenTimePicker = (e) => {
         e.preventDefault();
+        e.target.blur();
         this.setState({
             dateTimeOpen: true
         });
@@ -197,6 +200,14 @@ class PersonalDataForm extends React.Component {
     handleTermsClick = (e) => {
         e.preventDefault();
         this.props.showTermsModal();
+    }
+    clickOutsideDate = (e) => {
+        e.target.focus();
+        this.setState({ datePickerOpen: false });
+    }
+    clickOutsideTime = (e) => {
+        e.target.focus();
+        this.setState({ dateTimeOpen: false });
     }
     render() {
         const renderProvinciasOptions = this.getProvincias().map((provincia, indx) => {
@@ -370,7 +381,8 @@ class PersonalDataForm extends React.Component {
                                             placeholder="Seleccionar fecha" 
                                             value={format(form.date, "dd/MM/yyyy")}
                                             onChange={this.handleOnChange}
-                                            onFocus={this.handleFocusOpenDatePicker} />
+                                            ref={this.datePickerRef}
+                                            onClick={this.handleFocusOpenDatePicker} />
                                         
                                         {this.state.datePickerOpen && <DatePicker
                                             id="fa-app-date"
@@ -381,6 +393,7 @@ class PersonalDataForm extends React.Component {
                                             inline
                                             minDate={addDays(new Date(), 1)}
                                             filterDate={this.handleFilterDate}
+                                            onClickOutside={this.clickOutsideDate}
                                             onChange={this.handleDateChange} /> 
                                         }
                                         
@@ -395,7 +408,7 @@ class PersonalDataForm extends React.Component {
                                             placeholder="Seleccionar hora"
                                             value={format(form.time, "h:mm aa")}
                                             onChange={this.handleOnChange}
-                                            onFocus={this.handleFocusOpenTimePicker} />
+                                            onClick={this.handleFocusOpenTimePicker} />
                                         
                                         {this.state.dateTimeOpen && <DatePicker
                                             id="fa-app-time"
@@ -410,6 +423,7 @@ class PersonalDataForm extends React.Component {
                                             withPortal
                                             inline
                                             excludeTimes={this.state.excludeTime}
+                                            onClickOutside={this.clickOutsideTime}
                                             timeCaption="Hora" />
                                         }
                                     </FormGroup>

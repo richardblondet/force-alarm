@@ -130,6 +130,7 @@ export function getExcludeTimes() {
         setHours(setMinutes(TODAY, 30), 15),
         setHours(setMinutes(TODAY, 0), 16),
         setHours(setMinutes(TODAY, 30), 16),
+        setHours(setMinutes(TODAY, 30), 17),
         setHours(setMinutes(TODAY, 0), 18),
         setHours(setMinutes(TODAY, 30), 18),
         setHours(setMinutes(TODAY, 0), 19),
