@@ -349,17 +349,17 @@ class Force_Alarm_Public {
 		
 		// Verify error on service communication and throw Exception
 		if( is_wp_error( $response )) { // $res->get_error_message()
-			return wp_send_json_error( [esc_url_raw( $url ), $response, __LINE__], 500 );
 			throw new Exception('Ha ocurrido un fallo en la comunicación en la terminal de pago.');
 		}
 		$response['request'] = $request;
 		$response['url'] = esc_url_raw( $url );
+		
 		// Decode body
 		$response['body_decoded'] = json_decode( $response['body'] );
-		return wp_send_json_error( $response, 500 );
 		
 		// Verify error from service and throw Exception
 		if( isset( $response['body_decoded']->error_info )) {
+			return wp_send_json_error( [esc_url_raw( $url ), $response, __LINE__], 500 );
 			throw new Exception( $response['body_decoded']->error_info->message );
 		}
 		
