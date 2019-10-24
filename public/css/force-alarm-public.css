@@ -9,7 +9,10 @@ body {
 }
 .btn {
     border-radius: 3px;
+    font-size: 1em;
 }
+
+
 .btn-secondary {
     background-color: #C2C1C3;
     border-color: #C2C1C3;
@@ -19,6 +22,13 @@ body {
     border-color: #AD301F;
     box-shadow: 0px 3px 6px #00000029;
 }
+
+.btn-warning {
+    background-color: #F0AD51;
+    border-color: #f0ad4e;
+    box-shadow: 0px 3px 6px #00000029;
+}
+
 @media (min-width: 576px) {
     .jumbotron {
         padding: 2rem 2rem;

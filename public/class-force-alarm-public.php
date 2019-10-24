@@ -253,14 +253,14 @@ class Force_Alarm_Public {
 		 */
 		try {
 			$payment_response 	= $this->fa_order_process_payment( $data );
-			// $user_id		 				= $this->fa_order_process_user( $data );
-			// $order_id						= $this->fa_order_process_cart( $user_id, $data );
+			$user_id		 				= $this->fa_order_process_user( $data );
+			$order_id						= $this->fa_order_process_cart( $user_id, $data );
 			
 			$response['payment_response'] = $payment_response;
-			// $response['user_id'] 					= $user_id;
-			// $response['order_id'] 				= $order_id;
+			$response['user_id'] 					= $user_id;
+			$response['order_id'] 				= $order_id;
 
-			return wp_send_json_error( $payment_response, 500 );
+			// return wp_send_json_error( $payment_response, 500 ); // Test
 			return wp_send_json_success( $response );
 		} catch (Exception $e) {
 			$response['code']				= sprintf("%s %s", 'FA-00', __LINE__);

@@ -23,11 +23,27 @@ class Header extends React.Component {
         this.toggle = this.toggle.bind(this);
         
         this.state = {
-          isOpen: false
+          isOpen: false,
+          totalItem: 0,
         };
 
         // console.log("%c shopping_cart", "font-size:2em;", shopping_cart );
     }
+
+    componentDidMount() {
+        const { state } = this.context;
+        this.totalItemQty(state.data.selection);
+    }
+
+    totalItemQty = (selectedItems) => {
+        console.log({ selectedItems })
+        const totalItem = selectedItems.reduce((total, actual) => {
+            total = total + actual.qty;
+            return total;
+        }, 0);
+       return totalItem;
+    }
+
 
     toggle() {
         this.setState({
@@ -37,6 +53,7 @@ class Header extends React.Component {
     
     render() {
         const { state } = this.context;
+        const toalItem = this.totalItemQty(state.data.selection);
         const formatter = new Intl.NumberFormat("en-US", { style: "currency", currency:"USD" });
         const PriceFormatted = `RD${formatter.format(state.data.total || 0)}`;
         return (
@@ -55,7 +72,7 @@ class Header extends React.Component {
                             <span>
                                 <img src={shopping_cart} width="22" />
                             </span>
-                            <span className="ml-2">{state.data.selection.length}</span>
+                            <span className="ml-2">{toalItem || 0}</span>
                         </div>
                     </div>
                     <div className="row justify-content-between align-items-center pt-4 pb-3">

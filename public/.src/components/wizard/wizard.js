@@ -145,6 +145,8 @@ class ForceAlarmWizard extends React.Component {
         dispatch({ type: constants.SELECT_PLAN, data: state.data.selection });
         // this.goToStep(3);
     }
+
+
     handleForthStep = ( data ) => {
         const {dispatch} = this.context;
         dispatch({ type: constants.SET_USER_DATA, data });
@@ -166,6 +168,24 @@ class ForceAlarmWizard extends React.Component {
         dispatch({ type: constants.SET_MODAL_SERVICE, data: plan });
         dispatch({ type: constants.SHOW_MODAL_SERVICE  });
     }
+
+    showAddonsmodal = ( addon ) => {
+        console.log('WIZARD', addon);
+        const {dispatch} = this.context;
+       
+            dispatch({ type: constants.SET_MODAL_ADDON, data: addon });
+            dispatch({ type: constants.SHOW_MODAL_ADDON });
+
+    }
+
+    handleOnRemoveItem = ( addon ) => {
+
+        const {state, dispatch} = this.context;
+
+        state.data.selection = state.data.selection.filter((selection) => selection['ID'] !== addon['ID']);
+        dispatch({ type: constants.SELECT_PLAN, data: state.data.selection });
+    }
+
     process = ( payment ) => {
         const {dispatch} = this.context;
         const {state} = this.context;
@@ -219,7 +239,10 @@ class ForceAlarmWizard extends React.Component {
         return (
             <React.Fragment>
                 <StepView step={0}>
-                    <Step1 handleStep={this.handleFirstStep} handleDisclaimer={this.handleDisclaimer} />
+                    <Step1 
+                    handleStep={this.handleFirstStep} 
+                    handleDisclaimer={this.handleDisclaimer}
+                     />
                 </StepView>
                 <StepView step={1}>
                     <Step2
@@ -233,7 +256,11 @@ class ForceAlarmWizard extends React.Component {
                         addons={this.state.addons}
                         handleStep={this.handleThirdStep} 
                         handleForward={this.handleForward} 
-                        handleBack={this.handleBackStep} />
+                        handleBack={this.handleBackStep} 
+                        showAddonsmodal={this.showAddonsmodal}
+                        handleOnRemoveItem={this.handleOnRemoveItem}
+                        />
+                       
                 </StepView>
                 <StepView step={3}>
                     <Step4 
