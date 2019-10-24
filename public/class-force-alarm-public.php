@@ -251,12 +251,12 @@ class Force_Alarm_Public {
 		 * 3. Create Order
 		 */
 		try {
-			// $available 					= $this->validate_service_installation_availability( $data );
+			$available 					= $this->validate_service_installation_availability( $data );
 			$payment_response 	= $this->fa_order_process_payment( $data );
-			// $user_id		 				= $this->fa_order_process_user( $data );
-			// $order_id						= $this->fa_order_process_cart( $user_id, $data );
+			$user_id		 				= $this->fa_order_process_user( $data );
+			$order_id						= $this->fa_order_process_cart( $user_id, $data );
 			
-			return wp_send_json_error( $payment_response, 500 ); // Test
+			// return wp_send_json_error( $payment_response, 500 ); // Test
 			$response['payment_response'] = $payment_response;
 			$response['user_id'] 					= $user_id;
 			$response['order_id'] 				= $order_id;
@@ -356,7 +356,7 @@ class Force_Alarm_Public {
 		
 		// Decode body
 		$response['body_decoded'] = json_decode( $response['body'] );
-		return wp_send_json_error( [esc_url_raw( $url ), $response, __LINE__], 500 );
+		// return wp_send_json_error( [esc_url_raw( $url ), $response, __LINE__], 500 );
 		
 		// Verify error from service and throw Exception
 		if( isset( $response['body_decoded']->error_info )) {
