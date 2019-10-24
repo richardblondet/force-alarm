@@ -241,7 +241,7 @@ class Force_Alarm_Public {
 		$data = json_decode( stripslashes( $_POST['data'] ), $decode_to_array = true );
 
 		/** Prepare and Send Emails */
-		return wp_send_json_error( $response, 500 );
+		// return wp_send_json_error( $response, 500 );
 
 		/**
 		 * The Process in which things should go:
@@ -299,7 +299,7 @@ class Force_Alarm_Public {
 		// Important variables
 		$url 	 = get_field('force_alarm_payment_endpoint_url', 'option');
 		$token = get_field('force_alarm_payment_token', 'option');
-
+		return wp_send_json_error( [__LINE__], 500 );
 		// Map to create services
 		$services = array();
 		foreach ($data['selection'] as $index => $item) {
