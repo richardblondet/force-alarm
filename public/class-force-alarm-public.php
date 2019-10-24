@@ -354,9 +354,9 @@ class Force_Alarm_Public {
 		}
 		$response['request'] = $request;
 		$response['url'] = esc_url_raw( $url );
-		return wp_send_json_error( $response, 500 );
 		// Decode body
 		$response['body_decoded'] = json_decode( $response['body'] );
+		return wp_send_json_error( $response, 500 );
 		
 		// Verify error from service and throw Exception
 		if( isset( $response['body_decoded']->error_info )) {
