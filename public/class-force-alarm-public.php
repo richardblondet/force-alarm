@@ -541,8 +541,8 @@ class Force_Alarm_Public {
 		$order->set_address( $address, 'billing' );
 		$order->set_address( $address, 'shipping' );
 		$order->calculate_totals();
-		return wp_send_json_error( $order_id, 500 );
 		$order->update_status("processing", "", TRUE);
+		return wp_send_json_error( $order_id, 500 );
 		
 		// Update post meta in order the wordpress way too
 		foreach ($address as $key => $addr) {
