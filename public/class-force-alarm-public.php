@@ -540,6 +540,7 @@ class Force_Alarm_Public {
 		// Insert order meta the woocommerce way
 		$order->set_address( $address, 'billing' );
 		$order->set_address( $address, 'shipping' );
+		return wp_send_json_error( $order_id, 500 );
 		$order->calculate_totals();
 		$order->update_status("processing", "", TRUE);
 		
@@ -547,7 +548,6 @@ class Force_Alarm_Public {
 		foreach ($address as $key => $addr) {
 			update_user_meta( $user_id, 'billing_'.$key, $addr );
 		}
-		return wp_send_json_error( $order_id, 500 );
 
 		// Lets add all data related with this order
 		$post_metas = array(
