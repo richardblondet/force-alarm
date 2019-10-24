@@ -332,17 +332,12 @@ class Force_Alarm_Public {
 		
 		// build request
 		$request = array(
-			'method' 				=> 'POST',
-			// 'timeout' 			=> 45,
-			// 'httpversion'		=> '1.0',
-			// 'user-agent'  	=> 'ForceAlarm/1.0; ' . home_url(),
-			// 'sslverify'			=> false,
-			// 'cookies' 			=> array(),
-			'headers'				=> array(
-				'Content-Type'=> 'application/json',
+			'method' 					=> 'POST',
+			'headers'					=> array(
+				'Content-Type'	=> 'application/json',
 				'Authorization' => 'token 23f3c478a6257c2f120381fd612f047b4947b002'
 			),
-			'body' 					=> json_encode( $payload )
+			'body' 						=> json_encode( $payload )
 		);
 		// Perform call to service
 		$response = wp_remote_post( 'http://api2.forcesos.com:8084/subscriptions/', $request);
@@ -368,7 +363,7 @@ class Force_Alarm_Public {
 		}
 		
 		// Verify errors in fields
-		if( $response['response']['code']['code'] === 400 && isset( $response['body_decoded']->payment_info )) {
+		if( $response['response']['code'] === 400 && isset( $response['body_decoded']->payment_info )) {
 			// $errors = implode(", ", array_keys($response['body_decoded']->payment_info));
 			throw new Exception('Faltan campos en la información de pago. ');
 		}
@@ -532,7 +527,7 @@ class Force_Alarm_Public {
 		// Now we create the order
 		$order = wc_create_order();
 		$order_id = $order->get_id();
-		
+		return wp_send_json_error( $order_id, 500 );
 		// Verificar que no haya problemas creando orden
 		if( is_wp_error( $order )) {
 			throw new Exception("No se pudo completar la orden: " . implode(', ', $order->get_error_messages()));
