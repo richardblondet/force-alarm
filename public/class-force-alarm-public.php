@@ -527,16 +527,16 @@ class Force_Alarm_Public {
 		// Now we create the order
 		$order = wc_create_order();
 		$order_id = $order->get_id();
-		return wp_send_json_error( $order_id, 500 );
 		// Verificar que no haya problemas creando orden
 		if( is_wp_error( $order )) {
 			throw new Exception("No se pudo completar la orden: " . implode(', ', $order->get_error_messages()));
 		}
-
+		
 		// The add_product() function below is located in /plugins/woocommerce/includes/abstracts/abstract_wc_order.php
 		foreach ($data['selection'] as $key => $item) {
 			$order->add_product( get_product( $item['ID']), $item['qty'] ); // This is an existing product
 		}
+		return wp_send_json_error( $order_id, 500 );
 
 		// Insert order meta the woocommerce way
 		$order->set_address( $address, 'billing' );
