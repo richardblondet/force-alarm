@@ -18,7 +18,6 @@ function run() {
     let globals = window.FA_GLOBALS;
     
     if( app_container ) {
-        console.log("HERE?")
         ReactDOM.render(
             <App globals={globals} />, app_container
         );
