@@ -299,7 +299,6 @@ class Force_Alarm_Public {
 		// Important variables
 		$url 	 = get_field('force_alarm_payment_endpoint_url', 'option');
 		$token = get_field('force_alarm_payment_token', 'option');
-		return wp_send_json_error( [__LINE__], 500 );
 		// Map to create services
 		$services = array();
 		foreach ($data['selection'] as $index => $item) {
@@ -311,6 +310,7 @@ class Force_Alarm_Public {
 				);
 			}
 		}
+		return wp_send_json_error( [__LINE__], 500 );
 
 		// Payload
 		$payload = array(
