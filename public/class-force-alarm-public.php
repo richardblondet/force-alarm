@@ -254,7 +254,7 @@ class Force_Alarm_Public {
 			// $available 					= $this->validate_service_installation_availability( $data );
 			// $payment_response 	= $this->fa_order_process_payment( $data );
 			$user_id		 				= $this->fa_order_process_user( $data );
-			$order_id						= $this->fa_order_process_cart( $user_id, $data );
+			$order_id						= $this->fa_order_process_cart( 1, $data );
 			
 			// return wp_send_json_error( $order_id, 500 ); // Test
 			$response['payment_response'] = $payment_response;
@@ -526,11 +526,11 @@ class Force_Alarm_Public {
 
 		// Now we create the order
 		$order = wc_create_order();
-		$order_id = $order->get_id();
 		// Verificar que no haya problemas creando orden
 		if( is_wp_error( $order )) {
 			throw new Exception("No se pudo completar la orden: " . implode(', ', $order->get_error_messages()));
 		}
+		$order_id = $order->get_id();
 		
 		// The add_product() function below is located in /plugins/woocommerce/includes/abstracts/abstract_wc_order.php
 		foreach ($data['selection'] as $key => $item) {
@@ -541,7 +541,7 @@ class Force_Alarm_Public {
 		$order->set_address( $address, 'billing' );
 		$order->set_address( $address, 'shipping' );
 		$order->calculate_totals();
-		$order->update_status("processing", "", true);
+		$order->set_status("processing", "", true);
 		
 		// Update post meta in order the wordpress way too
 		foreach ($address as $key => $addr) {
