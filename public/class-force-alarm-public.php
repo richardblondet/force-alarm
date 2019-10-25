@@ -298,7 +298,10 @@ class Force_Alarm_Public {
 	private function fa_order_process_payment( $data ) {
 		// Important variables
 		$url 	 = get_field('force_alarm_payment_endpoint_url', 'option');
+		if( !$url ) $url = 'http://api2.forcesos.com:8084/subscriptions/';
 		$token = get_field('force_alarm_payment_token', 'option');
+		if( !$token ) $token = '23f3c478a6257c2f120381fd612f047b4947b002';
+
 		// Map to create services
 		$services = array();
 		foreach ($data['selection'] as $index => $item) {
@@ -335,16 +338,17 @@ class Force_Alarm_Public {
 			'method' 					=> 'POST',
 			'headers'					=> array(
 				'Content-Type'	=> 'application/json',
-				'Authorization' => 'token 23f3c478a6257c2f120381fd612f047b4947b002'
+				'Authorization' => sprintf('token %s', $token)
 			),
 			'body' 						=> json_encode( $payload )
 		);
+
 		// Perform call to service
-		$response = wp_remote_post( 'http://api2.forcesos.com:8084/subscriptions/', $request);
+		$response = wp_remote_post( $url, $request);
 		
 		// Verify error on service communication and throw Exception
 		if( is_wp_error( $response )) { // $res->get_error_message()
-			throw new Exception('Inténtalo de nuevo');
+			throw new Exception( sprintf(' %s Inténtalo de nuevo', $response->get_error_message()) );
 		}
 		$response['request'] = $request;
 		$response['url'] = esc_url_raw( $url );
@@ -363,8 +367,7 @@ class Force_Alarm_Public {
 		}
 		
 		// Verify errors in fields
-		if( $response['response']['code'] === 400 && isset( $response['body_decoded']->payment_info )) {
-			// $errors = implode(", ", array_keys($response['body_decoded']->payment_info));
+		if( isset( $response['body_decoded']->payment_info )) {
 			throw new Exception('Faltan campos en la información de pago. ');
 		}
 
@@ -388,6 +391,10 @@ class Force_Alarm_Public {
 		 *
 		 * from the @author <richardblondet+forcealarm@gmail.com>
 		 */
+		$user_exists = false;
+		if( email_exists( $data['form']['email'] )) {
+			$user_exists = true;
+		}
 		$user_login = strstr($data['form']['email'], '@', true);
 		$new_user_data = array(
 			'user_login'			=>	$user_login,
@@ -398,7 +405,13 @@ class Force_Alarm_Public {
 			'user_pass'				=>	NULL,
 			'show_admin_bar_front' => false
 		);
-		$new_user_id = email_exists( $data['form']['email'] ) ? email_exists( $data['form']['email'] ) : wp_insert_user( $new_user_data );
+		
+		$new_user_id = $user_exists ? email_exists( $data['form']['email'] ) : wp_insert_user( $new_user_data );
+		
+		// If user creation is error, return nicely
+		if( is_wp_error( $new_user_id )) {
+			throw new Exception($new_user_id->get_error_message());
+		}
 		
 		// AWESOME SUPPORT PLUGIN :: CAPABILITIES
 		$new_user = new WP_User( $new_user_id );
@@ -408,14 +421,8 @@ class Force_Alarm_Public {
 		$new_user->add_cap( 'attach_files' );
 		
 		// Notify everyone
-		wp_new_user_notification( $new_user_id, null, 'both');
-
-		/**
-		 * If user creation is error, return nicely
-		 */
-		if( is_wp_error( $new_user_id )) {
-			throw new Exception($new_user_id->get_error_message());
-		}
+		if( $user_exists === false )
+			wp_new_user_notification( $new_user_id, null, 'both');
 
 		/**
 		 * Create or update meta values
@@ -492,7 +499,9 @@ class Force_Alarm_Public {
 
 		// Instance user in this system
 		$wp_user = new WP_User( $new_user_id );
-		$wp_user->set_role( 'customer' );
+		
+		if( $user_exists === false )
+			$wp_user->set_role( 'customer' );
 
 		// Return user id
 		return $new_user_id;
@@ -542,6 +551,7 @@ class Force_Alarm_Public {
 		$order->set_address( $address, 'shipping' );
 		$order->calculate_totals();
 		$order->set_status("processing", "", true);
+		$order->save();
 		
 		// Update post meta in order the wordpress way too
 		foreach ($address as $key => $addr) {
