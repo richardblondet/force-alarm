@@ -344,7 +344,7 @@ class Force_Alarm_Public {
 		
 		// Verify error on service communication and throw Exception
 		if( is_wp_error( $response )) { // $res->get_error_message()
-			throw new Exception('Ha ocurrido un fallo en la comunicación en la terminal de pago.');
+			throw new Exception('Ha ocurrido un fallo en la comunicación en la terminal de pago. ' . $res->get_error_message());
 		}
 		$response['request'] = $request;
 		$response['url'] = esc_url_raw( $url );
