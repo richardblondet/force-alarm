@@ -548,15 +548,16 @@ class Force_Alarm_Public {
 		}
 		
 		// Insert order meta the woocommerce way
-		$order->set_address( $address, 'billing' );
-		$order->set_address( $address, 'shipping' );
-		$order->calculate_totals();
 		try {
+			$order->set_address( $address, 'billing' );
+			$order->set_address( $address, 'shipping' );
+			$order->calculate_totals();
 			$order->set_status("processing", "", true);
 			$order->save();
 			//code...
 		} catch (Exception $e) {
-			throw new Exception( __LINE__ . ' Raylin ' . $e->getMessage() );
+			return wp_send_json_error( $e->getMessage(), 500 ); // Test
+			// throw new Exception( __LINE__ . ' Raylin ' . $e->getMessage() );
 		}
 		// $order->update_status("processing", "", true);
 
