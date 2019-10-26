@@ -553,8 +553,12 @@ class Force_Alarm_Public {
 		$order->set_address( $address, 'billing' );
 		$order->set_address( $address, 'shipping' );
 		$order->calculate_totals();
-		$order->set_status("processing", "", TRUE);
-		$order->save();
+		echo "<pre>";
+		print_r($order);
+		echo "</pre>";
+		
+		// $order->set_status("processing", "", TRUE);
+		// $order->save();
 		
 		// $new_order = new WC_Order( $order_id );
 		// var_dump( $new_order->update_status('completed') );
