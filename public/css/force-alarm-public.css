@@ -44,6 +44,14 @@ body {
     font-size: 18px;
 }
 
+.not-qty-content {
+      display: block;
+      text-align: center;
+      width: 40px;
+      margin-top: 5px;
+      background-color: #DDD;
+  }
+
 .card-price-style {
     text-align: left;
     font-size: 18px;

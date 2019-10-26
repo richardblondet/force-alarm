@@ -24,7 +24,7 @@ font-size: 22px;
 margin-bottom: 0px;
 
 @media (max-width: 480px) { 
-    font-size: 18px;
+    font-size: 16px;
  }
 `;
 
@@ -133,7 +133,7 @@ class SelectAddons extends React.Component {
                 <Col xs="3">
                 <div className="qty-option-container">
                 <p className="mb-0">Cantidad</p>
-                {addon.product_type === "addon" && <Input disabled value={1} />}
+                {addon.product_type === "addon" && <span className="not-qty-content">1</span>}
                 {addon.product_type === "item" && <DropDownQty productQuantity={(quantity) => this.setState({ quantity })} />}
                 </div>
                 </Col>
