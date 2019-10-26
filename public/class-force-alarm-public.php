@@ -252,7 +252,7 @@ class Force_Alarm_Public {
 		 */
 		try {
 			$available 					= $this->validate_service_installation_availability( $data );
-			// $payment_response 	= $this->fa_order_process_payment( $data );
+			$payment_response 	= $this->fa_order_process_payment( $data );
 			$user_id		 				= $this->fa_order_process_user( $data );
 			$order_id						= $this->fa_order_process_cart( 1, $data );
 			
@@ -296,6 +296,7 @@ class Force_Alarm_Public {
 	 * @throws Exception
 	 */
 	private function fa_order_process_payment( $data ) {
+		return;
 		// Important variables
 		$url 	 = get_field('force_alarm_payment_endpoint_url', 'option');
 		if( !$url ) $url = 'http://api2.forcesos.com:8084/subscriptions/';
