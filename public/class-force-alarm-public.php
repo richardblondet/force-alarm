@@ -598,7 +598,7 @@ class Force_Alarm_Public {
 			'download_permissions' => $order->is_download_permitted() ? $order->is_download_permitted() : 0,
 );
 	echo "<pre>";
-	print_r( $data );
+	print_r( $order_data );
 	echo "</pre>";
 		// $order->set_status("processing", "", TRUE);
 		// $order->update_status("processing", "", true);
