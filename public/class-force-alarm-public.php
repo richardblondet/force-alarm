@@ -358,17 +358,17 @@ class Force_Alarm_Public {
 		
 		// Verify error from service and throw Exception
 		if( isset( $response['body_decoded']->error_info )) {
-			throw new Exception( $response['body_decoded']->error_info->message );
+			throw new Exception( __LINE__ . ' ' . $response['body_decoded']->error_info->message );
 		}
 		
 		// Verify for errors in server
 		if( isset( $response['body_decoded']->server_error )) {
-			throw new Exception( $response['body_decoded']->server_error->message );
+			throw new Exception( __LINE__ . ' ' . $response['body_decoded']->server_error->message );
 		}
 		
 		// Verify errors in fields
 		if( isset( $response['body_decoded']->payment_info )) {
-			throw new Exception('Faltan campos en la información de pago. ');
+			throw new Exception(__LINE__ . ' ' . 'Faltan campos en la información de pago. ');
 		}
 
 		// Return to the process
