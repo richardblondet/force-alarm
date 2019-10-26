@@ -536,7 +536,7 @@ class Force_Alarm_Public {
 
 		
 		// Now we create the order
-		$order = wc_create_order();
+		$order = new WC_Order();
 		$order_id = $order->get_id();
 		
 		// Verificar que no haya problemas creando orden
@@ -553,7 +553,8 @@ class Force_Alarm_Public {
 		$order->set_address( $address, 'billing' );
 		$order->set_address( $address, 'shipping' );
 		$order->calculate_totals();
-		$order->set_status("processing");
+		$order->set_status("processing", "", TRUE);
+		$order->save();
 		
 		// $new_order = new WC_Order( $order_id );
 		// var_dump( $new_order->update_status('completed') );
