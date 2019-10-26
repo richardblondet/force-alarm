@@ -16,9 +16,9 @@ const GlobalStyles = styled.div`
     z-index: 0;
     @media (max-width: 480px) {
         .btn {
-            padding: 4px;
+            padding: 7px 3px;
             margin-bottom: 1rem!important;
-            font-size: 0.9em;
+            font-size: 0.8em;
         }
         .ver-mas {
             font-size: 20px;
