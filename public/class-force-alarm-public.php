@@ -550,7 +550,7 @@ class Force_Alarm_Public {
 		// Insert order meta the woocommerce way
 		$order->set_address( $address, 'billing' );
 		$order->set_address( $address, 'shipping' );
-		$order->update_status("processing", "", true);
+		$order->update_status("processing", " ");
 		$order->calculate_totals();
 		// $order->save();
 		throw new Exception( __LINE__ . ' Raylin ' );
