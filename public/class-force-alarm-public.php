@@ -233,8 +233,6 @@ class Force_Alarm_Public {
 	 * @since 1.6.0
 	 */
 	public function fa_ajax_process_orders_handler() {
-		global $woocommerce;
-
 		$response = [];
 
 		// Receive data for the first time from client
@@ -555,7 +553,8 @@ class Force_Alarm_Public {
 		$order->set_address( $address, 'billing' );
 		$order->set_address( $address, 'shipping' );
 		$order->calculate_totals();
-		// $order->update_status("processing", "", TRUE);
+		$order->update_status("processing", "", TRUE);
+
 
 // 		$order_data = array(
 // 			'order_id' => $order->get_id(),
