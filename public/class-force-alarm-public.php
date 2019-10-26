@@ -536,7 +536,7 @@ class Force_Alarm_Public {
 
 		try {
 			// Now we create the order
-			$order = new WC_Order();
+			$order = wc_create_order();
 			// Verificar que no haya problemas creando orden
 			if( is_wp_error( $order )) {
 				throw new Exception("No se pudo completar la orden: " . implode(', ', $order->get_error_messages()));
@@ -552,7 +552,7 @@ class Force_Alarm_Public {
 			$order->set_address( $address, 'billing' );
 			$order->set_address( $address, 'shipping' );
 			$order->calculate_totals();
-			$order->set_status("wc-processing", "", TRUE);
+			$order->set_status("processing", "", false);
 			$order->save();
 			//code...
 		} catch (Exception $e) {
