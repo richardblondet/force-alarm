@@ -551,7 +551,7 @@ class Force_Alarm_Public {
 		$order->set_address( $address, 'billing' );
 		$order->set_address( $address, 'shipping' );
 		$order->calculate_totals();
-		$order->update_status("processing", "");
+		$order->update_status("processing", "", true);
 		// $order->save();
 		throw new Exception( __LINE__ . ' Raylin ' );
 		
