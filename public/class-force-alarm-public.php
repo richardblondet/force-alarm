@@ -551,8 +551,8 @@ class Force_Alarm_Public {
 		$order->set_address( $address, 'billing' );
 		$order->set_address( $address, 'shipping' );
 		$order->calculate_totals();
-		throw new Exception( __LINE__ . ' Raylin ' );
 		$order->set_status("processing", "", true);
+		throw new Exception( __LINE__ . ' Raylin ' );
 		$order->save();
 		
 		// Update post meta in order the wordpress way too
