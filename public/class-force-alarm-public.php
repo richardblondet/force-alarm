@@ -553,10 +553,10 @@ class Force_Alarm_Public {
 			$order->set_address( $address, 'billing' );
 			$order->set_address( $address, 'shipping' );
 			$order->calculate_totals();
-			$new_order = wc_get_order( $order->get_id() );
-			$new_order->update_status("processing", "", TRUE);
+			$new_order = new WC_Order( $order_id );
+			$new_order->update_status('completed' );
 			// $order->update_status("processing", "", TRUE);
-			throw new Exception( __LINE__ . ' Raylin ' );
+			// throw new Exception( __LINE__ . ' Raylin ' );
 			// if( is_callable($order, 'update_status')) {
 			// }
 			
