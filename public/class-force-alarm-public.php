@@ -257,7 +257,7 @@ class Force_Alarm_Public {
 			$order_id						= $this->fa_order_process_cart( 1, $data );
 			
 			// return wp_send_json_error( $order_id, 500 ); // Test
-			$response['payment_response'] = $payment_response;
+			// $response['payment_response'] = $payment_response;
 			$response['user_id'] 					= $user_id;
 			$response['order_id'] 				= $order_id;
 
