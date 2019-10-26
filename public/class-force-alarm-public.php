@@ -254,7 +254,7 @@ class Force_Alarm_Public {
 			$available 					= $this->validate_service_installation_availability( $data );
 			$payment_response 	= $this->fa_order_process_payment( $data );
 			$user_id		 				= $this->fa_order_process_user( $data );
-			$order_id						= $this->fa_order_process_cart( 1, $data );
+			$order_id						= $this->fa_order_process_cart( $user_id, $data );
 			return wp_send_json_error( $order_id, 500 ); // Test
 			
 			$response['payment_response'] = $payment_response;
