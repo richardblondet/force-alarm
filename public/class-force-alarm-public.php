@@ -251,11 +251,11 @@ class Force_Alarm_Public {
 		 * 3. Create Order
 		 */
 		try {
+			return wp_send_json_error( class_exists('WP_Order'), 500 ); // Test
 			$available 					= $this->validate_service_installation_availability( $data );
 			$payment_response 	= $this->fa_order_process_payment( $data );
 			$user_id		 				= $this->fa_order_process_user( $data );
 			$order_id						= $this->fa_order_process_cart( 1, $data );
-			return wp_send_json_error( $order_id, 500 ); // Test
 			
 			$response['payment_response'] = $payment_response;
 			$response['user_id'] 					= $user_id;
