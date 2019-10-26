@@ -552,9 +552,9 @@ class Force_Alarm_Public {
 			$order->set_address( $address, 'billing' );
 			$order->set_address( $address, 'shipping' );
 			$order->calculate_totals();
-			if( is_callable($order, 'set_status')) {
-				$order->set_status("processing", "", false);
-			}
+			// if( is_callable($order, 'set_status')) {
+			// 	$order->set_status("processing", "", false);
+			// }
 			
 			$order->save();
 			//code...
