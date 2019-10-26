@@ -175,7 +175,7 @@ class SelectAddons extends React.Component {
                 <Button block onClick={this.handleBackButton} color="secondary">Atrás</Button>
                 </Col>
                 <Col>
-                <Button block onClick={this.handleForwardButton} color="danger">No, Continuemos</Button>
+                <Button block onClick={this.handleForwardButton} color="danger">Continuar</Button>
                 </Col>
                 </Row>
                 </Col>

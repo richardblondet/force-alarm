@@ -535,7 +535,7 @@ class Force_Alarm_Public {
 		);
 
 		// Now we create the order
-		$order = wc_create_order();
+		$order = new WC_Order();
 		// Verificar que no haya problemas creando orden
 		if( is_wp_error( $order )) {
 			throw new Exception("No se pudo completar la orden: " . implode(', ', $order->get_error_messages()));
@@ -550,10 +550,10 @@ class Force_Alarm_Public {
 		// Insert order meta the woocommerce way
 		$order->set_address( $address, 'billing' );
 		$order->set_address( $address, 'shipping' );
-		$order->update_status("processing", " ");
 		$order->calculate_totals();
-		// $order->save();
+		$order->update_status("processing");
 		throw new Exception( __LINE__ . ' Raylin ' );
+		// $order->save();
 		
 		// Update post meta in order the wordpress way too
 		foreach ($address as $key => $addr) {
