@@ -552,6 +552,8 @@ class Force_Alarm_Public {
 			$order->set_address( $address, 'billing' );
 			$order->set_address( $address, 'shipping' );
 			$order->calculate_totals();
+			var_dump( $order );
+			wp_die("fead");
 			$order->set_status("processing", "", false);
 			$order->save();
 			//code...
