@@ -552,8 +552,8 @@ class Force_Alarm_Public {
 			$order->set_address( $address, 'billing' );
 			$order->set_address( $address, 'shipping' );
 			$order->calculate_totals();
-			$order->set_status("processing", "", true);
-			$order->save();
+			$order->update_status("processing", "", TRUE);
+			// $order->save();
 			//code...
 		} catch (Exception $e) {
 			return wp_send_json_error( $e->getMessage(), 500 ); // Test
