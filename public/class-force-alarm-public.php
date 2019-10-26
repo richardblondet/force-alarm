@@ -553,7 +553,7 @@ class Force_Alarm_Public {
 		$order->set_address( $address, 'billing' );
 		$order->set_address( $address, 'shipping' );
 		$order->calculate_totals();
-		$order->update_status("processing", "", TRUE);
+		// $order->update_status("processing", "", TRUE);
 
 
 // 		$order_data = array(
