@@ -554,17 +554,14 @@ class Force_Alarm_Public {
 		$order->set_address( $address, 'shipping' );
 		$order->calculate_totals();
 		$order->set_status("processing");
+		
 		// $new_order = new WC_Order( $order_id );
 		// var_dump( $new_order->update_status('completed') );
 		// throw new Exception( __LINE__ . ' Raylin ' );
 		// if( is_callable($order, 'update_status')) {
 		// }
 			
-			$order->save();
-			//code...
-		
-			return wp_send_json_error( $e->getMessage(), 500 ); // Test
-			// throw new Exception( __LINE__ . ' Raylin ' . $e->getMessage() );
+		// $order->save();
 		// $order->update_status("processing", "", true);
 		
 		// Update post meta in order the wordpress way too
