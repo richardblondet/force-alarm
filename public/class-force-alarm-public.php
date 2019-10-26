@@ -535,30 +535,30 @@ class Force_Alarm_Public {
 		);
 
 		
-			// Now we create the order
-			$order = wc_create_order();
-			$order_id = $order->get_id();
-			// // Verificar que no haya problemas creando orden
-			// if( is_wp_error( $order )) {
-			// 	throw new Exception("No se pudo completar la orden: " . implode(', ', $order->get_error_messages()));
-			// }
-			
-			// The add_product() function below is located in /plugins/woocommerce/includes/abstracts/abstract_wc_order.php
-			foreach ($data['selection'] as $key => $item) {
-				$order->add_product( get_product( $item['ID']), $item['qty'] ); // This is an existing product
-			}
+		// Now we create the order
+		$order = wc_create_order();
+		$order_id = $order->get_id();
+		
+		// Verificar que no haya problemas creando orden
+		if( is_wp_error( $order )) {
+			throw new Exception("No se pudo completar la orden: " . implode(', ', $order->get_error_messages()));
+		}
+		
+		// The add_product() function below is located in /plugins/woocommerce/includes/abstracts/abstract_wc_order.php
+		foreach ($data['selection'] as $key => $item) {
+			$order->add_product( get_product( $item['ID']), $item['qty'] ); // This is an existing product
+		}
 		
 		// Insert order meta the woocommerce way
-			// $status_result = $order->update_status("processing");
-			$order->set_address( $address, 'billing' );
-			$order->set_address( $address, 'shipping' );
-			$order->calculate_totals();
-			$new_order = new WC_Order( $order_id );
-			var_dump( $new_order->update_status('completed') );
-			// $order->update_status("processing", "", TRUE);
-			// throw new Exception( __LINE__ . ' Raylin ' );
-			// if( is_callable($order, 'update_status')) {
-			// }
+		$order->set_address( $address, 'billing' );
+		$order->set_address( $address, 'shipping' );
+		$order->calculate_totals();
+		$order->set_status("processing");
+		// $new_order = new WC_Order( $order_id );
+		// var_dump( $new_order->update_status('completed') );
+		// throw new Exception( __LINE__ . ' Raylin ' );
+		// if( is_callable($order, 'update_status')) {
+		// }
 			
 			$order->save();
 			//code...
