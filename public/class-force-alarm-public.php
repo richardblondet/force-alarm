@@ -534,26 +534,26 @@ class Force_Alarm_Public {
 			'inst_time'	 => strtotime( $data['form']['time'] )
 		);
 
-		// Now we create the order
-		$order = new WC_Order();
-		// Verificar que no haya problemas creando orden
-		if( is_wp_error( $order )) {
-			throw new Exception("No se pudo completar la orden: " . implode(', ', $order->get_error_messages()));
-		}
-		$order_id = $order->get_id();
-		
-		// The add_product() function below is located in /plugins/woocommerce/includes/abstracts/abstract_wc_order.php
-		foreach ($data['selection'] as $key => $item) {
-			$order->add_product( get_product( $item['ID']), $item['qty'] ); // This is an existing product
-		}
+		try {
+			// Now we create the order
+			$order = new WC_Order();
+			// Verificar que no haya problemas creando orden
+			if( is_wp_error( $order )) {
+				throw new Exception("No se pudo completar la orden: " . implode(', ', $order->get_error_messages()));
+			}
+			$order_id = $order->get_id();
+			
+			// The add_product() function below is located in /plugins/woocommerce/includes/abstracts/abstract_wc_order.php
+			foreach ($data['selection'] as $key => $item) {
+				$order->add_product( get_product( $item['ID']), $item['qty'] ); // This is an existing product
+			}
 		
 		// Insert order meta the woocommerce way
-		try {
 			$order->set_address( $address, 'billing' );
 			$order->set_address( $address, 'shipping' );
 			$order->calculate_totals();
-			$order->update_status("wc-processing", "", TRUE);
-			// $order->save();
+			$order->set_status("wc-processing", "", TRUE);
+			$order->save();
 			//code...
 		} catch (Exception $e) {
 			return wp_send_json_error( $e->getMessage(), 500 ); // Test
