@@ -553,8 +553,7 @@ class Force_Alarm_Public {
 			// $order->set_address( $address, 'shipping' );
 			$order->calculate_totals();
 			$order->set_status("processing", "", false);
-			var_dump( $order );
-			wp_die("fead");
+			
 			$order->save();
 			//code...
 		} catch (Exception $e) {
