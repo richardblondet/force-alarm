@@ -18,10 +18,14 @@ const GlobalStyles = styled.div`
         .btn {
             padding: 7px 3px;
             margin-bottom: 1rem!important;
-            font-size: 0.8em;
+            font-size: 0.6em;
         }
         .ver-mas {
             font-size: 20px;
+        }
+        .details_link {
+            font-size: 16px;
+            margin-top: 8px;
         }
     }
 
