@@ -549,11 +549,11 @@ class Force_Alarm_Public {
 			}
 		
 		// Insert order meta the woocommerce way
+			$order->update_status("processing");
 			$order->set_address( $address, 'billing' );
 			$order->set_address( $address, 'shipping' );
 			$order->calculate_totals();
 			// if( is_callable($order, 'update_status')) {
-				$order->update_status("on-hold");
 			// }
 			
 			$order->save();
