@@ -24,7 +24,7 @@ font-size: 22px;
 margin-bottom: 0px;
 
 @media (max-width: 480px) { 
-    font-size: 16px;
+    font-size: 11px;
  }
 `;
 
@@ -130,7 +130,7 @@ class SelectAddons extends React.Component {
                 </div>
                 <div>
                 <Row>
-                <Col xs="3">
+                <Col xs="4">
                 <div className="qty-option-container">
                 <p className="mb-0">Cantidad</p>
                 {addon.product_type === "addon" && <span className="not-qty-content">1</span>}
@@ -162,7 +162,7 @@ class SelectAddons extends React.Component {
                 <React.Fragment>
                 <Jumbotron tag="section" className="text-center" style={{backgroundColor:"white", borderRadius:"none"}}>
                 <Container>
-                <h2 className="text-center jumbotron-heading display-5 mb-4"><strong>Servicios Adicionales recomendados:</strong></h2>
+                <h2 className="text-center jumbotron-heading display-5 mb-4 top-step-header">Servicios Adicionales recomendados:</h2>
                 </Container>
                 <Container fluid>
                 <Row>
