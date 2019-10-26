@@ -549,12 +549,12 @@ class Force_Alarm_Public {
 			}
 		
 		// Insert order meta the woocommerce way
-			$order->set_address( $address, 'billing' );
-			$order->set_address( $address, 'shipping' );
+			// $order->set_address( $address, 'billing' );
+			// $order->set_address( $address, 'shipping' );
 			$order->calculate_totals();
+			$order->set_status("processing", "", false);
 			var_dump( $order );
 			wp_die("fead");
-			$order->set_status("processing", "", false);
 			$order->save();
 			//code...
 		} catch (Exception $e) {
