@@ -570,26 +570,6 @@ class Force_Alarm_Public {
 			$order->add_product( get_product( $item['ID']), $item['qty'] ); // This is an existing product
 		}
 		
-		// Insert order meta the woocommerce way
-		$order->set_address( $address, 'billing' );
-		$order->set_address( $address, 'shipping' );
-		$order->calculate_totals();
-		try {
-			$order->update_status("processing", "", TRUE);
-		} catch (Exception $e) {
-			$logger = wc_get_logger();
-			$logger->error(
-				sprintf( 'Error saving order #%d', $order_id ), array(
-						'order' => $this,
-						'error' => $e,
-				)
-			);
-		}
-
-		// $order->set_status("processing", "", TRUE);
-		// $order->update_status("processing", "", true);
-		// $order->save();
-		
 		// Update post meta in order the wordpress way too
 		foreach ($address as $key => $addr) {
 			update_user_meta( $user_id, 'billing_'.$key, $addr );
@@ -642,6 +622,24 @@ class Force_Alarm_Public {
 		// Iterate and add all order as post metas
 		foreach ($post_metas as $array_key => $array_value) {
 			$post_metas[$array_key]['result'] = update_post_meta( $order_id, $array_value['meta_key'], $array_value['meta_value'] );
+		}
+
+		// Insert order meta the woocommerce way
+		$order->set_address( $address, 'billing' );
+		$order->set_address( $address, 'shipping' );
+		$order->calculate_totals();
+		try {
+			ob_start();
+			$order->update_status("processing", "", TRUE);
+			$result = ob_get_clean();
+		} catch (Exception $e) {
+			$logger = wc_get_logger();
+			$logger->error(
+				sprintf( 'Error saving order #%d', $order_id ), array(
+						'order' => $this,
+						'error' => $e,
+				)
+			);
 		}
 
 		// return order id
