@@ -16,7 +16,7 @@ const GlobalStyles = styled.div`
     z-index: 0;
     @media (max-width: 480px) {
         .btn {
-            padding: 7px 3px;
+
             margin-bottom: 1rem!important;
             font-size: 0.6em;
         }
@@ -25,6 +25,20 @@ const GlobalStyles = styled.div`
         }
         .details_link {
             font-size: 16px;
+            margin-top: 2px;
+        }
+    };
+
+    @media (max-width: 375px) {
+        .btn {
+            padding: 7px 3px;
+            font-size: 0.6em;
+        }
+        .ver-mas {
+            font-size: 20px;
+        }
+        .details_link {
+            font-size: 14px;
             margin-top: 8px;
         }
     }

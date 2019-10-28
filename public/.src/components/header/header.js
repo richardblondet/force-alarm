@@ -80,7 +80,7 @@ class Header extends React.Component {
                             <div><a className="text-white" href="/">Volver a Página Principal</a></div>
                         </div>
                         <div className="col-6 text-right">
-                            <div className="mb-0 h4 font-weight-bold">{PriceFormatted}</div>
+                            <div className="mb-0 h4 font-weight-bold price-top-header">{PriceFormatted}</div>
                             <small style={{color: "#E87E70"}}>total a pagar</small>
                         </div>
                     </div>
