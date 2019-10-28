@@ -233,6 +233,7 @@ class Force_Alarm_Public {
 	 * @since 1.6.0
 	 */
 	public function fa_ajax_process_orders_handler() {
+		global $woocommerce;
 		$response = [];
 
 		// Receive data for the first time from client
@@ -529,7 +530,6 @@ class Force_Alarm_Public {
 	 * @throws Exception
 	 */
 	private function fa_order_process_cart( $user_id, $data ) {
-		global $woocommerce;
 		$response = [];
 
 		// get requested time and date
@@ -574,7 +574,17 @@ class Force_Alarm_Public {
 		$order->set_address( $address, 'billing' );
 		$order->set_address( $address, 'shipping' );
 		$order->calculate_totals();
-		$order->update_status("processing", "", TRUE);
+		try {
+			$order->update_status("processing", "", TRUE);
+		} catch (Exception $e) {
+			$logger = wc_get_logger();
+			$logger->error(
+				sprintf( 'Error saving order #%d', $order_id ), array(
+						'order' => $this,
+						'error' => $e,
+				)
+			);
+		}
 
 		// $order->set_status("processing", "", TRUE);
 		// $order->update_status("processing", "", true);
