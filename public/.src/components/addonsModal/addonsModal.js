@@ -22,7 +22,6 @@ export default class AddonsModal extends React.Component {
       post_content
     } = modalAddon;
     
-    { console.log('ADDMODAL', modalAddon) }
     return (
       <Modal isOpen={state.showModalAddon}>
       <div>

@@ -209,7 +209,7 @@ class Force_Alarm {
 		$this->loader->add_action( 'woocommerce_admin_order_data_after_billing_address', $plugin_admin, 'fa_woocommerce_order_details_after_order_table' );
 
 		/** Adding details to order email */
-		$this->loader->add_filter( 'woocommerce_email_order_meta', $plugin_admin, 'fa_woocommerce_email_order_meta' );
+		$this->loader->add_filter( 'woocommerce_email_order_meta', $plugin_admin, 'fa_woocommerce_email_order_meta', 10, 4 );
 
 	}
 

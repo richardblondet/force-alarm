@@ -108,8 +108,8 @@ class SelectAddons extends React.Component {
                 <CenterRow>
                 {/* <div className="mb-3"> */}
                 <img 
-                className="img-thumbnail p-4 img-thumbnail-custom" 
-                src={addon_image} style={{backgroundColor:"#691206"}} />
+                className={`img-thumbnail-custom img-thumbnail ${addon.featured_image ? "" : "p-4"}`}
+                src={addon.featured_image || addon_image} style={{backgroundColor: addon.featured_image ? "#691206": "transparent"}} />
                 {/* </div> */}
                 </CenterRow>
                 <CenterRow xs={12}>
@@ -175,7 +175,7 @@ class SelectAddons extends React.Component {
                 <Button block onClick={this.handleBackButton} color="secondary">Atrás</Button>
                 </Col>
                 <Col>
-                <Button block onClick={this.handleForwardButton} color="danger">No, Continuemos</Button>
+                <Button block onClick={this.handleForwardButton} color="danger">Continuar</Button>
                 </Col>
                 </Row>
                 </Col>

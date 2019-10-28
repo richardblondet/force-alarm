@@ -116,7 +116,7 @@ class Force_Alarm_Public {
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/force-alarm-public.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/force-alarm-public.min.js', array( 'jquery' ), $this->version, false );
 
 	}
 	/**
@@ -165,6 +165,7 @@ class Force_Alarm_Public {
 		 */
 		foreach( $services_result as $service ) {
 			// $service->metas = get_post_meta( $service->ID );
+			$service->featured_image = wp_get_attachment_url( get_post_thumbnail_id($service->ID) ); 
 			$service->price = get_post_meta( $service->ID, '_price', true );
 			$service->contract = get_field('fa_service_contract', $service->ID );
 			$service->product_type = $type;
@@ -215,13 +216,11 @@ class Force_Alarm_Public {
 			'date' => $date,
 			'_POST' => $_POST['date'],
 			'strtotime' => strtotime( $_POST['date'] ),
-			'tests' => get_field('force_alarm_payment_endpoint_url', 'option'),
-			'token_tets' => get_field('force_alarm_payment_token', 'option')
 		);
 
 		if( $response['parameters']['strtotime'] === false ) {
 			$response['error'] = "Date not valid. Format should be MM/DD/YYYY";
-			return wp_send_json_error( $response );
+			return wp_send_json_error( $response, 500 );
 		}
 
 		$response['booked'] = $this->getForceAlarmOrdersBy('date', $date );
@@ -235,39 +234,60 @@ class Force_Alarm_Public {
 	 */
 	public function fa_ajax_process_orders_handler() {
 		global $woocommerce;
-
 		$response = [];
 
 		// Receive data for the first time from client
 		$data = json_decode( stripslashes( $_POST['data'] ), $decode_to_array = true );
 
 		/** Prepare and Send Emails */
-		// return wp_send_json_error( $data, 500 );
+		// return wp_send_json_error( $response, 500 );
 
 		/**
 		 * The Process in which things should go:
 		 * 
+		 * 0. Validate availability
 		 * 1. Process payment
 		 * 2. Register User
 		 * 3. Create Order
 		 */
-		try {
-			$payment_response 	= $this->fa_order_process_payment( $data );
-			// $user_id		 				= $this->fa_order_process_user( $data );
-			// $order_id						= $this->fa_order_process_cart( $user_id, $data );
-			
-			$response['payment_response'] = $payment_response;
-			// $response['user_id'] 					= $user_id;
-			// $response['order_id'] 				= $order_id;
+		$available 					= $this->validate_service_installation_availability( $data );
+		$payment_response 	= $this->fa_order_process_payment( $data );
+		$user_id		 				= $this->fa_order_process_user( $data );
+		$order_id						= $this->fa_order_process_cart( $user_id, $data );
+		
+		// return wp_send_json_error( $order_id, 500 ); // Test
 
-			return wp_send_json_error( $payment_response, 500 );
-			return wp_send_json_success( $response );
-		} catch (Exception $e) {
+		$response['payment_response'] = $payment_response;
+		$response['user_id'] 					= $user_id;
+		$response['order_id'] 				= $order_id;
+
+		// No errors up to here means success
+		return wp_send_json_success( $response );
+	}
+	/**
+	 * Validate service installation availability
+	 * @param data Array
+	 * @throws Exception
+	 */
+	private function validate_service_installation_availability( $data ) {
+		$response = [];
+		// Validate that order installation date is available
+		$requestedDate = date("D d/m/Y", strtotime(  $data['form']['date'] ));
+		$requestedTime = date("h:i a", strtotime( $data['form']['time'] ));
+		$ordersToday = $this->getForceAlarmOrdersBy("date", $requestedDate );
+		$instCount=0;
+		foreach ($ordersToday as $order) {
+			if( $order->installation_time === $requestedTime) {
+				$instCount++;
+			}
+		}
+		if( $instCount >= 3  ) {
 			$response['code']				= sprintf("%s %s", 'FA-00', __LINE__);
-			$response['message']		= $e->getMessage();
+			$response['message']		= sprintf("Lo sentimos, no existe disponibilidad para la hora que ha seleccionado: '%s' en la fecha %s", $requestedTime, $requestedDate);
 	
 			return wp_send_json_error( $response, 500 );
 		}
+		return true;
 	}
 	/**
 	 * Process payment in order
@@ -275,9 +295,12 @@ class Force_Alarm_Public {
 	 * @throws Exception
 	 */
 	private function fa_order_process_payment( $data ) {
+		$response = [];
 		// Important variables
 		$url 	 = get_field('force_alarm_payment_endpoint_url', 'option');
+		if( !$url ) $url = 'http://api2.forcesos.com:8084/subscriptions/';
 		$token = get_field('force_alarm_payment_token', 'option');
+		if( !$token ) $token = '23f3c478a6257c2f120381fd612f047b4947b002';
 
 		// Map to create services
 		$services = array();
@@ -310,47 +333,65 @@ class Force_Alarm_Public {
 		);
 		// return $payload;
 		
-		// Perform call to service
-		$response = wp_remote_get( esc_url_raw( $url ) , array(
-			'method' 				=> 'POST',
-			'timeout' 			=> 45,
-			'httpversion'		=> '1.0',
-			'user-agent'  	=> 'ForceAlarm/1.0; ' . home_url(),
-			'sslverify'			=> false,
-			'cookies' 			=> array(),
-			'headers'				=> array(
-				'Content-Type'=> 'application/json',
-				'Authorization' => 'token '. $token
+		// build request
+		$request = array(
+			'method' 					=> 'POST',
+			'headers'					=> array(
+				'Content-Type'	=> 'application/json',
+				'Authorization' => sprintf('token %s', $token)
 			),
-			'body' 					=> json_encode( $payload )
-		));
+			'body' 						=> json_encode( $payload )
+		);
 
+		// Perform call to service
+		$service_response = wp_remote_post( $url, $request);
+		
 		// Verify error on service communication and throw Exception
-		if( is_wp_error( $response )) { // $res->get_error_message()
-			throw new Exception('Ha ocurrido un fallo en la comunicación en la terminal de pago');
-		}
+		if( is_wp_error( $service_response )) { // $res->get_error_message()
+			$response['code']				= sprintf("%s %s", 'FA-00', __LINE__);
+			$response['message']		= sprintf('Ha ocurrido un error procesando tu pago: %s. Inténtalo de nuevo', $service_response->get_error_message());
 
+			// $logger = wc_get_logger();
+			// $logger->error(
+			// 	sprintf( 'Force Alarm Public: Error saving order #%d', $order_id ), array(
+			// 			'error' => $service_response->get_error_message(),
+			// 	)
+			// );
+	
+			return wp_send_json_error( $response, 500 );
+		}
+		$service_response['request'] = $request;
+		$service_response['url'] = esc_url_raw( $url );
+		
 		// Decode body
-		$response['body_decoded'] = json_decode( $response['body'] );
+		$service_response['body_decoded'] = json_decode( $service_response['body'] );
 		
 		// Verify error from service and throw Exception
-		if( isset( $response['body_decoded']->error_info )) {
-			throw new Exception( $response['body_decoded']->error_info->message );
+		if( isset( $service_response['body_decoded']->error_info )) {
+			$response['code']				= sprintf("%s %s", 'FA-00', __LINE__);
+			$response['message']		= $service_response['body_decoded']->error_info->message;
+	
+			return wp_send_json_error( $response, 500 );
 		}
 		
 		// Verify for errors in server
-		if( isset( $response['body_decoded']->server_error )) {
-			throw new Exception( $response['body_decoded']->server_error->message );
+		if( isset( $service_response['body_decoded']->server_error )) {
+			$response['code']				= sprintf("%s %s", 'FA-00', __LINE__);
+			$response['message']		= $service_response['body_decoded']->server_error->message;
+	
+			return wp_send_json_error( $response, 500 );
 		}
 		
 		// Verify errors in fields
-		if( $response['response']['code'] === 400 && isset( $response['body_decoded']->payment_info )) {
-			$errors = implode(", ", array_keys($response['body_decoded']->payment_info));
-			throw new Exception('Faltan campos en la información de pago: '. errors);
+		if( isset( $service_response['body_decoded']->payment_info )) {
+			$response['code']				= sprintf("%s %s", 'FA-00', __LINE__);
+			$response['message']		= 'Faltan campos en la información de pago. ';
+	
+			return wp_send_json_error( $response, 500 );
 		}
 
 		// Return to the process
-		return $response;
+		return $service_response;
 	}
 	/**
 	 * Process user in order
@@ -358,6 +399,7 @@ class Force_Alarm_Public {
 	 * @throws Exception
 	 */
 	private function fa_order_process_user( $data ) {
+		$response = [];
 		/**
 		 * Create the new user making a WP_User
 		 * 
@@ -369,6 +411,10 @@ class Force_Alarm_Public {
 		 *
 		 * from the @author <richardblondet+forcealarm@gmail.com>
 		 */
+		$user_exists = false;
+		if( email_exists( $data['form']['email'] )) {
+			$user_exists = true;
+		}
 		$user_login = strstr($data['form']['email'], '@', true);
 		$new_user_data = array(
 			'user_login'			=>	$user_login,
@@ -379,7 +425,16 @@ class Force_Alarm_Public {
 			'user_pass'				=>	NULL,
 			'show_admin_bar_front' => false
 		);
-		$new_user_id = email_exists( $data['form']['email'] ) ? email_exists( $data['form']['email'] ) : wp_insert_user( $new_user_data );
+		
+		$new_user_id = $user_exists ? email_exists( $data['form']['email'] ) : wp_insert_user( $new_user_data );
+		
+		// If user creation is error, return nicely
+		if( is_wp_error( $new_user_id )) {
+			$response['code']				= sprintf("%s %s", 'FA-00', __LINE__);
+			$response['message']		= $new_user_id->get_error_message();
+	
+			return wp_send_json_error( $response, 500 );
+		}
 		
 		// AWESOME SUPPORT PLUGIN :: CAPABILITIES
 		$new_user = new WP_User( $new_user_id );
@@ -389,14 +444,8 @@ class Force_Alarm_Public {
 		$new_user->add_cap( 'attach_files' );
 		
 		// Notify everyone
-		wp_new_user_notification( $new_user_id, null, 'both');
-
-		/**
-		 * If user creation is error, return nicely
-		 */
-		if( is_wp_error( $new_user_id )) {
-			throw new Exception($new_user_id->get_error_message());
-		}
+		if( $user_exists === false )
+			wp_new_user_notification( $new_user_id, null, 'both');
 
 		/**
 		 * Create or update meta values
@@ -473,7 +522,9 @@ class Force_Alarm_Public {
 
 		// Instance user in this system
 		$wp_user = new WP_User( $new_user_id );
-		$wp_user->set_role( 'customer' );
+		
+		if( $user_exists === false )
+			$wp_user->set_role( 'customer' );
 
 		// Return user id
 		return $new_user_id;
@@ -485,6 +536,12 @@ class Force_Alarm_Public {
 	 * @throws Exception
 	 */
 	private function fa_order_process_cart( $user_id, $data ) {
+		$response = [];
+
+		// get requested time and date
+		$requestedDate = date("D d/m/Y", strtotime(  $data['form']['date'] ));
+		$requestedTime = date("h:i a", strtotime( $data['form']['time'] ));
+
 		// Create order post to save order
 		$address = array(
 			'first_name' => $data['form']['name'],
@@ -501,25 +558,31 @@ class Force_Alarm_Public {
 			'inst_time'	 => strtotime( $data['form']['time'] )
 		);
 
+		
 		// Now we create the order
 		$order = wc_create_order();
 		$order_id = $order->get_id();
 		
 		// Verificar que no haya problemas creando orden
 		if( is_wp_error( $order )) {
-			throw new Exception("No se pudo completar la orden: " . implode(', ', $order->get_error_messages()));
+			$response['code']				= sprintf("%s %s", 'FA-00', __LINE__);
+			$response['message']		= "No se pudo completar la orden: " . implode(', ', $order->get_error_messages());
+			
+			$logger = wc_get_logger();
+			$logger->error(
+				sprintf( 'Force Alarm Public: Error saving order #%d', $order_id ), array(
+						'order' => $order,
+						'error' => $e,
+				)
+			);
+	
+			return wp_send_json_error( $response, 500 );
 		}
-
+		
 		// The add_product() function below is located in /plugins/woocommerce/includes/abstracts/abstract_wc_order.php
 		foreach ($data['selection'] as $key => $item) {
 			$order->add_product( get_product( $item['ID']), $item['qty'] ); // This is an existing product
 		}
-
-		// Insert order meta the woocommerce way
-		$order->set_address( $address, 'billing' );
-		$order->set_address( $address, 'shipping' );
-		$order->calculate_totals();
-		$order->update_status("processing", "", TRUE);
 		
 		// Update post meta in order the wordpress way too
 		foreach ($address as $key => $addr) {
@@ -534,11 +597,11 @@ class Force_Alarm_Public {
 			),
 			array(
 				'meta_key' => 'billing_inst_date',
-				'meta_value' => date("D d/m/Y", strtotime( $data['form']['date'] ))
+				'meta_value' => $requestedDate
 			),
 			array(
 				'meta_key' => 'billing_inst_time',
-				'meta_value' => date("h:i a", strtotime( $data['form']['time'] ))
+				'meta_value' => $requestedTime
 			),
 			array(
 				'meta_key' => 'billing_inst_address',
@@ -574,6 +637,13 @@ class Force_Alarm_Public {
 		foreach ($post_metas as $array_key => $array_value) {
 			$post_metas[$array_key]['result'] = update_post_meta( $order_id, $array_value['meta_key'], $array_value['meta_value'] );
 		}
+
+		// Insert order meta the woocommerce way
+		$order->set_address( $address, 'billing' );
+		$order->set_address( $address, 'shipping' );
+		$order->calculate_totals();
+		$order->update_status("processing", "", TRUE);
+		
 
 		// return order id
 		return $order_id;

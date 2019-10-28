@@ -47,8 +47,8 @@ class SelectPlan extends React.Component {
                     <div className="mb-3">
                         <center>
                             <img 
-                                className="img-thumbnail p-5" 
-                                src={plan_image} />
+                                className={`img-thumbnail ${plan.featured_image ? "": "p-5"}`}
+                                src={plan.featured_image || plan_image} />
                         </center>
                     </div>
                     <PlanName>
