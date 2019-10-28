@@ -295,7 +295,6 @@ class Force_Alarm_Public {
 	 * @throws Exception
 	 */
 	private function fa_order_process_payment( $data ) {
-		return;
 		$response = [];
 		// Important variables
 		$url 	 = get_field('force_alarm_payment_endpoint_url', 'option');
@@ -351,6 +350,13 @@ class Force_Alarm_Public {
 		if( is_wp_error( $service_response )) { // $res->get_error_message()
 			$response['code']				= sprintf("%s %s", 'FA-00', __LINE__);
 			$response['message']		= sprintf('Ha ocurrido un error procesando tu pago: %s. Inténtalo de nuevo', $service_response->get_error_message());
+
+			// $logger = wc_get_logger();
+			// $logger->error(
+			// 	sprintf( 'Force Alarm Public: Error saving order #%d', $order_id ), array(
+			// 			'error' => $service_response->get_error_message(),
+			// 	)
+			// );
 	
 			return wp_send_json_error( $response, 500 );
 		}
@@ -561,6 +567,14 @@ class Force_Alarm_Public {
 		if( is_wp_error( $order )) {
 			$response['code']				= sprintf("%s %s", 'FA-00', __LINE__);
 			$response['message']		= "No se pudo completar la orden: " . implode(', ', $order->get_error_messages());
+			
+			$logger = wc_get_logger();
+			$logger->error(
+				sprintf( 'Force Alarm Public: Error saving order #%d', $order_id ), array(
+						'order' => $order,
+						'error' => $e,
+				)
+			);
 	
 			return wp_send_json_error( $response, 500 );
 		}
@@ -628,19 +642,8 @@ class Force_Alarm_Public {
 		$order->set_address( $address, 'billing' );
 		$order->set_address( $address, 'shipping' );
 		$order->calculate_totals();
-		try {
-			ob_start();
-			$order->update_status("processing", "", TRUE);
-			$result = ob_get_clean();
-		} catch (Exception $e) {
-			$logger = wc_get_logger();
-			$logger->error(
-				sprintf( 'Error saving order #%d', $order_id ), array(
-						'order' => $this,
-						'error' => $e,
-				)
-			);
-		}
+		$order->update_status("processing", "", TRUE);
+		
 
 		// return order id
 		return $order_id;
