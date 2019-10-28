@@ -23,6 +23,7 @@ body {
     box-shadow: 0px 3px 6px #00000029;
 }
 
+
 .btn-warning {
     background-color: #F0AD51;
     border-color: #f0ad4e;
@@ -37,6 +38,7 @@ body {
 .form-control {
     border-radius: 0 !important;
 }
+
 
 .details_link {
     color: #071AFF;
@@ -64,6 +66,12 @@ body {
 
 .price-top-header {
 
+}
+
+@media (max-width: 480px) {
+.img-thumbnail-custom {
+    max-height: 106.6px;
+}
 }
 
 @media (min-width: 48px) {

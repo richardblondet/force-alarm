@@ -102,13 +102,13 @@ class SelectAddons extends React.Component {
             
             return (
                 <Row className="m-3" key={indx}>
-                <Col lg={{ size: 8, offset: 2 }} xs={{ size: 12 }}>
+                <Col lg={{ size: 6, offset: 4 }} xs={{ size: 12 }}>
                 <Row>
                 <Col md={4} xs={4}>
                 <CenterRow>
                 {/* <div className="mb-3"> */}
                 <img 
-                className="img-thumbnail p-4" 
+                className="img-thumbnail p-4 img-thumbnail-custom" 
                 src={addon_image} style={{backgroundColor:"#691206"}} />
                 {/* </div> */}
                 </CenterRow>
@@ -130,14 +130,14 @@ class SelectAddons extends React.Component {
                 </div>
                 <div>
                 <Row>
-                <Col xs="4">
+                <Col lg="2" md="2" xs="4">
                 <div className="qty-option-container">
                 <p className="mb-0">Cantidad</p>
                 {addon.product_type === "addon" && <span className="not-qty-content">1</span>}
                 {addon.product_type === "item" && <DropDownQty productQuantity={(quantity) => this.setState({ quantity })} />}
                 </div>
                 </Col>
-                <Col xs="8" className="pt-16">
+                <Col lg="8" md="8" xs="8" className="pt-16">
                     {
                         !this.isDisabled(addon.ID) && (
                             <Button color="danger" onClick={e=>this.handleAddonSelect(e, addon)}>Añadir al Carrito</Button>
