@@ -244,28 +244,24 @@ class Force_Alarm_Public {
 		/**
 		 * The Process in which things should go:
 		 * 
+		 * 0. Validate availability
 		 * 1. Process payment
 		 * 2. Register User
 		 * 3. Create Order
 		 */
-		try {
-			// $available 					= $this->validate_service_installation_availability( $data );
-			$payment_response 	= $this->fa_order_process_payment( $data );
-			$user_id		 				= $this->fa_order_process_user( $data );
-			$order_id						= $this->fa_order_process_cart( $user_id, $data );
-			return wp_send_json_error( $order_id, 500 ); // Test
-			
-			$response['payment_response'] = $payment_response;
-			$response['user_id'] 					= $user_id;
-			$response['order_id'] 				= $order_id;
+		$available 					= $this->validate_service_installation_availability( $data );
+		$payment_response 	= $this->fa_order_process_payment( $data );
+		$user_id		 				= $this->fa_order_process_user( $data );
+		$order_id						= $this->fa_order_process_cart( $user_id, $data );
+		
+		return wp_send_json_error( $order_id, 500 ); // Test
 
-			return wp_send_json_success( $response );
-		} catch (Exception $e) {
-			$response['code']				= sprintf("%s %s", 'FA-00', __LINE__);
-			$response['message']		= $e->getMessage();
-	
-			return wp_send_json_error( $response, 500 );
-		}
+		$response['payment_response'] = $payment_response;
+		$response['user_id'] 					= $user_id;
+		$response['order_id'] 				= $order_id;
+
+		// No errors up to here means success
+		return wp_send_json_success( $response );
 	}
 	/**
 	 * Validate service installation availability
@@ -273,6 +269,7 @@ class Force_Alarm_Public {
 	 * @throws Exception
 	 */
 	private function validate_service_installation_availability( $data ) {
+		$response = [];
 		// Validate that order installation date is available
 		$requestedDate = date("D d/m/Y", strtotime(  $data['form']['date'] ));
 		$requestedTime = date("h:i a", strtotime( $data['form']['time'] ));
@@ -284,7 +281,10 @@ class Force_Alarm_Public {
 			}
 		}
 		if( $instCount >= 3  ) {
-			throw new Exception(sprintf("Lo sentimos, no existe disponibilidad para la hora que ha seleccionado: '%s' en la fecha %s", $requestedTime, $requestedDate));
+			$response['code']				= sprintf("%s %s", 'FA-00', __LINE__);
+			$response['message']		= sprintf("Lo sentimos, no existe disponibilidad para la hora que ha seleccionado: '%s' en la fecha %s", $requestedTime, $requestedDate);
+	
+			return wp_send_json_error( $response, 500 );
 		}
 		return true;
 	}
@@ -295,6 +295,7 @@ class Force_Alarm_Public {
 	 */
 	private function fa_order_process_payment( $data ) {
 		return;
+		$response = [];
 		// Important variables
 		$url 	 = get_field('force_alarm_payment_endpoint_url', 'option');
 		if( !$url ) $url = 'http://api2.forcesos.com:8084/subscriptions/';
@@ -343,35 +344,47 @@ class Force_Alarm_Public {
 		);
 
 		// Perform call to service
-		$response = wp_remote_post( $url, $request);
+		$service_response = wp_remote_post( $url, $request);
 		
 		// Verify error on service communication and throw Exception
-		if( is_wp_error( $response )) { // $res->get_error_message()
-			throw new Exception( sprintf(' %s Inténtalo de nuevo', $response->get_error_message()) );
+		if( is_wp_error( $service_response )) { // $res->get_error_message()
+			$response['code']				= sprintf("%s %s", 'FA-00', __LINE__);
+			$response['message']		= sprintf('Ha ocurrido un error procesando tu pago: %s. Inténtalo de nuevo', $service_response->get_error_message());
+	
+			return wp_send_json_error( $response, 500 );
 		}
-		$response['request'] = $request;
-		$response['url'] = esc_url_raw( $url );
+		$service_response['request'] = $request;
+		$service_response['url'] = esc_url_raw( $url );
 		
 		// Decode body
-		$response['body_decoded'] = json_decode( $response['body'] );
+		$service_response['body_decoded'] = json_decode( $service_response['body'] );
 		
 		// Verify error from service and throw Exception
-		if( isset( $response['body_decoded']->error_info )) {
-			throw new Exception( __LINE__ . ' ' . $response['body_decoded']->error_info->message );
+		if( isset( $service_response['body_decoded']->error_info )) {
+			$response['code']				= sprintf("%s %s", 'FA-00', __LINE__);
+			$response['message']		= $service_response['body_decoded']->error_info->message;
+	
+			return wp_send_json_error( $response, 500 );
 		}
 		
 		// Verify for errors in server
-		if( isset( $response['body_decoded']->server_error )) {
-			throw new Exception( __LINE__ . ' ' . $response['body_decoded']->server_error->message );
+		if( isset( $service_response['body_decoded']->server_error )) {
+			$response['code']				= sprintf("%s %s", 'FA-00', __LINE__);
+			$response['message']		= $service_response['body_decoded']->server_error->message;
+	
+			return wp_send_json_error( $response, 500 );
 		}
 		
 		// Verify errors in fields
-		if( isset( $response['body_decoded']->payment_info )) {
-			throw new Exception(__LINE__ . ' ' . 'Faltan campos en la información de pago. ');
+		if( isset( $service_response['body_decoded']->payment_info )) {
+			$response['code']				= sprintf("%s %s", 'FA-00', __LINE__);
+			$response['message']		= 'Faltan campos en la información de pago. ';
+	
+			return wp_send_json_error( $response, 500 );
 		}
 
 		// Return to the process
-		return $response;
+		return $service_response;
 	}
 	/**
 	 * Process user in order
@@ -379,6 +392,7 @@ class Force_Alarm_Public {
 	 * @throws Exception
 	 */
 	private function fa_order_process_user( $data ) {
+		$response = [];
 		/**
 		 * Create the new user making a WP_User
 		 * 
@@ -409,7 +423,10 @@ class Force_Alarm_Public {
 		
 		// If user creation is error, return nicely
 		if( is_wp_error( $new_user_id )) {
-			throw new Exception($new_user_id->get_error_message());
+			$response['code']				= sprintf("%s %s", 'FA-00', __LINE__);
+			$response['message']		= $new_user_id->get_error_message();
+	
+			return wp_send_json_error( $response, 500 );
 		}
 		
 		// AWESOME SUPPORT PLUGIN :: CAPABILITIES
@@ -513,6 +530,7 @@ class Force_Alarm_Public {
 	 */
 	private function fa_order_process_cart( $user_id, $data ) {
 		global $woocommerce;
+		$response = [];
 
 		// get requested time and date
 		$requestedDate = date("D d/m/Y", strtotime(  $data['form']['date'] ));
@@ -541,7 +559,10 @@ class Force_Alarm_Public {
 		
 		// Verificar que no haya problemas creando orden
 		if( is_wp_error( $order )) {
-			throw new Exception("No se pudo completar la orden: " . implode(', ', $order->get_error_messages()));
+			$response['code']				= sprintf("%s %s", 'FA-00', __LINE__);
+			$response['message']		= "No se pudo completar la orden: " . implode(', ', $order->get_error_messages());
+	
+			return wp_send_json_error( $response, 500 );
 		}
 		
 		// The add_product() function below is located in /plugins/woocommerce/includes/abstracts/abstract_wc_order.php
