@@ -44,7 +44,7 @@ const GlobalStyles = styled.div`
     }
 
 
-    @media (max-width: 980px) {
+    @media (max-width: 1024px) {
         .btn {
             padding: 7px 3px;
             font-size: 0.6em;
