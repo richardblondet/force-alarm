@@ -15,7 +15,7 @@ class OrderCompleted extends React.Component {
     }
     handleHomeButton = (e) => {
         e.preventDefault();
-        window.location = "/";
+        window.location = "/mi-cuenta";
     }
     render() {
         
