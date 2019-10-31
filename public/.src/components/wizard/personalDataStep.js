@@ -13,7 +13,9 @@ import {
     setHours,
     setMinutes,
     addDays,
-    getDay
+    getDay,
+    isSunday,
+    setDay
 } from "date-fns";
 import es from "date-fns/locale/es";
 import "react-datepicker/dist/react-datepicker.css";
@@ -63,7 +65,7 @@ const initialDataTest = {
     address: "",
     sector: "",
     reference: "",
-    date: addDays( TODAY, 3),
+    date: isSunday(addDays(TODAY, 2)) ? addDays(TODAY, 3) : addDays(TODAY, 2),
     time: setHours( setMinutes( TODAY, 0), 9)
 };
 
