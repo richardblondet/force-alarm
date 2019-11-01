@@ -336,7 +336,7 @@ class Force_Alarm_Public {
 		// build request
 		$request = array(
 			'method' 					=> 'POST',
-			'timeout' 				=> 45,
+			'timeout' 				=> 100,
 			'headers'					=> array(
 				'Content-Type'	=> 'application/json',
 				'Authorization' => sprintf('token %s', $token)
