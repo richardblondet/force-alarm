@@ -121,3 +121,151 @@ body {
 .mb-0 {
     margin-bottom: 0px;
 }
+
+
+
+
+
+
+/** Additionals ***/
+.additional {
+    font-size: 18px;
+    margin-top: 2rem;
+    max-width: 577px;
+    margin: 0 auto;
+}
+
+.additional .container {
+    max-width: 46rem;
+}
+
+.additional .title {
+    font-size: 22px;
+    color: #AD301F;
+    font-weight: bold;
+}
+
+.additional .desc {
+    display: block;
+    line-height: 1.2;
+}
+
+.additional .desc .car-price-description-small {
+    font-size: 18px;
+}
+
+.additional .desc strong {
+    font-size: 26px;
+    color: #333B40;
+}
+
+.additional .form-group label {
+    font-size: 1.2rem;
+    text-align: center;
+    display: block;
+}
+
+.additional .form-control {
+    background: #ececec;
+    height: 3.5rem;
+    display: block;
+    border: 0;
+    width: 100%;
+}
+
+.additional label {
+    font-size: 14px;
+}
+
+.additional .not-qty-content {
+    height: 47px;
+    width: 47px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    margin: 0;
+}
+
+.additional .btn {
+    font-weight: bold;
+    padding: 10px 20px !important;
+    font-size: 17px !important;
+}
+
+@media (max-width: 576px) {
+    .additional .img-thumbnail {
+        padding:0;
+    }
+
+    .additional .title {
+        font-size: 14px;
+    }
+
+    .additional .details_link {
+        font-size: 13px !important;
+        line-height: 1 !important;
+        display: block;
+    }
+
+    .additional .not-qty-content {
+        height: 36px;
+        width: 36px;
+    }
+
+    .additional label {
+        font-size: 12px;
+    }
+
+    .additional .desc .car-price-description-small {
+        font-size: 13px;
+        color: #333;
+        font-weight: 500;
+    }
+
+    .additional .desc strong {
+        font-size: 16px;
+    }
+
+ .crbSWd .additional .btn {
+        font-size: 11px !important;
+        padding: 8px 10px !important;
+        margin-bottom: 0 !important;
+        margin-left: 1rem;
+    }
+}
+@media (max-width: 370px) {
+    .additional .desc strong{
+        font-size:13px;
+    }
+    .additional .desc .car-price-description-small{
+        font-size:10px;
+    }
+    .additional [class='col-4']{
+        max-width: 40%;
+        flex: 0 0 40%;
+    }
+ .additional label{
+     font-size: 9px;
+     margin-bottom: 2px;
+ }
+ .additional [class *= col-8]{
+     max-width: 60%;
+        flex: 0 0 60%;
+ }
+ .additional [class *= col-6],
+ .additional [class *= col-8]
+ {
+     padding:0 10px;
+ }
+ .crbSWd .additional .btn {
+        font-size: 10px !important;
+        padding: 8px 10px !important;
+        margin-left:5px;
+    }
+  .additional .not-qty-content{
+        width:30px !important;
+        height:30px !important;
+        font-size:11px;
+    }
+}
