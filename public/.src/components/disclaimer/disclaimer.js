@@ -56,7 +56,7 @@ class Disclaimer extends React.Component {
                 <ModalHeader toggle={this.toggle} />
                 <ModalBody>
                     {/* <div dangerouslySetInnerHTML={{ __html: disclaimer }} /> */}
-                    <MyIframe src="http://159.89.53.77/formulario-de-solicitud/" width="100%" frameBorder="0" />
+                    <MyIframe src="/formulario-de-solicitud/" width="100%" frameBorder="0" />
                 </ModalBody>
             </MyModal>
         );
