@@ -15,6 +15,12 @@ const PlanName = styled.div`
     font-size: 22px;
 `;
 
+const ButtonSpaced = styled(Button)`
+    font-weight: bold !important;
+    padding: 10px 20px !important;
+    font-size: 17px !important;
+`
+
 class SelectPlan extends React.Component {
     constructor( props ) {
         super( props );
@@ -59,7 +65,7 @@ class SelectPlan extends React.Component {
                             {PriceFormatted} <span className="text-black-50 h6">/Al mes</span>
                         </p>
                     </div>
-                    <Button color="danger" onClick={e=>this.handlePlanSelect(e, plan)}>Seleccionar</Button>
+                    <ButtonSpaced color="danger" onClick={e=>this.handlePlanSelect(e, plan)}>Seleccionar</ButtonSpaced>
                     <div>
                         <a href="" 
                             className="mt-3 ver-mas"
