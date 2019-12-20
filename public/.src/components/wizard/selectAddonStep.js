@@ -92,17 +92,24 @@ class SelectAddons extends React.Component {
     showAddonsModal = (addon) => {
         this.props.showAddonsmodal(addon);
     }
+
+    isPlanSelected = (planName) => {
+        const { state } = this.context;
+        return state.data.selection.filter(item => item.post_title === planName ).length > 0
+    }
     
     render() {
         const addons = this.getAddons();
+        
         // console.log({ addons });
         const renderAddons = addons.map( (addon, indx) => {
             const formatter = new Intl.NumberFormat('en-US', { style: 'currency', currency:'USD' });
             const PriceFormatted = `RD${formatter.format(addon.price)}`
-            
+            const isAddonIncluded = (addon.post_title === "Force Seguro" || addon.post_title === "ForceSOS Hogar") && this.isPlanSelected("Plan Avanzado");
+            const addongRowStyles = isAddonIncluded ? { opacity: 0.5, pointerEvents: "none" } : {};
             return (
-                <div className="additional">
-                    <Row className="my-5">        
+                <div className="additional" key={indx}>
+                    <Row className={`my-5 ${isAddonIncluded ? "disabled" : ""}`} style={addongRowStyles}>
                         <Col xs="4">
                             <img  className={`img-thumbnail-custom img-thumbnail ${addon.featured_image ? "" : "p-4"}`} src={addon.featured_image || addon_image}   />
                             <div className="see-more-wrap text-center mt-2">
@@ -113,7 +120,7 @@ class SelectAddons extends React.Component {
                             </div>
                         </Col>
                         <Col xs="8" className="text-left">
-                            <h4 class="title">{addon.post_title}</h4>
+                            <h4 className="title">{addon.post_title}</h4>
                             <FormText  className="desc">                
                                 <strong>{PriceFormatted}</strong> {addon.product_type === "addon" && <span className="car-price-description-small">/Adicionales en la renta</span>}
                             </FormText>
@@ -122,7 +129,7 @@ class SelectAddons extends React.Component {
                                     <Label for="qty">Cantidad</Label>
                                 </Col>
                                 <Col xs="2">
-                                    <div class="form-group">
+                                    <div className="form-group">
                                         {/* <Input  addon id="qty" type="number" /> */}
                                         {addon.product_type === "addon" && <span className="not-qty-content">1</span>}
                                         {addon.product_type === "item" && <DropDownQty productQuantity={(quantity) => this.setState({ quantity })} />}
@@ -132,7 +139,7 @@ class SelectAddons extends React.Component {
                                     <div className="form-group wrap-add">
                                         {
                                             !this.isDisabled(addon.ID) && (
-                                                <Button color="danger" onClick={e=>this.handleAddonSelect(e, addon)}>Añadir al Carrito</Button>
+                                                <Button color="danger" onClick={isAddonIncluded ? e => e : e=>this.handleAddonSelect(e, addon)}>Añadir al Carrito</Button>
                                             )
                                         }
                                         {

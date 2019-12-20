@@ -65,7 +65,7 @@ const initialDataTest = {
     address: "",
     sector: "",
     reference: "",
-    date: isSunday(addDays(TODAY, 2)) ? addDays(TODAY, 3) : addDays(TODAY, 2),
+    date: isSunday( addDays(TODAY, 2) ) ? addDays(TODAY, 3) : addDays(TODAY, 2),
     time: setHours( setMinutes( TODAY, 0), 9)
 };
 
@@ -393,7 +393,7 @@ class PersonalDataForm extends React.Component {
                                             dateFormat="dd/MM/yyyy"
                                             withPortal
                                             inline
-                                            minDate={addDays(new Date(), 1)}
+                                            minDate={addDays(new Date(), 2)}
                                             filterDate={this.handleFilterDate}
                                             onClickOutside={this.clickOutsideDate}
                                             onChange={this.handleDateChange} /> 
