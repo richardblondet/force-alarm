@@ -105,7 +105,7 @@ class SelectAddons extends React.Component {
         const renderAddons = addons.map( (addon, indx) => {
             const formatter = new Intl.NumberFormat('en-US', { style: 'currency', currency:'USD' });
             const PriceFormatted = `RD${formatter.format(addon.price)}`
-            const isAddonIncluded = (addon.post_title === "Force Seguro" || addon.post_title === "ForceSOS Hogar") && this.isPlanSelected("Plan Avanzado");
+            const isAddonIncluded = (addon.post_title === "Force Seguro" || addon.post_title === "ForceSOS Hogar" || addon.post_title === "Visitas Técnicas Ilimitadas") && this.isPlanSelected("Plan Avanzado");
             const addongRowStyles = isAddonIncluded ? { opacity: 0.5, pointerEvents: "none" } : {};
             return (
                 <div className="additional" key={indx}>
@@ -137,10 +137,11 @@ class SelectAddons extends React.Component {
                                 </Col>
                                 <Col xs="10">
                                     <div className="form-group wrap-add">
+                                        
                                         {
-                                            !this.isDisabled(addon.ID) && (
+                                            !this.isDisabled(addon.ID) && !isAddonIncluded ? (
                                                 <Button color="danger" onClick={isAddonIncluded ? e => e : e=>this.handleAddonSelect(e, addon)}>Añadir al Carrito</Button>
-                                            )
+                                            ) : <Button color="secondary" disabled>Incluido</Button>
                                         }
                                         {
                                             this.isDisabled(addon.ID) && (
