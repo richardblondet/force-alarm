@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Button, Modal, ModalBody, ModalFooter } from "reactstrap";
+import logo from "../../static/logo-fa-color.png";
 import constants from "../../constants";
 import Store from "../../redux/store";
 
@@ -25,7 +26,7 @@ class ServicesModal extends React.Component {
                     <div>
                         <img 
                             className="pt-5 pb-2 mx-auto d-block" 
-                            src="https://forcealarm.interactiva.com.do/wp-content/uploads/2019/07/Logo-ForceAlarm.png" 
+                            src={logo} 
                             width="125" />
                     </div>
                     <div dangerouslySetInnerHTML={{__html: state.modalService.post_title}} />
